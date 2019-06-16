@@ -1,8 +1,8 @@
-# OpenStone L861 - Lineage-15.1 branch (oreo)
+# AMOI L861 - Lineage-15.1 (Oreo 8.1)
 
 ==============
 
-This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenStone L861.
+This branch is device tree for building Lineage-15.1 (Oreo 8.1) Rom for AMOI L861.
 
 ---
 
@@ -10,19 +10,21 @@ This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenS
 
 ### Working
 
-* Boots
-* Ril
-* wifi & hotspot
+* Ril (phone calls / mobile data OK)
+* Wifi & hotspot
+* Bluetooth
+* NFC
 * Audio
-* sound
-* online/offline charging
-* lights ( notifications, charging,etc)
-* bluetooth
-* USB tethering
+* FM-Radio
+* GPS/Glonass
+* Online/offline charging
+* Lights ( notifications, charging,etc)
+* All Sensors 
 
-### Broken/Bugs
+### Current Bugs
 
-* graphical glitches
-* camera
-* everything
+* Small graphical glitches (WIP)
+* Camera Service Management (WIP)
+* IGTV doesn't work (under investigation)
+* SafetyNET tests fail (WIP)
 
