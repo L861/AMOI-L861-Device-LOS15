@@ -1,11 +1,41 @@
 #
-# system.prop for LeEco Le 1s
+# system.prop for L861
 #
+
+# rild
+#ro.telephony.ril_class=SproutRIL
+ro.mtk_rild_read_imsi=1
+ro.telephony.sim.count=1
+persist.radio.default.sim=0
+persist.radio.multisim.config=ss
+persist.md.perm.checked=to_upgrade
+persist.gemini.sim_num=1
+ro.gemini.smart_sim_switch=false
+ril.specific.sm_cause=0
+bgw.current3gband=0
+ril.external.md=0
+ril.first.md=1
+ril.flightmode.poweroffMD=1
+ril.telephony.mode=0
+ril.current.share_modem=1
+ril.radiooff.poweroffMD=0
+ro.mediatek.gemini_support=false
+ro.mtk_gemini_support=1
+persist.radio.gemini_support=0
+rild.libpath=mtk-ril.so
+rild.libargs=-d /dev/ttyC0
+
+# end
+
 
 # Enable ADB from the begining
 persist.service.adb.enable=1
 persist.service.debuggable=1
-persist.sys.usb.config=mass_storage,adb
+#persist.sys.usb.config=mtp,adb
+
+# Default Renderer
+debug.hwui.renderer=opengl
+# debug.hwui.renderer=skiavk
 
 # MTK, Infinity, 20090720 {
 wifi.interface=wlan0
@@ -23,8 +53,7 @@ mediatek.wlan.ctia=0
 # MTK, mtk03034 20101213}
 
 
-rild.libpath=mtk-ril.so
-rild.libargs=-d /dev/ttyC0
+
 #
 wifi.tethering.interface=ap0
 #
@@ -88,36 +117,22 @@ ro.mediatek.chip_ver=S01
 ro.config.ringtone=Ring_Synth_04.ogg
 ro.config.notification_sound=pixiedust.ogg
 ro.config.alarm_alert=Alarm_Classic.ogg
-dalvik.vm.heapgrowthlimit=256m
-dalvik.vm.heapsize=512m
+#dalvik.vm.heapgrowthlimit=256m
+#dalvik.vm.heapsize=512m
 ro.mediatek.chip_ver=S01
 ro.mediatek.version.release=alps-mp-m0.mp11-V1_vz6795.lwt.m
 ro.mediatek.platform=MT6795
-persist.radio.multisim.config=dsds
-persist.gemini.sim_num=2
-ro.gemini.smart_sim_switch=false
-ril.specific.sm_cause=0
-bgw.current3gband=0
-ril.external.md=0
 ro.mtk_cam_lomo_support=1
 ro.btstack=blueangel
 ro.sf.hwrotation=0
 curlockscreen=0
-ro.mediatek.gemini_support=true
 drm.service.enabled=true
-ril.first.md=1
-ril.flightmode.poweroffMD=1
-ril.telephony.mode=0
 dalvik.vm.mtk-stack-trace-file=/data/anr/mtk_traces.txt
 mediatek.wlan.chip=MT6630
 mediatek.wlan.module.postfix=_mt6630
-ril.radiooff.poweroffMD=0
 ro.mediatek.version.branch=alps-mp-m0.mp11
 ro.mediatek.version.sdk=4
 bt.profiles.dun.enabled=1
-ro.mtk_gemini_support=1
-persist.radio.gemini_support=1
-ril.current.share_modem=2
 #ro.mtk_audenh_support=1
 ro.mtk_ims_support=0
 ro.mtk_volte_support=0
@@ -182,6 +197,8 @@ ro.mtk_lte_support=1
 ro.mtk_safemedia_support=1
 ro.mtk_umts_tdd128_mode=1
 ro.mtk_cam_mav_support=1
+ro.mtk_cam_mfb_support=3
+ro.mtk_slow_motion_support=1
 camera.disable_zsl_mode=1
 persist.debug.wfd.enable=1
 ro.mtk_cam_vfb=1
@@ -192,6 +209,7 @@ ro.mtk_slidevideo_support=1
 ro.mtk_bg_power_saving_support=1
 ro.mtk_bg_power_saving_ui=1
 ro.ril.disable.power.collapse=1
+ril.first.md=1
 pm.sleep_mode=1
 wifi.supplicant_scan_interval=360
 ro.sim_me_lock_mode=0
@@ -199,11 +217,10 @@ ro.mtk_dual_mic_support=1
 ro.mtk_is_tablet=0
 ro.mtk_voice_extension_support=1
 wfd.dummy.enable=1
-ro.mediatek.project.path=device/leeco/x3
-persist.mtk.wcn.combo.chipid=-1
-persist.mtk.wcn.combo.chipid=0x6630
+ro.mediatek.project.path=device/openstone/L861
 service.wcn.driver.ready=no
 service.wcn.coredump.mode=2
+af.resouce.extdac_support=0
 ro.com.android.mobiledata=false
 persist.radio.mobile.data=0,0
 persist.meta.dumpdata=0

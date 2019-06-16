@@ -8,7 +8,7 @@ for dir in $dirs ; do
 	cd $rootdirectory
 	cd $dir
 	echo "Applying $dir patches..."
-	git apply $rootdirectory/device/leeco/x3/patches/$dir/*.patch
+	git apply $rootdirectory/device/openstone/L861/patches/$dir/*.patch
 	echo " "
 done
 

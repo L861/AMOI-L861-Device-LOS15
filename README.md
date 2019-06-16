@@ -1,11 +1,28 @@
-# AMOI L861 (stonexone) - Lineage-15.1 (Oreo)
+# OpenStone L861 - Lineage-15.1 branch (oreo)
 
 ==============
 
-This branch is test device tree for building Lineage-15.1 branch (oreo) Rom for AMOI L861 (stonexone).
+This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenStone L861.
 
 ---
 
 ## Build Information
 
-### Work In Progress
+### Working
+
+* Boots
+* Ril
+* wifi & hotspot
+* Audio
+* sound
+* online/offline charging
+* lights ( notifications, charging,etc)
+* bluetooth
+* USB tethering
+
+### Broken/Bugs
+
+* graphical glitches
+* camera
+* everything
+

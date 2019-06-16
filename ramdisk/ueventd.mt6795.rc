@@ -13,6 +13,16 @@
 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/para      0660    root    system
 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/frp       0660    root    system
 /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name/security  0660    root    system
+
+
+#NFC device
+/dev/msr3110              0666   root       root
+/dev/mt6605               0660   nfc        radio
+
+
+# kms driver for drm based gpu
+/dev/dri/*                0666   root       graphics
+
 # Connectivity
 /dev/stpwmt               0660   system     system
 /dev/wmtdetect            0660   system     system
@@ -37,7 +47,7 @@
 /dev/wmtWifi              0660   wifi     wifi
 
 # FMRadio
-/dev/fm                   0660   media     media
+/dev/fm                   0660   system     media
  
 # MTK BTIF driver
 /dev/btif                 0600   system     system
@@ -80,8 +90,8 @@
 /sys/devices/platform/leds-mt65xx/leds/green   delay_off      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/red   delay_on      0664  system   system
 /sys/devices/platform/leds-mt65xx/leds/red   delay_off      0664  system   system
-/sys/devices/platform/leds-mt65xx/leds/blue   delay_on      0664  system   system
-/sys/devices/platform/leds-mt65xx/leds/blue   delay_off      0664  system   system
+#/sys/devices/platform/leds-mt65xx/leds/blue   delay_on      0664  system   system
+#/sys/devices/platform/leds-mt65xx/leds/blue   delay_off      0664  system   system
 
 #GPIO
 /dev/mtgpio               0600   radio      root
@@ -109,13 +119,13 @@
 /dev/ttyACM0              0660   radio      radio
 
 #Add Wake Gestures @Bule 20161119
-/sys/android_touch/*       0664  system   system
+#/sys/android_touch/*       0664  system   system
 
 #Add Fingerprint @Bule 20161119
-/dev/goodix_fp              0660   root       system
+#/dev/goodix_fp              0660   root       system
 
 #Add Wake Gestures @Bule 20161123
-/sys/bus/i2c/devices/i2c-2/2-004b/*       0664  system   system
+#/sys/bus/i2c/devices/i2c-2/2-004b/*       0664  system   system
 
 /dev/random               0666   root       root
 /dev/urandom              0666   root       root

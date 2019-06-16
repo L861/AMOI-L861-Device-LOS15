@@ -36,23 +36,23 @@ on post-fs-data
     chmod 0660 /proc/smb/ScreenComm
 
 # Create char device file for WMT, GPS, BT, FM, WIFI
-#    mknod /dev/stpwmt c 190 0;
-#    mknod /dev/stpgps c 191 0;
-#    mknod /dev/stpbt  c 192 0;
+    mknod /dev/stpwmt c 190 0;
+    mknod /dev/stpgps c 191 0;
+    mknod /dev/stpbt  c 192 0;
 
-#    chmod 0660 /dev/stpwmt
-#    chown system system /dev/stpwmt
+    chmod 0660 /dev/stpwmt
+    chown system system /dev/stpwmt
 
-#    chmod 0660 /dev/wmtdetect
-#    chown system system /dev/wmtdetect
+    chmod 0660 /dev/wmtdetect
+    chown system system /dev/wmtdetect
 
     mknod /dev/wmtWifi c 153 0
     chmod 0660 /dev/wmtWifi
     chown system system /dev/wmtWifi
 
 #disable quick charge
-    chown system system /sys/class/power_supply/bq2589x-Wall/disable_quick_charge
-    chmod 0660 /sys/class/power_supply/bq2589x-Wall/disable_quick_charge
+#    chown system system /sys/class/power_supply/bq2589x-Wall/disable_quick_charge
+#    chmod 0660 /sys/class/power_supply/bq2589x-Wall/disable_quick_charge
 
 #Camera
     chmod 0660 /dev/MAINAF
@@ -141,7 +141,7 @@ on post-fs-data
 #
 
 # goodix fingerprint begin
-    chown system system /dev/goodix_fp
+#    chown system system /dev/goodix_fp
 # goodix fingerprint end
 
 on init
@@ -162,21 +162,23 @@ service fuse_usbotg /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/
 # Connectivity related services (Begin)
 #
 
-service wmt_loader /system/bin/wmt_loader
+service wmt_loader /system/vendor/bin/wmt_loader
 	class core
 	user root
 	group root
 	oneshot
+	seclabel u:r:wmt_loader:s0
 
-service 66xx_launcher /system/bin/6620_launcher -m 4 -p /system/etc/firmware/
+service 66xx_launcher /system/vendor/bin/6620_launcher -m 4 -p /system/vendor/etc/firmware/
     user system
     group system
 	class core
+	seclabel u:r:mtk_6620_launcher:s0
 
 on property:service.wcn.coredump.mode=2
 start stp_dump
 
-service stp_dump /system/bin/stp_dump3
+service stp_dump /system/vendor/bin/stp_dump3
 	user root
 	group root
 	class core
@@ -184,20 +186,20 @@ service stp_dump /system/bin/stp_dump3
 	oneshot
 
 # add by letv for reduced power rate when normal charge be selected begin
-on property:persist.sys.le_fast_chrg_enable=1
-    write /sys/class/power_supply/bq2589x-Wall/disable_quick_charge 0
-on property:persist.sys.le_fast_chrg_enable=0
-    write /sys/class/power_supply/bq2589x-Wall/disable_quick_charge 1
+#on property:persist.sys.le_fast_chrg_enable=1
+#    write /sys/class/power_supply/bq2589x-Wall/disable_quick_charge 0
+#on property:persist.sys.le_fast_chrg_enable=0
+#    write /sys/class/power_supply/bq2589x-Wall/disable_quick_charge 1
 # add by letv for reduced power rate when normal charge be selected end
 
-# goodix fingerprint begin
-service goodixfpd /system/bin/goodixfingerprintd
-    class main
-    user system
-    group system
+#goodix fingerprint begin
+#service goodixfpd /system/vendor/bin/goodixfingerprintd
+#    class main
+#    user system
+#    group system
 
-service fingerprintd /system/bin/fingerprintd
-    class main
-    user system
-    group system
+#service fingerprintd /system/vendor/bin/fingerprintd
+#    class main
+#    user system
+#    group system
 # goodix fingerprint end

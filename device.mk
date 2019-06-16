@@ -5,10 +5,15 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-3072-dalv
 $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-3072-hwui-memory.mk)
 
 # Vendor
-$(call inherit-product, vendor/leeco/x3/x3-vendor-blobs.mk)
+$(call inherit-product, vendor/openstone/L861/L861-vendor-blobs.mk)
+
+
+# Telecom
+PRODUCT_PACKAGES += Telecom
+
 
 # Folder path
-DEVICE_PATH := device/leeco/x3
+DEVICE_PATH := device/openstone/L861
 
 -include $(DEVICE_PATH)/hidl.mk
 
@@ -22,7 +27,32 @@ PRODUCT_AAPT_CONFIG := normal xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Recovery allowed devices
-TARGET_OTA_ASSERT_DEVICE := x3,X500,X507,X509,X3,x500,x507,x509,X502,x502
+TARGET_OTA_ASSERT_DEVICE := L861
+
+# Super User ROOT
+PRODUCT_PACKAGES += su
+
+PRODUCT_PROPERTY_OVERRIDES += persist.sys.root_access=3
+
+
+# FMRadio
+PRODUCT_PACKAGES += \
+	libmtkplayer \
+	FMRadio \
+    libfmcust \
+    libfmmt6630
+
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.mtk_fm_recording_support=1 \
+	persist.mtk.wcn.combo.chipid=-1 \
+	persist.mtk.combo.coredump=no \
+	service.wcn.driver.ready=no \
+	service.wcn.coredump.mode=2
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	fmradio.driver.enable=1 \
+	ro.mtk_bt_fm_over_bt=1	
 
 # Power
 PRODUCT_PACKAGES += \
@@ -33,26 +63,69 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
         md_ctrl
 
-# Camera
+# Weather
 PRODUCT_PACKAGES += \
-	Camera2 \
-	Snap \
-	libcamera_parameters_ext
+   WeatherProvider \
+   WeatherManagerService
+
+# Camera
+#	Snap \
+#	libcam.halsensor \
+#	libcam2halsensor \
+#	libcam.halsensor \
+
+# Sensors
+#PRODUCT_PACKAGES += \
+#	multihal \
+#	sensors.default
+
+#	libcam2halsensor \
+#	libcam.halsensor \
+#	libcam2client \
+#	libcam.client \
+#	libcam.camnode \
+#	libcam1_utils \	
+
+PRODUCT_PACKAGES += \
+	libcamera_parameters_ext \
+	libcamera_client_mtk  \
+	libcamera_parameters_mtk \
+	libcameracustom \
+	libstdc++ \
+	libcam.client \
+	Snap
 
 # Charger
+#	libfgauge \
+#    lineage_charger_res_images \
+#    font_log.png \
+#    libhealthd.lineage
 PRODUCT_PACKAGES += \
 	charger \
-	charger_res_images
+	charger_res_images \
+
+
+# Custom charger images
+# PRODUCT_COPY_FILES += \
+#$(LOCAL_PATH)/charger/res/images/lineage_battery_scale.png:root/res/images/charger/lineage_battery_scale.png \
+#$(LOCAL_PATH)/charger/res/images/font_log.png:root/res/images/font_log.png
+#$(LOCAL_PATH)/charger/res/values/charger/animation.txt:root/res/values/charger/animation.txt \
+
+    
+# Timezone
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
+     persist.sys.timezone=Europe/Rome
 
 # Torch
 PRODUCT_PACKAGES += \
 	Torch
 
-# LeEco's Prebuilt Apps
-PRODUCT_PACKAGES += \
-        GFManager \
-        LetvRemoteControl_preinstall \
-        UEIQuicksetSDKLeTV
+
+# Prebuilt Apps
+# PRODUCT_PACKAGES += \
+#        GFManager \
+#        LetvRemoteControl_preinstall \
+#        UEIQuicksetSDKLeTV
 
 # Other
 PRODUCT_PACKAGES += \
@@ -67,17 +140,19 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	ro.debuggable=1 \
 	ro.zygote=zygote64_32 \
 	ro.dalvik.vm.native.bridge=0 \
-	persist.sys.usb.config=mtp \
 	persist.debug.xlog.enable=0 \
 	camera.disable_zsl_mode=1
+#persist.sys.usb.config=mtp,adb \
 
-ifeq (lineage_x3,$(TARGET_PRODUCT))	#this is included only in lineage atm as some other roms have issue with this
+ifeq (lineage_L861,$(TARGET_PRODUCT))	#this is included only in lineage atm as some other roms have issue with this
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	dalvik.vm.dex2oat-Xms=64m \
 	dalvik.vm.dex2oat-Xmx=64m \
 	dalvik.vm.image-dex2oat-Xms=64m \
 	dalvik.vm.image-dex2oat-Xmx=512m
 endif
+
+
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -92,7 +167,12 @@ PRODUCT_PACKAGES += \
 	libtinyxml \
 	audio_policy.stub \
 	libtinymix \
-	libfs_mgr
+	libfs_mgr \
+	tinymix \
+	tinyhostless \
+	tinypcminfo \
+	tinycap \
+	tinyplay
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -152,13 +232,19 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/ramdisk/ueventd.mt6795.rc:root/ueventd.mt6795.rc \
 	$(DEVICE_PATH)/ramdisk/init.volte.rc:root/init.volte.rc \
 	$(DEVICE_PATH)/ramdisk/init.mal.rc:root/init.mal.rc \
-	$(DEVICE_PATH)/ramdisk/init.trustonic.rc:root/init.trustonic.rc
+	$(DEVICE_PATH)/ramdisk/init.trustonic.rc:root/init.trustonic.rc \
+	$(DEVICE_PATH)/ramdisk/meta_init.modem.rc:root/meta_init.modem.rc \
+	$(DEVICE_PATH)/ramdisk/meta_init.project.rc:root/meta_init.project.rc \
+	$(DEVICE_PATH)/ramdisk/meta_init.rc:root/meta_init.rc \
+	$(DEVICE_PATH)/ramdisk/fstab.charger:root/fstab.charger \
 
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
 	frameworks/native/data/etc/android.hardware.camera.autofocus.xml:system/etc/permissions/android.hardware.camera.autofocus.xml \
 	frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
 	frameworks/native/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
+	frameworks/native/data/etc/android.hardware.camera.full.xml:system/etc/permissions/android.hardware.camera.full.xml \
+	frameworks/native/data/etc/android.hardware.camera.raw.xml:system/etc/permissions/android.hardware.camera.raw.xml \
 	frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
 	frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
 	frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
@@ -197,15 +283,19 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/audio/audio_device.xml:system/vendor/etc/audio_device.xml \
 	$(DEVICE_PATH)/configs/audio/audio_effects.xml:system/vendor/etc/audio_effects.xml \
 	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/vendor/etc/audio_em.xml \
-	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/vendor/etc/audio_policy.conf
+	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/vendor/etc/audio_policy.conf \
+	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf \
+	$(DEVICE_PATH)/configs/audio/audio_device.xml:system/etc/audio_device.xml \
+	$(DEVICE_PATH)/configs/audio/audio_effects.xml:system/etc/audio_effects.xml \
+	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/vendor/etc/audio_em.xml
 
 # Audio Policy Configurations
 PRODUCT_COPY_FILES += \
-    frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:system/vendor/etc/audio/a2dp_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:system/vendor/etc/audio/r_submix_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:system/vendor/etc/audio/usb_audio_policy_configuration.xml \
-    frameworks/av/services/audiopolicy/config/default_volume_tables.xml:system/vendor/etc/audio/default_volume_tables.xml \
-    frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:system/vendor/etc/audio/audio_policy_volumes.xml
+	frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration.xml:system/vendor/etc/audio/a2dp_audio_policy_configuration.xml \
+	frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:system/vendor/etc/audio/r_submix_audio_policy_configuration.xml \
+	frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:system/vendor/etc/audio/usb_audio_policy_configuration.xml \
+	frameworks/av/services/audiopolicy/config/default_volume_tables.xml:system/vendor/etc/audio/default_volume_tables.xml \
+	frameworks/av/services/audiopolicy/config/audio_policy_volumes.xml:system/vendor/etc/audio/audio_policy_volumes.xml
 
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/permissions/android.hardware.camera.xml:system/etc/permissions/android.hardware.camera.xml \
@@ -267,8 +357,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/agps_profiles_conf2.xml:system/etc/agps_profiles_conf2.xml
 
-PRODUCT_COPY_FILES += \
-	frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml
+#PRODUCT_COPY_FILES += \
+#	frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml
 
 # Mediaserver with system group
 PRODUCT_COPY_FILES += \
@@ -280,10 +370,39 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/hostapd/hostapd.deny:system/vendor/etc/hostapd/hostapd.deny
 
 
+# NFC
+PRODUCT_PACKAGES += \
+	com.android.nfc_extras \
+	nfc_nci.mt6605.default \
+	libmtknfc \
+	Nfc \
+	Tag
+
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcstackp:system/bin/nfcstackp
+
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PATH)/configs/nfc/MTKNfclicense.lic:system/etc/MTKNfclicense.lic \
+	frameworks/native/data/etc/android.hardware.nfc.hce.xml:system/etc/permissions/android.hardware.nfc.hce.xml \
+	frameworks/native/data/etc/android.hardware.nfc.xml:system/etc/permissions/android.hardware.nfc.xml \
+	frameworks/native/data/etc/com.android.nfc_extras.xml:system/etc/permissions/com.android.nfc_extras.xml \
+	$(DEVICE_PATH)/configs/permissions/com.gsma.services.nfc.xml:system/etc/permissions/com.gsma.services.nfc.xml \
+	$(DEVICE_PATH)/configs/permissions/privapp-permissions-mediatek.xml:system/etc/permissions/privapp-permissions-mediatek.xml
+
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfc.cfg:system/vendor/etc/nfc.cfg
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcse.cfg:system/vendor/etc/nfcse.cfg
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcee_access.xml:system/vendor/etc/nfcee_access.xml
+
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfc.cfg:system/etc/nfc.cfg
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcse.cfg:system/etc/nfcse.cfg
+PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcee_access.xml:system/etc/nfcee_access.xml
+
+
 # MTK Helpers
 PRODUCT_PACKAGES += \
 	libccci_util \
-	libmtk_symbols
+	libmtk_symbols \
+	libxlog \
+	asec_helper
 
 # Sensor Calibration
 PRODUCT_PACKAGES += libem_sensor_jni
@@ -302,22 +421,29 @@ PRODUCT_PACKAGES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-        lights.mt6795
+        lights.default
 
 # GPS
 PRODUCT_PACKAGES += \
 	gps.mt6795 \
 	libcurl
 
-# camera
+#camera
 PRODUCT_PACKAGES += \
 	libbwc \
-	libm4u
+	libm4u \
+    libcamera_parameters_mtk \
+    libcamera_client_mtk \
+    libcam.halsensor \
+    libcam2halsensor \
+    libcameracustom \
+    libnativewindow
 
 #Camera Legacy
 PRODUCT_PROPERTY_OVERRIDES += \
      media.stagefright.legacyencoder=true \
      media.stagefright.less-secure=true
+
 
 # Vulkan
 PRODUCT_COPY_FILES += \
@@ -326,12 +452,12 @@ PRODUCT_COPY_FILES += \
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/seccomp/mediacodec.policy:system/vendor/etc/seccomp_policy/mediacodec.policy \
-    $(DEVICE_PATH)/seccomp/mediaextractor.policy:system/vendor/etc/seccomp_policy/mediaextractor.policy
+	$(DEVICE_PATH)/seccomp/mediacodec.policy:system/vendor/etc/seccomp_policy/mediacodec.policy \
+	$(DEVICE_PATH)/seccomp/mediaextractor.policy:system/vendor/etc/seccomp_policy/mediaextractor.policy
 
 # HIDL Manifest
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/configs/manifest.xml:system/vendor/manifest.xml
+	$(DEVICE_PATH)/configs/manifest.xml:system/vendor/manifest.xml
 
 # Bluetooth
 PRODUCT_PACKAGES += \
@@ -343,3 +469,6 @@ PRODUCT_PACKAGES += \
     libgralloc_extra \
     libui_ext \
     libgui_ext
+
+# XML Parser
+PRODUCT_PACKAGES += libxml2

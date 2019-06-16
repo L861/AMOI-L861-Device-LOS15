@@ -176,7 +176,7 @@ blink_red(int level, int onMS, int offMS)
         	write_int(RED_LED_FILE, 0);
 	}
 	else if (nowStatus == 1) {
-//        	write_int(RED_LED_FILE, level); // default full brightness
+       	write_int(RED_LED_FILE, 255); // default full brightness
 		write_str(RED_TRIGGER_FILE, "timer");
 		write_int(RED_DELAY_OFF_FILE, offMS);
 		write_int(RED_DELAY_ON_FILE, onMS);
@@ -215,7 +215,7 @@ blink_green(int level, int onMS, int offMS)
         	write_int(GREEN_LED_FILE, 0);
 	}
 	else if (nowStatus == 1) {
-//        	write_int(GREEN_LED_FILE, level); // default full brightness
+       	write_int(GREEN_LED_FILE, 255); // default full brightness
 		write_str(GREEN_TRIGGER_FILE, "timer");
 		write_int(GREEN_DELAY_OFF_FILE, offMS);
 		write_int(GREEN_DELAY_ON_FILE, onMS);
@@ -254,7 +254,7 @@ blink_blue(int level, int onMS, int offMS)
         	write_int(BLUE_LED_FILE, 0);
 	}
 	else if (nowStatus == 1) {
-//        	write_int(BLUE_LED_FILE, level); // default full brightness
+        write_int(BLUE_LED_FILE, 255); // default full brightness
 		write_str(BLUE_TRIGGER_FILE, "timer");
 		write_int(BLUE_DELAY_OFF_FILE, offMS);
 		write_int(BLUE_DELAY_ON_FILE, onMS);

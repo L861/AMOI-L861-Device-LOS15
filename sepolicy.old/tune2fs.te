@@ -1,0 +1,35 @@
+# ==============================================
+# Policy File of /system/bin/fsck Executable File
+
+# ==============================================
+# Type Declaration
+# ==============================================
+#type fsck, domain;
+#type fsck_exec, exec_type, file_type;
+
+# ==============================================
+# MTK Policy Rule
+# ==============================================
+
+# Date : WK15.30
+# Operation : Migration
+# Purpose : tune /data.
+#init_daemon_domain(fsck)
+
+allow fsck userdata_block_device:blk_file rw_file_perms;
+allow fsck block_device:dir search;
+
+# for Nougat
+allow fsck proc:file r_file_perms;
+allow fsck proc:lnk_file read;
+allow fsck rootfs:lnk_file { getattr read };
+allow fsck null_device:chr_file { read write };
+allow fsck init:fd use;
+allow fsck property_contexts_file:file { getattr read open };
+allow fsck properties_serial:file { getattr read open };
+allow fsck system_file:file { read };
+allow fsck device:dir { search };
+allow fsck urandom_device:chr_file { getattr ioctl open read };
+allow fsck properties_device:dir getattr;
+allow fsck self:dir { search };
+allow fsck self:lnk_file read;

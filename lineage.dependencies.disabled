@@ -1,0 +1,13 @@
+ 
+[ 
+ { 
+   "repository":  "le1s/android_kernel_leeco_x3", 
+   "target_path": "kernel/openstone/L861", 
+   "branch":      "master" 
+ }, 
+ { 
+   "repository":  "le1s/proprietary_vendor_leeco", 
+   "target_path": "vendor/leeco", 
+   "branch":      "N" 
+ } 
+] 

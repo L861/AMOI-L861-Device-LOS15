@@ -1,5 +1,14 @@
 #include <stdlib.h>
 
+#include <utils/Log.h>
+#include <binder/IServiceManager.h>
+#include <media/AudioSystem.h>
+#include <media/IAudioFlinger.h>
+#include <media/IAudioPolicyService.h>
+#include <math.h>
+
+#include <system/audio.h>
+
 extern "C" {
  void _ZN7android11IDumpTunnel11asInterfaceERKNS_2spINS_7IBinderEEE(){}
  //void _ZN7android22AudioMTKGainController17SetHeadPhoneLGainEi(uint32_t DegradedBGain) {}

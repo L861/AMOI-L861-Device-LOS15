@@ -111,6 +111,7 @@ on fs
 
 on post-fs
 
+#	mount none /system/etc/firmware /system/vendor/etc/firmware bind
 
     start logd
 
@@ -161,6 +162,7 @@ on post-fs
 
 on post-fs-data
 	#Thermal
+	
 	mkdir /data/.tp/ 0775 system system
 
     # We chown/chmod /data again so because mount is run as root + defaults

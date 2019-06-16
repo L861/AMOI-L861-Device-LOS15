@@ -1,0 +1,26 @@
+// wrapper library for libcam.halsensor
+//
+
+//ifeq ($(USE_MTK_CAMERA_WRAPPER),true)
+cc_library_shared {
+    clang: true,
+    srcs: ["StreamImgBuf.cpp"],
+
+    include_dirs: [
+        "system/media/camera/include",
+        "frameworks/native/libs/nativebase/include",
+    ],
+
+    shared_libs: [
+        "liblog",
+        "libutils",
+        "libcutils",
+        "libdl",
+        "libcam_utils",
+    ],
+
+    name: "libcam.client",
+
+}
+
+//endif

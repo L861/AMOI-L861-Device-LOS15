@@ -12,12 +12,28 @@ on post-fs-data
     mkdir /data/nvram/md  0770 root system
 
     chown radio radio /sys/kernel/ccci/boot
+    
+    chown radio radio /dev/ccci_fs
+    chown radio radio /dev/ccci_ioctl0
+    chown radio radio /dev/ccci_ioctl1
+    chown radio radio /dev/ccci_ipc_1220_0
+    chown radio radio /dev/ccci_md_log_rx
+    chown radio radio /dev/ccci_md_log_tx
+    chown radio radio /dev/ccci_monitor
+    chown radio radio /dev/ccci_pcm_rx
+    chown radio radio /dev/ccci_pcm_tx
+    chown radio radio /dev/ccci_uem_rx
+    chown radio radio /dev/ccci_uem_tx
 
 #SeLinux
     mkdir /data/ccci_cfg 0770 system radio
     restorecon /data/ccci_cfg
     restorecon_recursive /protect_f
     restorecon_recursive /protect_s
+
+
+    write /data/ccci_cfg/md_new_ver.1 "flag"
+    chmod 0660 /data/ccci_cfg/md_new_ver.1
 
     # Encrypt phone function
     setprop vold.post_fs_data_done 1
@@ -29,36 +45,36 @@ service gsm0710muxd /system/vendor/bin/gsm0710muxd -s /dev/ttyC0 -f 512 -n 8 -m 
     disabled
     oneshot
 
-service muxreport-daemon /system/bin/muxreport
+service muxreport-daemon /system/vendor/bin/muxreport
     class root
     user radio
     group radio cache inet misc
     disabled
     oneshot
 
-service ril-daemon-mtk /vendor/bin/hw/rild
+service ril-daemon-mtk /system/vendor/bin/hw/rild
     class core
     user root
     group radio cache inet misc audio log readproc wakelock system
     disabled
     oneshot
 
-service md_minilog_util /system/bin/md_minilog_util
-    user radio
-    disabled
-    oneshot
+#service md_minilog_util /system/bin/md_minilog_util
+#    user radio
+#    disabled
+#    oneshot
 
 #
 #  Modem related services (Begin)
 #
 
-service permission_check /system/bin/permission_check
-    class main
-    user root
-    group nvram
-    oneshot
+#service permission_check /system/vendor/bin/permission_check
+#    class main
+#    user root
+#    group nvram
+#    oneshot
 
-service permission_check /system/bin/permission_check
+service permission_check /system/vendor/bin/permission_check
     class main
     user root
     group system radio
@@ -66,23 +82,36 @@ service permission_check /system/bin/permission_check
 
 service ccci_fsd /system/vendor/bin/ccci_fsd 0
     user root
-    group radio system
+    group root
     class core
     oneshot
 
 service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
     user root
-    group radio system
+    group root
     class core
     oneshot
 
-service ccci_rpcd /system/vendor/bin/ccci_rpcd
-    user root
-    group radio system
-    class core
-    oneshot
 
-service pppd_gprs /system/bin/pppd_dt /dev/ttyACM0 debug noauth refuse-eap usepeerdns nodetach
+#service ccci_fsd /system/vendor/bin/ccci_fsd 0
+#    user root
+#    group radio system
+#    class core
+#    oneshot
+
+#service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
+#    user root
+#    group radio system
+#    class core
+#    oneshot
+
+#service ccci_rpcd /system/vendor/bin/ccci_rpcd
+#    user root
+#    group radio system
+#    class core
+#    oneshot
+
+service pppd_gprs /system/vendor/bin/pppd_dt /dev/ttyACM0 debug noauth refuse-eap usepeerdns nodetach
     user root
     group radio cache inet misc
     disabled

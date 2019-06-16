@@ -1,11 +1,5 @@
 This is patch directory
 
-1. cd WORKING_DIR
-sh device/leeco/x3/patches/install.sh
-sh device/leeco/x3/patches/uninstall.sh
-
-2. Replace following files with those provided on hardware/interfaces and hardware/ril folders
-
-- hardware/interfaces/audio/2.0/default/Android.mk
-- hardware/interfaces/audio/2.0/default/StreamOut.cpp
-- hardware/ril/rild/Android.mk
+cd WORKING_DIR
+sh device/openstone/L861/patches/install.sh
+sh device/openstone/L861/patches/uninstall.sh

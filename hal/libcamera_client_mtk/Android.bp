@@ -1,0 +1,15 @@
+// libcamera_parameters_mtk
+//	by: daniel_hk (https://github.com/danielhk)
+
+cc_library_static {
+    name: "libcamera_client_mtk",
+
+    srcs: ["CameraParameters.cpp","MtkCameraParameters.cpp","MtkCamera.cpp","MtkCameraMMP.cpp","MtkCameraProfile.cpp"],
+    export_include_dirs: ["."],
+
+    include_dirs: [
+        "system/media/camera/include","device/openstone/L861/include","device/openstone/L861/hal/libcamera_client_mtk/include",
+    ],
+    
+    shared_libs: ["libbinder"],
+}

@@ -1,4 +1,4 @@
-<!-- DEVICE_MANIFEST_FILE for LeEco Le1s by vishalk17 : github.com/vishalk17 -->
+<!-- DEVICE_MANIFEST_FILE for Openstone L861 by TRONX2100 : github.com/rawmain -->
 <manifest version="1.0" type="device">
     <hal format="hidl">
         <name>android.hardware.audio</name>
@@ -87,6 +87,15 @@
         <version>2.0</version>
         <interface>
             <name>IAllocator</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.graphics.composer</name>
+        <transport arch="32+64">passthrough</transport>
+        <version>2.1</version>
+        <interface>
+            <name>IComposer</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -191,7 +200,16 @@
             <instance>default</instance>
         </interface>
     </hal>
-        <hal format="hidl">
+    <hal format="hidl">
+        <name>android.frameworks.sensorservice</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>ISensorManager</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
         <name>android.hardware.tetheroffload.config</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
@@ -278,6 +296,33 @@
         <version>1.0</version>
         <interface>
             <name>ISupplicant</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.nfc</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>INfc</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>vendor.nxp.hardware.nfc</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>INqNfc</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl">
+        <name>android.hardware.renderscript</name>
+        <transport arch="32+64">passthrough</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IDevice</name>
             <instance>default</instance>
         </interface>
     </hal>
