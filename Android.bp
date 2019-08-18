@@ -14,9 +14,8 @@ cc_defaults {
 
 
 subdirs = [
-	"hal/libcamera_parameters",
 	"hal/libcamera_client_mtk",
-//	"camera_wrapper",
+	"camera_wrapper",
 //	"libcam.client",
 //	"camera_wrapper",
 //   

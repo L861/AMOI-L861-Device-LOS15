@@ -22,4 +22,6 @@ allow gsm0710muxd kernel:system { module_request };
 allow gsm0710muxd gsm0710muxd_prop:file { read open getattr };
 allow gsm0710muxd gsm0710muxd:capability { dac_override fsetid };
 allow gsm0710muxd device:dir { write };
-
+#oreo 
+allow gsm0710muxd gsm0710muxd_prop:property_service { set };
+allow gsm0710muxd ctl_ril-daemon-mtk_prop:property_service { set };

@@ -22,7 +22,7 @@ on init
 #Create nvdata mount point
 #    mkdir /nvdata 0771 root system
 
-export LD_PRELOAD "libmtk_symbols.so"
+# export LD_PRELOAD "libmtk_symbols.so"
 
 # Workaround for old nvram blobs
     symlink /dev/block/platform/mtk-msdc.0/11230000.MSDC0/by-name /dev/block/platform/mtk-msdc.0/by-name
@@ -652,10 +652,10 @@ on post-fs-data
     #EM eint
     chown root diag /sys/bus/platform/drivers/eint/current_eint
 
-    chmod 0660 /dev/graphics/fb0
+    chmod 0666 /dev/graphics/fb0
     chown system graphics /dev/graphics/fb0
 
-    chmod 0660 /dev/mtkfb_vsync
+    chmod 0666 /dev/mtkfb_vsync
     chown system graphics /dev/mtkfb_vsync
 
     chmod 0666 /dev/sw_sync
@@ -734,20 +734,20 @@ on post-fs-data
     chmod 0660 /dev/hdmitx
 
     # JPEG
-    chmod 0440 /dev/mtk_jpeg
+    chmod 0444 /dev/mtk_jpeg
     chown system camera /dev/mtk_jpeg
 
     #ALMK
-    chmod 0440 /dev/mtk_almk
+    chmod 0444 /dev/mtk_almk
 
     # DISP
-    chmod 0660 /dev/mtk_disp_mgr
+    chmod 0666 /dev/mtk_disp_mgr
     chown system graphics /dev/mtk_disp_mgr
 
-    chmod 0660 /sys/devices/platform/mtk_disp_mgr.0/rgb
+    chmod 0666 /sys/devices/platform/mtk_disp_mgr.0/rgb
     chown system system /sys/devices/platform/mtk_disp_mgr.0/rgb
 
-    chmod 0660 /dev/mtkfb_vsync
+    chmod 0666 /dev/mtkfb_vsync
     chown system graphics /dev/mtkfb_vsync
 
     #Camera
@@ -799,31 +799,20 @@ on post-fs-data
     chmod 0660 /dev/mt-mdp
     chown system media /dev/mt-mdp
 
-    chmod 0660 /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
-    chown media media /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
+    chmod 0666 /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
+    chown system media /sys/bus/platform/drivers/mem_bw_ctrl/concurrency_scenario
 
     # SMI
     chmod 0666 /dev/MTK_SMI
-    chown media media /dev/MTK_SMI
+    chown system media /dev/MTK_SMI
 
     # RRC
-    chmod 0660 /dev/mtk_rrc
+    chmod 0666 /dev/mtk_rrc
     chown system media /dev/mtk_rrc
 
     #mtk_sched
-    chmod 0660 /dev/mtk_sched
+    chmod 0666 /dev/mtk_sched
     chown system media /dev/mtk_sched
-
-    # For 6572 Mali400MP1 GPU kernel driver
-    #chmod 666 /dev/ump
-    #chown system.graphics /dev/ump
-
-    chmod 666 /dev/mali
-    chown system graphics /dev/mali
-
-    #BT SCO CVSD, for MT6572 and MT6595 CVSD codec on AP
-    chmod 0660 /dev/ebc
-    chown media media /dev/ebc
 
     #sn
     chmod 0664 /sys/class/android_usb/android0/iSerial
@@ -835,9 +824,6 @@ on post-fs-data
     chown system system /sys/class/android_usb/android0/f_acm/port_index
     chmod 0660 /sys/class/android_usb/android0/f_acm/port_index
 
-    chmod 0666 /dev/exm0
-
-    exec 0666 /system/xbin/autosanity
 
     # AGPS
     mkdir /data/agps_supl 0771 gps system
@@ -1133,7 +1119,7 @@ service pvrsrvctl /system/vendor/bin/pvrsrvctl --no-module --start
 on property:sys.boot_completed=1
     start ged_srv
 
-service ged_srv /system/bin/ged_srv
+service ged_srv /system/vendor/bin/ged_srv
     class core
     user system
     group system
@@ -1142,7 +1128,7 @@ service ged_srv /system/bin/ged_srv
 on property:sys.boot_completed=1
     start gas_srv
 
-service gas_srv /system/bin/gas_srv
+service gas_srv /system/vendor/bin/gas_srv
     class core
     user system
     group system
@@ -1423,7 +1409,7 @@ service agpsd /system/vendor/bin/mtk_agpsd
     socket agpsd2 stream 660 system inet
     socket agpsd3 stream 660 system inet
     user gps
-    group gps inet sdcard_r sdcard_rw misc radio
+    group gps ccci inet sdcard_r sdcard_rw misc radio
 
 service slpd /system/vendor/bin/slpd
     class main

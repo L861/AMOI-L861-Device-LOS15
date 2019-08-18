@@ -171,7 +171,10 @@ public:
     static const char KEY_SUPPORTED_ZSD_MODE[];
     static const char KEY_AWB2PASS[];
     static const char KEY_AF_LAMP_MODE [];
-
+    static const char KEY_SNAPSHOT_PICTURE_FLIP[];
+    static const char FLASH_MODE_TORCH1[];
+    static const char FLASH_MODE_TORCH2[];
+    
     static const char KEY_STEREO_3D_PREVIEW_SIZE[];
     static const char KEY_STEREO_3D_PICTURE_SIZE[];
     static const char KEY_STEREO_3D_TYPE [];
@@ -427,6 +430,7 @@ public:
 
     // KEY for c_shot indicator
     static const char KEY_CSHOT_INDICATOR[];
+    static const char KEY_SHUTTER_VALUE[];
 
     // KEY for [Engineer Mode] Add new camera paramters for new requirements
     static const char KEY_ENG_AE_ENABLE[];

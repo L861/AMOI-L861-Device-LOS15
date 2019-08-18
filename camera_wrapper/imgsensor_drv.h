@@ -149,6 +149,7 @@ private:
     ACDK_SENSOR_INFO_STRUCT* m_psensorInfo[2];
     ACDK_SENSOR_CONFIG_STRUCT m_sensorConfigData[2];
     ACDK_SENSOR_CONFIG_STRUCT* m_psensorConfigData[2];
+
 	MUINT16 mImageTargetWidth;
 	MUINT16 mImageTargetHeight;
 

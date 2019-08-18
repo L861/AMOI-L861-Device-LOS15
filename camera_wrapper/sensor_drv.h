@@ -41,6 +41,7 @@ TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE, OR REFUND ANY SOFTWARE LICE
 //////////////////////////////////////////////////////////////////////////
 using namespace NSCam;
 
+
 typedef enum {
     CMD_SENSOR_SET_SENSOR_EXP_TIME            = 0x1000,
     CMD_SENSOR_SET_SENSOR_EXP_LINE,
@@ -59,6 +60,11 @@ typedef enum {
     CMD_SENSOR_SET_OB_LOCK,
     CMD_SNESOR_SET_SENSOR_OTP_AWB_CMD,
     CMD_SNESOR_SET_SENSOR_OTP_LSC_CMD,
+    CMD_SENSOR_SET_SENSOR_EXP_FRAME_TIME,
+    CMD_SENSOR_SET_SENSOR_EXP_LINE_BUF_MODE,
+    CMD_SENSOR_SET_SENSOR_EXP_TIME_BUF_MODE,
+    CMD_SENSOR_SET_SENSOR_GAIN_BUF_MODE,
+    CMD_SENSOR_SET_I2C_BUF_MODE_EN,
     CMD_SENSOR_GET_UNSTABLE_DELAY_FRAME_CNT    = 0x2000,
     CMD_SENSOR_GET_INPUT_BIT_ORDER,
     CMD_SENSOR_GET_PAD_PCLK_INV,
@@ -104,10 +110,14 @@ typedef enum {
     CMD_SENSOR_SET_YUV_AUTOTEST,
     CMD_SENSOR_SET_FRAMERATE,
     CMD_SENSOR_SET_IHDR_SHUTTER_GAIN,
+    CMD_SENSOR_SET_HDR_SHUTTER,
     CMD_SENSOR_SET_SENSOR_AWB_GAIN,
     CMD_SENSOR_SET_MIN_MAX_FPS,
     CMD_SENSOR_GET_PDAF_DATA,
+    CMD_SET_PDFOCUS_AREA,
+    CMD_SENSOR_SET_SENSOR_ISO,
     CMD_SENSOR_GET_SENSOR_PDAF_CAPACITY,
+    CMD_SENSOR_GET_SENSOR_ROLLING_SHUTTER,
     CMD_SENSOR_MAX                 = 0xFFFF
 } CMD_SENSOR_ENUM;
 
@@ -175,6 +185,7 @@ typedef struct
     MUINT32         sId;
     MUINT32         InitFPS;
     MUINT32         HDRMode;
+    MUINT32         PDAFMode;
 } SENSOR_DRIVER_SCENARIO_T, *PSENSOR_DRIVER_SCENARIO_T;
 
 typedef struct
@@ -244,6 +255,11 @@ typedef struct
     MUINT8  AESensorGainDelayFrame;   /* The frame of setting sensor gain */
     MUINT8  AEISPGainDelayFrame;
     MUINT8  MIPIDataLowPwr2HighSpeedTermDelayCount;
+    MUINT8  MIPIDataLowPwr2HSSettleDelayM0;/*Preview Settle delay*/
+    MUINT8  MIPIDataLowPwr2HSSettleDelayM1;/*Capture Settle delay*/
+    MUINT8  MIPIDataLowPwr2HSSettleDelayM2;/*video Settle delay*/
+    MUINT8  MIPIDataLowPwr2HSSettleDelayM3;/*video1 Settle delay*/
+    MUINT8  MIPIDataLowPwr2HSSettleDelayM4;/*video2 Settle delay*/
     MUINT8  MIPIDataLowPwr2HighSpeedSettleDelayCount;
     MUINT8  MIPICLKLowPwr2HighSpeedTermDelayCount;
     MUINT8  SensorWidthSampling;
@@ -310,6 +326,7 @@ typedef struct
 
     //Part4:
 } SENSORDRV_INFO_STRUCT, *PSENSORDRV_INFO_STRUCT;
+
 
 /*******************************************************************************
 *

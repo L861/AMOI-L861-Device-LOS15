@@ -42,44 +42,38 @@ LOCAL_PATH := $(call my-dir)
 #
 ################################################################################
 include $(CLEAR_VARS)
-LOCAL_VENDOR_MODULE := true
 
 #-----------------------------------------------------------
-
-LOCAL_SRC_FILES += CameraParameters.cpp
-LOCAL_SRC_FILES += MtkCameraParameters.cpp
-LOCAL_SRC_FILES += MtkCamera.cpp
-LOCAL_SRC_FILES += MtkCameraMMP.cpp
-LOCAL_SRC_FILES += MtkCameraProfile.cpp
-
-#-----------------------------------------------------------
-LOCAL_C_INCLUDES += $(TOP)/frameworks/av/include
+LOCAL_WHOLE_STATIC_LIBRARIES += libcamera_client_mtk
+#
+LOCAL_STATIC_LIBRARIES += 
 
 LOCAL_LDLIBS := -llog
 
-LOCAL_SHARED_LIBRARIES += libbinder
-LOCAL_SHARED_LIBRARIES += libutils
-
 LOCAL_C_INCLUDES += \
     system/media/camera/include \
-    device/openstone/L861/include \
+    $(DEVICE_PATH)/include \
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/include
 
-ifneq ($(strip $(MTK_EMULATOR_SUPPORT)),yes)
-ifeq ($(strip $(MTK_MMPROFILE_SUPPORT)),yes)
+#-----------------------------------------------------------
+LOCAL_SHARED_LIBRARIES += liblog
+LOCAL_SHARED_LIBRARIES += libcutils
+LOCAL_SHARED_LIBRARIES += libutils
+LOCAL_SHARED_LIBRARIES += libbinder
+# LOCAL_SHARED_LIBRARIES += libcamera_client
+#
 
-    #LOCAL_SHARED_LIBRARIES += libmmprofile
-    LOCAL_CFLAGS += -DMTK_CAMERAMMP_SUPPORT
-
-    LOCAL_C_INCLUDES += $(TOP)/bionic/libc/kernel/uapi/common
-
-endif
-endif
-
-
+#-----------------------------------------------------------
+LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE := libcamera_client_mtk
 
+#-----------------------------------------------------------
 include $(BUILD_SHARED_LIBRARY)
 
+################################################################################
+#
+################################################################################
+include $(CLEAR_VARS)
+include $(call all-makefiles-under,$(LOCAL_PATH))
 endif

@@ -1,7 +1,8 @@
 # Power
 PRODUCT_PACKAGES += \
-	android.hardware.power@1.0-impl
-
+	android.hardware.power@1.0-impl \
+	android.hardware.thermal@1.1-impl
+	
 # Wifi
 PRODUCT_PACKAGES += \
 	android.hardware.wifi@1.0-service
@@ -11,8 +12,8 @@ PRODUCT_PACKAGES += \
     android.hardware.gnss@1.0-impl
 
 # GPS force mode
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    persist.force.gps.mode=gnss
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.force.gps.mode=gnss
 
 #Audio HIDL
 PRODUCT_PACKAGES += \
@@ -55,14 +56,34 @@ PRODUCT_PACKAGES += \
 
 #   camera.device@1.0-impl \
 #	camera.device@1.0-impl-legacy \
-
+#     camera.device@1.0-impl \
+#Camera HAL
+#
+#
+#	camera.device@1.0-impl \
+#    camera.device@3.2-impl \
+#    camera.device@3.3-impl \
+#    android.hardware.camera.provider@2.4-impl \
+#
 #Camera HAL
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl \
-    android.hardware.camera.provider@2.4-service \
-    
+		android.hardware.camera.provider@2.4-impl \
 
+#	camera.device@1.0-impl \
+#	camera.device@3.2-impl \
+#    camera.device@3.3-impl \
+#	android.hardware.camera.provider@2.4-impl \
+    
+#	android.hardware.camera.provider@2.4-service \
+#	camera.device@1.0-impl \
+#	camera.device@3.2-impl \
+#    camera.device@3.3-impl \
+    
+	
+#	android.hardware.camera.provider@2.4-impl \
+#	android.hardware.camera.provider@2.4-impl-legacy \
+#	android.hardware.camera.provider@2.4-service \
+    
 #    android.hardware.camera.provider@2.4-impl \
 #    android.hardware.camera.provider@2.4-service
     
@@ -89,7 +110,7 @@ PRODUCT_PACKAGES += \
 
 # Gatekeeper HIDL
 PRODUCT_PACKAGES += \
-    android.hardware.gatekeeper@1.0-impl
+    android.hardware.gatekeeper@1.0-impl \
 #   android.hardware.gatekeeper@1.0-service
 
 # Vibrator

@@ -4,7 +4,7 @@
 // ANDROIDMK TRANSLATION ERROR: unsupported conditional
 // ifeq ($(USE_MTK_CAMERA_WRAPPER),true)
 
-cc_library_shared {
+cc_library_static {
     clang: true,
 
     srcs: ["imgsensor_drv.cpp"],
@@ -20,10 +20,11 @@ cc_library_shared {
         "libcutils",
         "libdl",
         "libutils",
-        "libcam2halsensor",
+        "libcam.halsensor",
         "libcameracustom",
     ],
-    name: "libcam.halsensor",
+    
+    name: "libcam.halsensor.wrapper",
 
 }
 

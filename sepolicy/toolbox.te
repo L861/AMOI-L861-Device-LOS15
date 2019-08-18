@@ -31,3 +31,11 @@ allow toolbox self:capability { chown };
 allow toolbox device:dir { write add_name };
 allow toolbox device:chr_file { create };
 
+# oreo
+
+allow toolbox cache_file:dir { getattr };
+allow toolbox storage_file:dir { getattr };
+allow toolbox labeledfs:filesystem { remount };
+allow toolbox su_exec:file { setattr getattr };
+allow toolbox rootfs:dir { read open  };
+allow toolbox cache_file:dir { search };

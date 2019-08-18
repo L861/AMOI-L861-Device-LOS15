@@ -18,7 +18,6 @@
 #define LOG_TAG "CameraParams"
 #include <utils/Log.h>
 
-#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <camera/CameraParameters.h>
@@ -37,6 +36,9 @@ const char CameraParameters::KEY_SUPPORTED_PREVIEW_FPS_RANGE[] = "preview-fps-ra
 const char CameraParameters::KEY_PICTURE_SIZE[] = "picture-size";
 const char CameraParameters::KEY_SUPPORTED_PICTURE_SIZES[] = "picture-size-values";
 const char CameraParameters::KEY_PICTURE_FORMAT[] = "picture-format";
+#ifdef MTK_HARDWARE
+const char CameraParameters::SNAPSHOT_PICTURE_FLIP[] = "snapshot-picture-flip";//add by xueweifeng
+#endif
 const char CameraParameters::KEY_SUPPORTED_PICTURE_FORMATS[] = "picture-format-values";
 const char CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH[] = "jpeg-thumbnail-width";
 const char CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT[] = "jpeg-thumbnail-height";
@@ -98,6 +100,11 @@ const char CameraParameters::TRUE[] = "true";
 const char CameraParameters::FALSE[] = "false";
 const char CameraParameters::FOCUS_DISTANCE_INFINITY[] = "Infinity";
 
+#ifdef MTK_HARDWARE
+const char CameraParameters::KEY_SNAPSHOT_PICTURE_FLIP[] = "snapshot-picture-flip";
+#endif
+
+
 // Values for white balance settings.
 const char CameraParameters::WHITE_BALANCE_AUTO[] = "auto";
 const char CameraParameters::WHITE_BALANCE_INCANDESCENT[] = "incandescent";
@@ -131,6 +138,10 @@ const char CameraParameters::FLASH_MODE_AUTO[] = "auto";
 const char CameraParameters::FLASH_MODE_ON[] = "on";
 const char CameraParameters::FLASH_MODE_RED_EYE[] = "red-eye";
 const char CameraParameters::FLASH_MODE_TORCH[] = "torch";
+
+const char CameraParameters::FLASH_MODE_TORCH1[] = "torch1";
+const char CameraParameters::FLASH_MODE_TORCH2[] = "torch2";
+
 
 // Values for scene mode settings.
 const char CameraParameters::SCENE_MODE_AUTO[] = "auto";
@@ -238,6 +249,9 @@ void CameraParameters::unflatten(const String8 &params)
 
 void CameraParameters::set(const char *key, const char *value)
 {
+    if (key == NULL || value == NULL)
+        return;
+
     // XXX i think i can do this with strspn()
     if (strchr(key, '=') || strchr(key, ';')) {
         //XXX ALOGE("Key \"%s\"contains invalid character (= or ;)", key);
@@ -455,6 +469,19 @@ const char *CameraParameters::getPictureFormat() const
 {
     return get(KEY_PICTURE_FORMAT);
 }
+
+#ifdef MTK_HARDWARE
+void CameraParameters::setCameraPictureFlip(const int format)
+{
+    set(SNAPSHOT_PICTURE_FLIP, format);
+}
+
+int CameraParameters::getCameraPictureFlip() const
+{
+    return getInt(SNAPSHOT_PICTURE_FLIP);
+}
+#endif
+
 
 void CameraParameters::dump() const
 {

@@ -7,10 +7,8 @@ $(call inherit-product-if-exists, frameworks/native/build/phone-xxhdpi-3072-hwui
 # Vendor
 $(call inherit-product, vendor/openstone/L861/L861-vendor-blobs.mk)
 
-
 # Telecom
 PRODUCT_PACKAGES += Telecom
-
 
 # Folder path
 DEVICE_PATH := device/openstone/L861
@@ -28,6 +26,11 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Recovery allowed devices
 TARGET_OTA_ASSERT_DEVICE := L861
+
+
+#hw composer
+PRODUCT_PACKAGES += hwcomposer.mt6795
+
 
 # Super User ROOT
 PRODUCT_PACKAGES += su
@@ -87,14 +90,26 @@ PRODUCT_PACKAGES += \
 #	libcam1_utils \	
 
 PRODUCT_PACKAGES += \
-	libcamera_parameters_ext \
-	libcamera_client_mtk  \
-	libcamera_parameters_mtk \
 	libcameracustom \
 	libstdc++ \
+	libmtkcamera_client \
+	Camera2 \
+	CameraNext \
+	libcam.camadapter \
 	libcam.client \
-	Snap
+	libcam_utils
 
+#	libcam.paramsmgr \
+#	libcam.camadapter \
+#	libcam.iopipe
+	
+# 	libmtkcamera_client \
+#	libcam.client \
+# 	libcamera_parameters_ext \	
+# 	libcamera_parameters_mtk \
+#	libcam.halsensor \
+#	libtsfsw_shim
+	
 # Charger
 #	libfgauge \
 #    lineage_charger_res_images \
@@ -113,8 +128,8 @@ PRODUCT_PACKAGES += \
 
     
 # Timezone
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
-     persist.sys.timezone=Europe/Rome
+#PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
+#     persist.sys.timezone=Europe/Rome
 
 # Torch
 PRODUCT_PACKAGES += \
@@ -172,7 +187,17 @@ PRODUCT_PACKAGES += \
 	tinyhostless \
 	tinypcminfo \
 	tinycap \
-	tinyplay
+	tinyplay \
+	
+# Vipersound
+# USE_VIPER_PROFILES := true
+PRODUCT_PACKAGES += \
+	ViperSound
+
+
+# MTK Vendor
+#PRODUCT_PACKAGES += \
+#	libperfservicenative
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -188,8 +213,9 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/camera/camerasize.xml:system/etc/camerasize.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/vendor/etc/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/vendor/etc/media_codecs_google_telephony.xml \
-	frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/vendor/etc/media_codecs_google_video_le.xml \
-	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/vendor/etc/media_codecs_google_video.xml
+	$(DEVICE_PATH)/configs/media/media_codecs_google_video_le.xml:system/vendor/etc/media_codecs_google_video_le.xml \
+	$(DEVICE_PATH)/configs/media/media_codecs_google_video.xml:system/vendor/etc/media_codecs_google_video.xml \
+	$(DEVICE_PATH)/configs/media/media_codecs_ffmpeg.xml:system/vendor/etc/media_codecs_ffmpeg.xml
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -270,9 +296,11 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
 	frameworks/native/data/etc/android.hardware.camera.manual_sensor.xml:system/etc/permissions/android.hardware.camera.manual_sensor.xml
 
+
+# 	$(DEVICE_PATH)/configs/media/media_codecs_ffmpeg.xml:system/vendor/etc/media_codecs_ffmpeg.xml \
+
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/media/media_codecs.xml:system/vendor/etc/media_codecs.xml \
-	$(DEVICE_PATH)/configs/media/media_codecs_ffmpeg.xml:system/vendor/etc/media_codecs_ffmpeg.xml \
 	$(DEVICE_PATH)/configs/media/media_codecs_mediatek_audio.xml:system/vendor/etc/media_codecs_mediatek_audio.xml\
 	$(DEVICE_PATH)/configs/media/media_codecs_mediatek_video.xml:system/vendor/etc/media_codecs_mediatek_video.xml \
 	$(DEVICE_PATH)/configs/media/media_codecs_performance.xml:system/vendor/etc/media_codecs_performance.xml \
@@ -287,7 +315,7 @@ PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/audio/audio_policy.conf:system/etc/audio_policy.conf \
 	$(DEVICE_PATH)/configs/audio/audio_device.xml:system/etc/audio_device.xml \
 	$(DEVICE_PATH)/configs/audio/audio_effects.xml:system/etc/audio_effects.xml \
-	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/vendor/etc/audio_em.xml
+	$(DEVICE_PATH)/configs/audio/audio_em.xml:system/etc/audio_em.xml
 
 # Audio Policy Configurations
 PRODUCT_COPY_FILES += \
@@ -364,6 +392,13 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/init/mediaserver.rc:system/etc/init/mediaserver.rc
 
+ifneq ($(TARGET_HAS_LEGACY_CAMERA_HAL1), true)
+
+PRODUCT_COPY_FILES += \
+	$(DEVICE_PATH)/configs/init/cameraserver.rc:system/etc/init/cameraserver.rc
+	
+endif
+
 PRODUCT_COPY_FILES += \
 	$(DEVICE_PATH)/configs/hostapd/hostapd_default.conf:system/vendor/etc/hostapd/hostapd_default.conf \
 	$(DEVICE_PATH)/configs/hostapd/hostapd.accept:system/vendor/etc/hostapd/hostapd.accept \
@@ -401,8 +436,9 @@ PRODUCT_COPY_FILES += $(DEVICE_PATH)/configs/nfc/nfcee_access.xml:system/etc/nfc
 PRODUCT_PACKAGES += \
 	libccci_util \
 	libmtk_symbols \
-	libxlog \
-	asec_helper
+	asec_helper \
+
+# libxlog (inc. in libmtk_symbols)
 
 # Sensor Calibration
 PRODUCT_PACKAGES += libem_sensor_jni
@@ -430,19 +466,23 @@ PRODUCT_PACKAGES += \
 
 #camera
 PRODUCT_PACKAGES += \
-	libbwc \
-	libm4u \
     libcamera_parameters_mtk \
     libcamera_client_mtk \
-    libcam.halsensor \
-    libcam2halsensor \
-    libcameracustom \
-    libnativewindow
+	libm4u \
+	libSensorslistener_shim \
+# 	libbwc \
 
 #Camera Legacy
 PRODUCT_PROPERTY_OVERRIDES += \
-     media.stagefright.legacyencoder=true \
      media.stagefright.less-secure=true
+
+ifeq ($(TARGET_HAS_LEGACY_CAMERA_HAL1), true)
+	PRODUCT_PROPERTY_OVERRIDES += \
+		 media.stagefright.legacyencoder=true
+	
+#	PRODUCT_PACKAGES += \
+#		android.hardware.camera.common@1.0
+endif
 
 
 # Vulkan

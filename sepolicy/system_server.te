@@ -288,3 +288,4 @@ allow system_server keystore_service:service_manager find;
 # oreo
 
 allow system_server device:chr_file { read open };
+allow system_server mnld_data_file:file { read open lock getattr };

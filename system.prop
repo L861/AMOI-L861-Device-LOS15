@@ -25,7 +25,14 @@ persist.radio.gemini_support=0
 rild.libpath=mtk-ril.so
 rild.libargs=-d /dev/ttyC0
 
-# end
+
+# temp camera fix
+# green stich fix
+# debug.tsfcore.enable=0
+#debug.lsc_mgr.enable=0
+# sensor mode fix
+#debug.force_sensormode=2
+#persist.camera.dual.camera=0
 
 
 # Enable ADB from the begining
@@ -35,7 +42,6 @@ persist.service.debuggable=1
 
 # Default Renderer
 debug.hwui.renderer=opengl
-# debug.hwui.renderer=skiavk
 
 # MTK, Infinity, 20090720 {
 wifi.interface=wlan0
@@ -62,8 +68,7 @@ ro.opengles.version=196608
 #ro.kernel.qemu=1
 
 wifi.direct.interface=p2p0
-dalvik.vm.heapgrowthlimit=256m
-dalvik.vm.heapsize=512m
+
 
 # USB MTP WHQL
 ro.sys.usb.mtp.whql.enable=0
@@ -91,7 +96,7 @@ persist.sys.button_jack_profile=volume
 persist.sys.button_jack_switch=0
 
 #default timezone
-persist.sys.defaulttimezone=Asia/Kolkata
+persist.sys.defaulttimezone=Europe/Berlin
 
 ro.kernel.zio=38,108,105,16
 #ro.kernel.qemu=1
@@ -110,15 +115,13 @@ ro.mtk_perf_response_time=1
 #
 # ADDITIONAL_BUILD_PROPERTIES
 #
-persist.camera.HAL3.enabled=1
+# persist.camera.HAL3.enabled=1
 ro.mtk_trustonic_tee_support=1
 persist.sys.le_fast_chrg_enable=1
 ro.mediatek.chip_ver=S01
 ro.config.ringtone=Ring_Synth_04.ogg
 ro.config.notification_sound=pixiedust.ogg
 ro.config.alarm_alert=Alarm_Classic.ogg
-#dalvik.vm.heapgrowthlimit=256m
-#dalvik.vm.heapsize=512m
 ro.mediatek.chip_ver=S01
 ro.mediatek.version.release=alps-mp-m0.mp11-V1_vz6795.lwt.m
 ro.mediatek.platform=MT6795
@@ -137,7 +140,11 @@ bt.profiles.dun.enabled=1
 ro.mtk_ims_support=0
 ro.mtk_volte_support=0
 ro.mtk_lossless_bt_audio=1
-ro.mtk_bessurround_support=1
+ro.mtk.audio.profiles=1
+ro.mtk.audenh.support=1
+ro.mtk.besloudness.support=1
+ro.mtk.besaudenh.support=1
+ro.mtk.bessurround.support=0
 ro.mtk_wapi_support=1
 ro.mtk_bt_support=1
 ro.mtk_wappush_support=1
@@ -191,7 +198,6 @@ ro.mtk_owner_sdcard_support=1
 ro.mtk_cta_set=1
 ro.mtk_antibricking_level=2
 ro.mtk_zsdhdr_support=1
-ro.mtk_cam_mfb_support=0
 ro.mtk_slow_motion_support=1
 ro.mtk_lte_support=1
 ro.mtk_safemedia_support=1
@@ -229,8 +235,6 @@ persist.power.useautobrightadj=true
 ro.com.android.dataroaming=true
 ro.hardware=mt6795
 #ro.build.system_root_image=true
-media.stagefright.legacyencoder=true
-media.stagefright.less-secure=true
 # ClearMotion
 persist.sys.display.clearMotion=1
 ro.mtk_clearmotion_support=1

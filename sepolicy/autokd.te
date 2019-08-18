@@ -61,3 +61,6 @@ allow autokd debugfs:file { read open };
 allow autokd shell_exec:file { getattr };
 allow autokd toolbox_exec:file { execute getattr read open execute_no_trans };
 allow autokd kmsg_device:chr_file { write open };
+#
+allow autokd system_prop:property_service { set };
+allow autokd platformblk_device:dir { search };

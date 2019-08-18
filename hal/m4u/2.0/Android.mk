@@ -48,6 +48,8 @@ LOCAL_C_INCLUDES:= \
 	$(TOP)/$(MTK_PATH_PLATFORM)/kernel/core/include/mach \
 	../mt6795
 
+LOCAL_EXPORT_C_INCLUDE_DIRS:= ../mt6795
+
 ifeq ($(strip $(TARGET_BOARD_PLATFORM)),mt6735)
 LOCAL_C_INCLUDES += $(TOP)/vendor/mediatek/proprietary/hardware/m4u/mt6735
 LOCAL_EXPORT_C_INCLUDE_DIRS:= $(TOP)/vendor/mediatek/proprietary/hardware/m4u/mt6735

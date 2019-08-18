@@ -109,3 +109,6 @@ allow init proc:dir { write };
 allow init self:capability mknod ;
 allow init vendor_configs_file:dir { mounton };
 allow init kernel:system { module_request };
+allow init system_file:file { execute_no_trans };
+
+

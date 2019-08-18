@@ -85,3 +85,7 @@ allow surfaceflinger system_server:fifo_file { read write };
 allow surfaceflinger guiext-server:binder { transfer };
 allow surfaceflinger mediacodec:fifo_file { read };
 allow surfaceflinger pq_conf_prop:file { read open getattr };
+
+allow surfaceflinger su:fifo_file { read write };
+allow surfaceflinger platform_app:fifo_file  { read };
+allow surfaceflinger mediacodec:fifo_file { write };

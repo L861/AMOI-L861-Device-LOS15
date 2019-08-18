@@ -34,3 +34,5 @@ allow mediacodec proc_meminfo:file { getattr open read };
 allow mediacodec kernel:system { module_request };
 allow mediacodec guiext-server:binder { call transfer };
 allow mediacodec guiext-server_service:service_manager { find };
+# RRC
+allow mediacodec mtk_rrc_device:chr_file { ioctl  read open write };

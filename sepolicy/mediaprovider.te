@@ -1,0 +1,3 @@
+# mediaprovider
+allow mediaprovider proc:file { ioctl open read };
+allow mediaprovider rootfs:dir { read };

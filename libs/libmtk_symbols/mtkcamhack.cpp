@@ -7,6 +7,10 @@
 #include <linux/types.h>
 
 #include <hardware/camera.h>
+
+#ifdef USE_NEW_MTK_JPEG
+#include <enc/jpeg_hal.h>
+#endif
 // #include <gui/BufferItemConsumer.h>
 
 
@@ -35,38 +39,34 @@ extern "C" void _ZN7android13GraphicBufferC1EjjijjP13native_handleb(
         inFormat, static_cast<uint32_t>(1), static_cast<uint64_t>(inUsage), inStride);
 }
 
+/* bool setEncSize(JUINT32 width, JUINT32 height, EncFormat encformat) ; */
+/* new bool setEncSize(JUINT32 width, JUINT32 height, EncFormat encformat, bool isSrcBufNeedFlush = true) ; */
 
 
+// /* JpgEncHal::setEncSize(unsigned int, unsigned int, JpgEncHal::EncFormat) */
 
-/* start additional */
 
+#ifdef USE_NEW_MTK_JPEG
 
+extern "C" bool _ZN9JpgEncHal10setEncSizeEjjNS_9EncFormatEb(JUINT32 width,JUINT32 height, JpgEncHal::EncFormat encformat,bool isSrcBufNeedFlush = true);
+
+extern "C" bool _ZN9JpgEncHal10setEncSizeEjjNS_9EncFormatE(JUINT32 width,JUINT32 height, JpgEncHal::EncFormat encformat){
+	return _ZN9JpgEncHal10setEncSizeEjjNS_9EncFormatEb(width, height, encformat, true);
+	//return JpgEncHal::setEncSize(width, height, encformat, true);
+}
+
+#endif
 /*
+void dummy1(){};
 
-void _ZN7android22IGraphicBufferConsumer10BufferItemC1Ek(){};
+extern "C" void _ZN7TsfCore15Shading_TSF_intEPviiPiS1_S1_ (void* p1, int p2, int p3, int* p4, int* p5, int* p6){
+   	dummy1();
+}
 
-	 
-extern "C"  void _ZN7android22IGraphicBufferConsumer10BufferItemC1Ev(){
-	_ZN7android22IGraphicBufferConsumer10BufferItemC1Ek();
-	}	 
+_ZN6AppTsf7TsfMainEv
 
-void _ZN7android18BufferItemConsumer20setDefaultBufferSizeEjk(){};
-
-extern "C" void _ZN7android18BufferItemConsumer20setDefaultBufferSizeEjj(){
-	_ZN7android18BufferItemConsumer20setDefaultBufferSizeEjk();
-	};
-	
-
-
-void _ZN7android18BufferItemConsumer22setDefaultBufferFormatEk(){};
-extern "C" void _ZN7android18BufferItemConsumer22setDefaultBufferFormatEj(){
-	_ZN7android18BufferItemConsumer22setDefaultBufferFormatEk();
-	}
-
-void _ZN7android18BufferItemConsumer13acquireBufferEPNS_22IGraphicBufferConsumer10BufferItemExh(){};
-
-extern "C" void _ZN7android18BufferItemConsumer13acquireBufferEPNS_22IGraphicBufferConsumer10BufferItemExb(){
-	_ZN7android18BufferItemConsumer13acquireBufferEPNS_22IGraphicBufferConsumer10BufferItemExh();
-	}	
+extern "C" bool  _Z11isEnableTSFi(int param1){
+	return false;
+}
 
 */

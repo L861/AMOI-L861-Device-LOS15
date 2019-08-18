@@ -49,7 +49,27 @@ allow cameraserver nvram_device:blk_file { read write };
 allow cameraserver surfaceflinger:fifo_file { read write };
 allow cameraserver DW9714AF_device:chr_file { open read write ioctl };
 allow cameraserver pq_conf_prop:file { open getattr read };
+allow cameraserver kmsg_device:chr_file { open read write };
+
+allow cameraserver hal_configstore_ISurfaceFlingerConfigs:hwservice_manager { find };
+allow cameraserver storage_file:dir { search };
+allow cameraserver storage_file:lnk_file { read };
+allow cameraserver mnt_user_file:dir { search };
+allow cameraserver block_device:dir { search };
+
+allow cameraserver proc:file { read open getattr };
+allow cameraserver hal_configstore_default:binder { call };
+allow cameraserver mtk_rrc_device:chr_file { read open ioctl };
+
+allow cameraserver nvram_data_file:dir { add_name write search };
+allow cameraserver nvram_data_file:file { create write setattr };
 
 allow hal_camera_default vndbinder_device:chr_file { open read write };
 allow hal_camera_default kernel:system { module_request };
+
+allow crash_dump cameraserver:fifo_file { getattr };
+
+# oreo
+allow cameraserver untrusted_app:fifo_file { read write };
+allow cameraserver untrusted_app_25:fifo_file { read write };
 

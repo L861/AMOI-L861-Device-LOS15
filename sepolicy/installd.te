@@ -56,3 +56,5 @@ allow installd mobicore_data_file:dir { r_file_perms write remove_name rmdir };
 # O
 allow installd system_data_file:lnk_file { getattr };
 allow installd mobicore_data_file:file { unlink };
+allow installd mobicore_data_file:dir { search };
+allow installd platformblk_device:dir { search };

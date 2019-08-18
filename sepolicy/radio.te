@@ -193,3 +193,4 @@ allow radio proc_mtkcooler:dir search;
 allow radio proc_mtktz:dir search;
 allow radio ril_mux_report_case_prop:property_service set;
 allow radio ril_msim_power_prop:property_service set;
+allow radio system_app_data_file:dir { getattr };

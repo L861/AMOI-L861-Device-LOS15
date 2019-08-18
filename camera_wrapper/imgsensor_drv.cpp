@@ -25,6 +25,7 @@
  ************************************************************************************************/
 #define LOG_TAG "ImgSensorDrv"
 
+
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
@@ -35,6 +36,8 @@
 #include "imgsensor_drv.h"
 #include "kd_imgsensor.h"
 #include <camera_custom_imgsensor_cfg.h>
+
+
 
 MUINT32 sensorDrvInit[KDIMGSENSOR_MAX_INVOKE_DRIVERS] = {0,0};
 
@@ -562,6 +565,17 @@ ImgSensorDrv::setScenario(SENSOR_DRIVER_SCENARIO_T scenarioconf)
 		LOG_ERR("[setScenario]: SENSOR_FEATURE_SET_FRAMERATE error\n");
 		return SENSOR_UNKNOWN_ERROR;
 	    }
+	       /* PDAF Type */
+	       {
+                FeaturePara32 = scenarioconf.PDAFMode;
+                FeatureParaLen = sizeof(MUINTPTR);
+                ret = featureControl((CAMERA_DUAL_CAMERA_SENSOR_ENUM)tempDevId[i], SENSOR_FEATURE_SET_PDAF,  (MUINT8*)&FeaturePara32,(MUINT32*)&FeatureParaLen);
+                if (ret < 0) {
+                     LOG_ERR("[setScenario]: SENSOR_FEATURE_SET_FRAMERATE error\n");
+                     return SENSOR_UNKNOWN_ERROR;
+                }
+            }
+	    
             SensorConfigData[i].SensorImageMirror = ACDK_SENSOR_IMAGE_NORMAL;
 
             switch(tempId[i])
@@ -674,6 +688,10 @@ ImgSensorDrv::setScenario(SENSOR_DRIVER_SCENARIO_T scenarioconf)
                 LOG_MSG("[setScenario]DevID = %d, m_LineTimeInus[0] = %d, m_LineTimeInus[1] = %d Scenario id = %d, PixelClk = %d, PixelInLine = %d\n",
                           tempDevId[i], m_LineTimeInus[0],m_LineTimeInus[1], tempId[i], FeaturePara32, pFeaturePara16[0]);
             }
+            //set target width/height
+            mImageTargetWidth = pFeaturePara16[0];
+            mImageTargetHeight = pFeaturePara16[1];
+            
         }
     }
     return ret;
@@ -838,16 +856,20 @@ ImgSensorDrv::sendCommand(
     MUINT32 FeatureParaLen = 0; // The length of feature data
 
     MUINT64 FeaturePara[4]; // Convert input paras to match the format used in kernel
+#ifdef SENDCMD_LOG
     LOG_MSG("[sendCommand] cmd=0x%x, arg1=%p, arg2=%p, arg3=%p", cmd, parg1, parg2, parg3);
+#endif
 
-#define SENDCMD_LOG // Open sendcommand log, for test only
+// #define SENDCMD_LOG // Open sendcommand log, for test only
     switch (cmd) {
     case CMD_SENSOR_SET_SENSOR_EXP_TIME:
         FeatureId = SENSOR_FEATURE_SET_ESHUTTER;
         if(SENSOR_MAIN == sensorDevId) {
             FeaturePara[0] = ((1000 * (*parg1)) / m_LineTimeInus[0]);
             if(FeaturePara[0] == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[0]);
+                #endif
                 FeaturePara[0] = 1;
             }
             FeatureParaLen = sizeof(MUINT64);
@@ -856,7 +878,9 @@ ImgSensorDrv::sendCommand(
         else if((SENSOR_MAIN_2 == sensorDevId)||(SENSOR_SUB == sensorDevId)) {
             FeaturePara[0] = ((1000 * (*parg1)) / m_LineTimeInus[1]);
             if(FeaturePara[0] == 0) {   // avoid the line number to zero
+                #ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[1]);
+                #endif
                 FeaturePara[0] = 1;
             }
             FeatureParaLen = sizeof(MUINT64);
@@ -908,7 +932,9 @@ ImgSensorDrv::sendCommand(
             FeaturePara[2] = *(parg1+2);  // Exposure time
             FeaturePara[2] = ((1000 * FeaturePara[2]) / m_LineTimeInus[0]);
             if(FeaturePara[2]  == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_SENSOR_SYNC] m_LineTime[0] = %llu %d\n", FeaturePara[2] , m_LineTimeInus[0]);
+                #endif
                 FeaturePara[2]  = 1;
             }
             FeaturePara[2] = (FeaturePara[2] ) | (((*(parg1+3))>>4) << 16); // Sensor gain from 10b to 6b base
@@ -922,7 +948,9 @@ ImgSensorDrv::sendCommand(
             FeaturePara[2] = *(parg1+2);  // Exposure time
             FeaturePara[2] = ((1000 * FeaturePara[2]) / m_LineTimeInus[1]);
             if(FeaturePara[2]  == 0) {   // avoid the line number to zero
+               #ifdef SENDCMD_LOG
                LOG_MSG("[CMD_SENSOR_SET_SENSOR_SYNC] m_LineTime[1] = %llu %d\n", FeaturePara[2] , m_LineTimeInus[1]);
+               #endif
                FeaturePara[2]  = 1;
             }
             FeaturePara[2] = (FeaturePara[2] ) | (((*(parg1+3))>>4) << 16); // Sensor gain from 10b to 6b base
@@ -1015,14 +1043,18 @@ ImgSensorDrv::sendCommand(
             LOG_ERR("Error sensorDevId !\n");
         }
         if(FeaturePara[0] == 0) {   // avoid the line number to zero
+            #ifdef SENDCMD_LOG
             LOG_MSG("[CMD_SENSOR_SET_ESHUTTER_GAIN] m_LineTime = %llu %d\n", FeaturePara[0] , m_LineTimeInus[0]);
+            #endif
             FeaturePara[0]  = 1;
         }
         FeaturePara[2] = (FeaturePara[0] ) | (((*(parg1+1))>>4) << 16); // Sensor gain from 10b to 6b base
         FeaturePara[0] = 0; // RAW Gain R, Gr
         FeaturePara[1] = 0;  // RAW Gain Gb, B
         FeaturePara[3] = 0;  // Delay frame cnt
+#ifdef SENDCMD_LOG        
         LOG_MSG("CMD_SENSOR_SET_ESHUTTER_GAIN: Exp=%d, SensorGain=%d\n", (MUINT32)FeaturePara[2]&0x0000FFFF, (MUINT32)FeaturePara[2]>>16);
+#endif
         FeatureParaLen = sizeof(MUINT64) * 4;
         pFeaturePara = (MUINT8*)FeaturePara;
 #ifdef SENDCMD_LOG
@@ -1462,24 +1494,58 @@ ImgSensorDrv::sendCommand(
             case SENSOR_SCENARIO_ID_SLIM_VIDEO2:
                 FeaturePara[0] = MSDK_SCENARIO_ID_SLIM_VIDEO;
                 break;
+            case SENSOR_SCENARIO_ID_CUSTOM1:
+                FeaturePara[0] = MSDK_SCENARIO_ID_CUSTOM1;
+                break;
+            case SENSOR_SCENARIO_ID_CUSTOM2:
+                FeaturePara[0] = MSDK_SCENARIO_ID_CUSTOM2;
+                break;
+            case SENSOR_SCENARIO_ID_CUSTOM3:
+                FeaturePara[0] = MSDK_SCENARIO_ID_CUSTOM3;
+                break;
+            case SENSOR_SCENARIO_ID_CUSTOM4:
+                FeaturePara[0] = MSDK_SCENARIO_ID_CUSTOM4;
+                break;
+            case SENSOR_SCENARIO_ID_CUSTOM5:
+                FeaturePara[0] = MSDK_SCENARIO_ID_CUSTOM5;
+                break;
+
             default:
                 LOG_ERR("[setScenario] error scenario id\n");
                 return SENSOR_UNKNOWN_ERROR;
         }
         FeatureId = SENSOR_FEATURE_GET_PDAF_INFO;
-        FeaturePara[1] = (MUINT64)parg2;
-        FeatureParaLen = sizeof(SET_PD_BLOCK_INFO_T);
+        FeaturePara[1] = (MUINTPTR)parg2;
+        FeatureParaLen = sizeof(MUINT64) * 2;
         pFeaturePara = (MUINT8*)FeaturePara;
-        LOG_ERR("[SENSOR_FEATURE_GET_PDAF_INFO]%llu %llu\n",FeaturePara[0],FeaturePara[1]);
+		ALOGD("deng,[SENSOR_FEATURE_GET_PDAF_INFO]%llu %llu\n",FeaturePara[0],FeaturePara[1]);
+#ifdef SENDCMD_LOG
+        LOG_MSG("[SENSOR_FEATURE_GET_PDAF_INFO]%llu %llu\n",FeaturePara[0],FeaturePara[1]);
+#endif
         break;
+	 case CMD_SET_PDFOCUS_AREA:
+		FeatureId = SENSOR_FEATURE_SET_PDFOCUS_AREA;
+		FeaturePara[0] = *parg1;	//offset
+		FeaturePara[1] = *parg2;	//the address of pointer pointed
+		FeatureParaLen = sizeof(MUINT64) * 2;
+		pFeaturePara = (MUINT8*)FeaturePara;
+#ifdef SENDCMD_LOG		
+		LOG_MSG("[CMD_SET_PDFOCUS_AREA] 0x%llu 0x%llu", FeaturePara[0], FeaturePara[1]);
+#endif
+		break;
      case CMD_SENSOR_GET_PDAF_DATA:
+#ifdef SENDCMD_LOG
+	 	ALOGD("deng, SENSOR_FEATURE_GET_PDAF_DATA   1794!\n");
+#endif
         FeatureId = SENSOR_FEATURE_GET_PDAF_DATA;
         FeaturePara[0] = *parg1;//offset
-        FeaturePara[1] = *parg2;//the address of pointer pointed
-	FeaturePara[2] = *parg3;//size of buff
+        FeaturePara[1] = (MUINTPTR)(*parg2);//the address of pointer pointed
+        FeaturePara[2] = *parg3;//size of buff
         FeatureParaLen = sizeof(MUINT64) * 3;
         pFeaturePara = (MUINT8*)FeaturePara;
-        LOG_MSG("[CMD_SENSOR_GET_PDAF_DATA] 22 0x%llu 0x%llu 0x%llu", FeaturePara[0], FeaturePara[1], FeaturePara[2]);
+#ifdef SENDCMD_LOG
+        LOG_MSG("[CMD_SENSOR_GET_PDAF_DATA]0x%llu 0x%llu 0x%llu", FeaturePara[0], FeaturePara[1], FeaturePara[2]);
+#endif
         break;
      case CMD_SENSOR_GET_SENSOR_PDAF_CAPACITY:
         FeatureId = SENSOR_FEATURE_GET_SENSOR_PDAF_CAPACITY;
@@ -1686,11 +1752,15 @@ ImgSensorDrv::sendCommand(
             FeaturePara[0] = (1000 * (*parg1)) / m_LineTimeInus[0];
             FeaturePara[1] = (1000 * (*parg2)) / m_LineTimeInus[0];
             if(FeaturePara[0] == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[0]);
+                #endif
                 FeaturePara[0] = 1;
             }
             if(FeaturePara[1] == 0) {   // avoid the line number to zero
+                #ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[1], m_LineTimeInus[0]);
+                #endif
                 FeaturePara[1] = 1;
             }
         }
@@ -1698,11 +1768,15 @@ ImgSensorDrv::sendCommand(
             FeaturePara[0] = (1000 * (*parg1)) / m_LineTimeInus[1];
             FeaturePara[1] = (1000 * (*parg2)) / m_LineTimeInus[1];
             if(FeaturePara[0] == 0) {   // avoid the line number to zero
+                #ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[1]);
+                #endif
                 FeaturePara[0] = 1;
             }
             if(FeaturePara[1] == 0) {   // avoid the line number to zero
+                #ifdef SENDCMD_LOG
                 LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[1], m_LineTimeInus[1]);
+                #endif
                 FeaturePara[1] = 1;
             }
         }
@@ -1717,6 +1791,51 @@ ImgSensorDrv::sendCommand(
         LOG_MSG("[CMD_SENSOR_SET_IHDR_SHUTTER_GAIN] FeaturePara[0] = %llu, FeaturePara[1] = %llu, FeaturePara[2] = %llu, FeaturePara[3] = %llu \n", FeaturePara[0], FeaturePara[1], FeaturePara[2], FeaturePara[3]);
 #endif
         break;
+    case CMD_SENSOR_SET_HDR_SHUTTER:
+        FeatureId = SENSOR_FEATURE_SET_HDR_SHUTTER;
+        if(SENSOR_MAIN == sensorDevId) {
+            FeaturePara[0] = (1000 * (*parg1)) / m_LineTimeInus[0];
+            FeaturePara[1] = (1000 * (*parg2)) / m_LineTimeInus[0];
+            if(FeaturePara[0] == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
+                LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[0]);
+                #endif
+                FeaturePara[0] = 1;
+            }
+            if(FeaturePara[1] == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
+                LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[1], m_LineTimeInus[0]);
+                #endif
+                FeaturePara[1] = 1;
+            }
+        }
+        else if((SENSOR_MAIN_2 == sensorDevId)||(SENSOR_SUB == sensorDevId)) {
+            FeaturePara[0] = (1000 * (*parg1)) / m_LineTimeInus[1];
+            FeaturePara[1] = (1000 * (*parg2)) / m_LineTimeInus[1];
+            if(FeaturePara[0] == 0) {   // avoid the line number to zero
+				#ifdef SENDCMD_LOG
+                LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[0], m_LineTimeInus[1]);
+                #endif
+                FeaturePara[0] = 1;
+            }
+            if(FeaturePara[1] == 0) {   // avoid the line number to zero
+                #ifdef SENDCMD_LOG
+                LOG_MSG("[CMD_SENSOR_SET_EXP_TIME] m_LineTime = %llu %d\n", FeaturePara[1], m_LineTimeInus[1]);
+                #endif
+                FeaturePara[1] = 1;
+            }
+
+        }
+        else{
+              LOG_ERR("sensorDevId is incorrect!!\n");
+        }
+
+        FeatureParaLen = sizeof(MUINT64) * 2;
+        pFeaturePara = (MUINT8*)FeaturePara;
+#ifdef SENDCMD_LOG
+        LOG_MSG("[CMD_SENSOR_SET_HDR_SHUTTER] FeaturePara[0] = %llu, FeaturePara[1] = %llu, FeaturePara[2] = %llu, FeaturePara[3] = %llu \n", FeaturePara[0], FeaturePara[1], FeaturePara[2], FeaturePara[3]);
+#endif
+        break;
     case CMD_SENSOR_SET_MIN_MAX_FPS:
         FeatureId = SENSOR_FEATURE_SET_MIN_MAX_FPS;
         FeaturePara[0] = *parg1;
@@ -1726,6 +1845,35 @@ ImgSensorDrv::sendCommand(
 #ifdef SENDCMD_LOG
         LOG_MSG("[CMD_SENSOR_SET_IHDR_SHUTTER_GAIN] FeaturePara[0] = %llu, FeaturePara[1] = %llu, FeaturePara[2] = %llu, FeaturePara[3] = %llu \n", FeaturePara[0], FeaturePara[1], FeaturePara[2], FeaturePara[3]);
 #endif
+        break;
+    case CMD_SENSOR_GET_SENSOR_ROLLING_SHUTTER:
+        if(SENSOR_MAIN == sensorDevId) {
+            *parg1 = m_LineTimeInus[0];
+            *parg2 = mImageTargetHeight;
+        }
+        else if((SENSOR_MAIN_2 == sensorDevId)||(SENSOR_SUB == sensorDevId)) {
+            *parg1 = m_LineTimeInus[1];
+            *parg2 = mImageTargetHeight;
+#ifdef MTK_SUB2_IMGSENSOR
+        } else if(SENSOR_SUB_2 == sensorDevId) {
+            *parg1 = m_LineTimeInus[2];
+            *parg2 = mImageTargetHeight;
+#endif
+        }
+        else{
+            LOG_ERR("sensorDevId is incorrect!!\n");
+        }
+       break;
+    case CMD_SENSOR_SET_SENSOR_ISO:
+        //FeatureId = SENSOR_FEATURE_SET_ISO;
+        //FeaturePara[0] = *parg1;
+        //FeatureParaLen = sizeof(MUINT64);
+        //pFeaturePara =  (MUINT8*)FeaturePara;
+
+        FeatureId = SENSOR_FEATURE_SET_ISO;
+        pFeaturePara = (UINT8*)parg1;
+        FeatureParaLen = sizeof(SET_SENSOR_ISO);
+
         break;
     default:
         LOG_ERR("[sendCommand]Command ID = %d is undefined\n",cmd);
@@ -1972,15 +2120,15 @@ ImgSensorDrv::getResolution(
         LOG_ERR("[getResolution] NULL pointer\n");
         return SENSOR_UNKNOWN_ERROR;
     }
-
+/*
     if (m_fdSensor < 0) {
         LOG_ERR("[getResolution] ioctl not possible\n");
         return SENSOR_UNKNOWN_ERROR;
-    }
+    } */
 
 
     ACDK_SENSOR_PRESOLUTION_STRUCT resolution = {{pSensorResolution[0], pSensorResolution[1]}};    
-    LOG_WRN("pSensorResolution[0]:%p, [1]:%p\n", pSensorResolution[0], pSensorResolution[1]);
+   /* LOG_WRN("pSensorResolution[0]:%p, [1]:%p\n", pSensorResolution[0], pSensorResolution[1]); */
     err = ioctl(m_fdSensor, KDIMGSENSORIOC_X_GETRESOLUTION2, &resolution);
 	
     if (err < 0) {
@@ -1988,43 +2136,43 @@ ImgSensorDrv::getResolution(
         return -errno;
     }
 #else
-    m_SenosrResInfo[0].SensorPreviewWidth = 2560;
-    m_SenosrResInfo[0].SensorPreviewHeight = 1440;
-    m_SenosrResInfo[0].SensorFullWidth = 6144;
-    m_SenosrResInfo[0].SensorFullHeight = 3456;
-    m_SenosrResInfo[0].SensorVideoWidth = 3840;
-    m_SenosrResInfo[0].SensorVideoHeight = 2176;
+    m_SenosrResInfo[0].SensorPreviewWidth = 2672;
+    m_SenosrResInfo[0].SensorPreviewHeight = 2008;
+    m_SenosrResInfo[0].SensorFullWidth = 5344;
+    m_SenosrResInfo[0].SensorFullHeight = 4016;
+    m_SenosrResInfo[0].SensorVideoWidth = 5344;
+    m_SenosrResInfo[0].SensorVideoHeight = 3006;
     m_SenosrResInfo[0].SensorHighSpeedVideoWidth = 1280;
     m_SenosrResInfo[0].SensorHighSpeedVideoHeight = 720;
     m_SenosrResInfo[0].SensorSlimVideoWidth = 1280;
     m_SenosrResInfo[0].SensorSlimVideoHeight = 720;
-    m_SenosrResInfo[0].SensorCustom1Width = 3840;
-    m_SenosrResInfo[0].SensorCustom1Height = 2176;
-    m_SenosrResInfo[0].SensorCustom2Width = 3840;
-    m_SenosrResInfo[0].SensorCustom2Height = 2176;
-    m_SenosrResInfo[0].SensorCustom3Width = 3840;
-    m_SenosrResInfo[0].SensorCustom3Height = 2176;
-    m_SenosrResInfo[0].SensorCustom4Width = 3840;
-    m_SenosrResInfo[0].SensorCustom4Height = 2176;
-    m_SenosrResInfo[0].SensorCustom5Width = 3840;
-    m_SenosrResInfo[0].SensorCustom5Height = 2176;
+    m_SenosrResInfo[0].SensorCustom1Width = 0;
+    m_SenosrResInfo[0].SensorCustom1Height = 0;
+    m_SenosrResInfo[0].SensorCustom2Width = 0;
+    m_SenosrResInfo[0].SensorCustom2Height = 0;
+    m_SenosrResInfo[0].SensorCustom3Width = 0;
+    m_SenosrResInfo[0].SensorCustom3Height = 0;
+    m_SenosrResInfo[0].SensorCustom4Width = 0;
+    m_SenosrResInfo[0].SensorCustom4Height = 0;
+    m_SenosrResInfo[0].SensorCustom5Width = 0;
+    m_SenosrResInfo[0].SensorCustom5Height = 0;
 
-    m_SenosrResInfo[1].SensorPreviewWidth = 1280;
-    m_SenosrResInfo[1].SensorPreviewHeight = 720;
+    m_SenosrResInfo[1].SensorPreviewWidth = 1632;
+    m_SenosrResInfo[1].SensorPreviewHeight = 1224;
     m_SenosrResInfo[1].SensorFullWidth = 3264;
     m_SenosrResInfo[1].SensorFullHeight = 2448;
-    m_SenosrResInfo[1].SensorVideoWidth = 1920;
-    m_SenosrResInfo[1].SensorVideoHeight = 1080;
+    m_SenosrResInfo[1].SensorVideoWidth = 3264;
+    m_SenosrResInfo[1].SensorVideoHeight = 2448;
     m_SenosrResInfo[1].SensorHighSpeedVideoWidth = 640;
     m_SenosrResInfo[1].SensorHighSpeedVideoHeight = 480;
-    m_SenosrResInfo[1].SensorSlimVideoWidth = 1280;
-    m_SenosrResInfo[1].SensorSlimVideoHeight = 720;
+    m_SenosrResInfo[1].SensorSlimVideoWidth = 1632;
+    m_SenosrResInfo[1].SensorSlimVideoHeight = 1224;
 #endif
 
 
 // TRONX
 
-
+#if 0
 	    if (NULL == pSensorResolution) {
 	        LOG_ERR("[getResolution] NULL pointer\n");
 	        return SENSOR_UNKNOWN_ERROR;
@@ -2145,7 +2293,7 @@ ImgSensorDrv::getResolution(
 	    LOG_MSG("[Decker] m_SenosrResInfo[1].Sensor3DFullHeightOffset = %d;",pSensorResolution[1]->Sensor3DFullHeightOffset);
 	    LOG_MSG("[Decker] m_SenosrResInfo[1].Sensor3DVideoWidthOffset = %d;",pSensorResolution[1]->Sensor3DVideoWidthOffset);
 	    LOG_MSG("[Decker] m_SenosrResInfo[1].Sensor3DVideoHeightOffset = %d;",pSensorResolution[1]->Sensor3DVideoHeightOffset);
-	
+#endif	
 
 // TRONX End
 

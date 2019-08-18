@@ -53,3 +53,5 @@ allow platform_app      gas_srv_service:service_manager     find;
 allow gas_srv           sysfs:file			    { read open };
 allow gas_srv           proc:file			    { open ioctl };
 allow gas_srv		rootfs:lnk_file			    { getattr };
+# oreo
+allow gas_srv		sysfs_boot_mode:file			    { open read };

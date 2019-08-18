@@ -573,3 +573,4 @@
 
 # USB Gadget
 /dev/hidg(.*)                        u:object_r:hid_gadget_device:s0
+

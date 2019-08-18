@@ -450,7 +450,14 @@ allow mediaserver nvram_prop:file { read open getattr };
 allow mediaserver kernel:system { module_request };
 allow mediaserver pq_conf_prop:file  { getattr open read };
 
+allow mediaserver hal_configstore_default:binder { call };
+allow mediaserver mtk_rrc_device:chr_file { read open ioctl };
+
 # mediadrmserver policy
 allow mediadrmserver rootfs:lnk_file { getattr };
 allow mediadrmserver kernel:system { module_request };
 
+allow mediaserver storage_file:dir { search };
+
+allow mediaextractor proc:file { read open ioctl };
+allow mediaextractor fuse:file { getattr read open write };

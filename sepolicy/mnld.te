@@ -80,3 +80,5 @@ allow mnld kernel:system { module_request };
 allow mnld kmsg_device:chr_file { open read write };
 allow mnld agpsd_data_file:file { open read write create getattr };
 
+allow mnld platformblk_device:dir { search };
+allow mnld apk_data_file:dir { search };

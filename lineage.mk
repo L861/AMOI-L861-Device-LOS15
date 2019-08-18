@@ -26,7 +26,7 @@ PRODUCT_MANUFACTURER := openstone
 PRODUCT_RESTRICT_VENDOR_FILES := false
 
 # SDcard
-# PRODUCT_CHARACTERISTICS := nosdcard
+PRODUCT_CHARACTERISTICS := nosdcard
 
 # Google client ID property.
 PRODUCT_GMS_CLIENTID_BASE := android-leeco

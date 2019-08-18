@@ -111,6 +111,9 @@ const char MtkCameraParameters::SCENE_MODE_NORMAL[] = "normal";
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  Face Beauty
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+const char MtkCameraParameters::KEY_SNAPSHOT_PICTURE_FLIP[] = "snapshot-picture-filp";
+const char MtkCameraParameters::FLASH_MODE_TORCH1[] = "torch1";
+const char MtkCameraParameters::FLASH_MODE_TORCH2[] = "torch2";
 const char MtkCameraParameters::KEY_FB_SMOOTH_LEVEL[]       = "fb-smooth-level";
 const char MtkCameraParameters::KEY_FB_SMOOTH_LEVEL_MIN[]   = "fb-smooth-level-min";
 const char MtkCameraParameters::KEY_FB_SMOOTH_LEVEL_MAX[]   = "fb-smooth-level-max";
@@ -307,6 +310,7 @@ const char MtkCameraParameters::KEY_RAW_PATH[] = "rawfname";
 const char MtkCameraParameters::KEY_FAST_CONTINUOUS_SHOT[] = "fast-continuous-shot";
 
 const char MtkCameraParameters::KEY_CSHOT_INDICATOR[] = "cshot-indicator";
+const char MtkCameraParameters::KEY_SHUTTER_VALUE[] = "shutter-value";
 
 // AF EM MODE
 const char MtkCameraParameters::KEY_FOCUS_ENG_MODE[]        = "afeng-mode";

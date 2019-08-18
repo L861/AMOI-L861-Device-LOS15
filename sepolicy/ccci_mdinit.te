@@ -69,4 +69,5 @@ allow ccci_mdinit nvram_data_file:dir { setattr getattr create write add_name };
 allow ccci_mdinit ctl_emdlogger1_prop:property_service  { set };
 #
 allow ccci_mdinit self:capability { fsetid };
-
+allow ccci_mdinit nvram_data_file:dir { search };
+allow ccci_mdinit block_device:dir { search };
