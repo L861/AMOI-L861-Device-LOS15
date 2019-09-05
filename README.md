@@ -22,7 +22,7 @@ This branch is device tree for building Lineage-15.1 branch (oreo) Rom for AMOI 
 
 ### Broken/Bugs
 
-* Graphical glitches = Telegram Emojis with Telegram official client. NO GLITCHES AT ALL instead using Telegram X 
+* Graphical glitches = Telegram Emojis with Telegram main official client. NO GLITCHES AT ALL instead using Telegram X (alternative official client)
 
 * Graphical glitches = Google Photos preview thumbnails. NO GLITCHES with other Gallery Apps (even others with cloud support)
 
