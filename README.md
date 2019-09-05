@@ -10,18 +10,20 @@ This branch is device tree for building Lineage-15.1 branch (oreo) Rom for AMOI 
 
 ### Working - Stable / Daily Usage
 
-* Boots
 * Cameras IMX230/OV8858
 * Ril
 * Wifi & hotspot
-* Audio
+* NFC
+* Audio speaker/headphone
 * Online/offline charging
 * Lights ( notifications, charging,etc)
-* Bluetooth
+* Bluetooth media/phone audio & data
 * USB tethering
 
 ### Broken/Bugs
 
-* Graphical glitches = Telegram Emojis / Google Photos preview thumbnails
+* Graphical glitches = Telegram Emojis with Telegram official client. NO GLITCHES AT ALL instead using Telegram X 
+
+* Graphical glitches = Google Photos preview thumbnails. NO GLITCHES with other Gallery Apps (even others with cloud support)
 
 
