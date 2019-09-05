@@ -1,0 +1,21 @@
+cc_library_shared {
+    name: "libzeroutils",
+    defaults: ["hidl_defaults"],
+    proprietary: true,
+    srcs: ["Utils.cpp"],
+
+    cflags: [
+        "-Wall",
+        "-Werror",
+		"-DSTRICT_BEHAVIOUR",
+		"-DNR_CPUS=8"
+    ],
+
+    export_include_dirs: ["."],
+    
+    shared_libs: [
+        "liblog",
+        "libhardware",
+        "libutils",
+    ],
+}

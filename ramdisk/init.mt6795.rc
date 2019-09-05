@@ -35,9 +35,9 @@ on init
 
 
     # For debugging:
-    setprop ro.secure 0
-    setprop ro.adb.secure 0
-    setprop ro.debuggable 1
+    #setprop ro.secure 0
+    #setprop ro.adb.secure 0
+    #setprop ro.debuggable 1
 
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
@@ -231,6 +231,20 @@ on post-fs-data
     # GPS
     mkdir /data/gps_mnl 0771 gps system
     mkdir /data/misc/gps 0770 gps system
+
+#    mkdir /data/mnl_flp 0771 gps system
+#    mkdir /data/mnl_gfc 0771 gps system
+#    chown gps system /data/mpe_mnl
+#    chown gps system /data/mnl_flp
+#    chown gps system /data/mnl_gfc
+#    chown gps gps /sys/class/gpsdrv/gps/pwrctl
+#    chown gps gps /sys/class/gpsdrv/gps/suspend
+#    chown gps gps /sys/class/gpsdrv/gps/state
+#    chown gps gps /sys/class/gpsdrv/gps/pwrsave
+#    chown gps gps /sys/class/gpsdrv/gps/status
+
+# GPS EMI
+#    chmod 666 /dev/gps_emi
     
     # NFC
     mkdir /data/nfc_socket 0771 nfc radio
@@ -316,6 +330,89 @@ on post-fs-data
 	
 #    # Set SELinux security contexts on upgrade or policy update.
 #    restorecon_recursive /nvdata
+
+
+# Added by TRONX2100 for power HAL
+
+
+
+    # Change permissions for the CPU governor settings
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    chown system system /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_cur_freq
+
+    # change permissions for all cpusets we touch at runtime
+    chown system system /dev/cpuset/cpus
+    chown system system /dev/cpuset/foreground/cpus
+    chown system system /dev/cpuset/background/cpus
+    chown system system /dev/cpuset/system-background/cpus
+    chown system system /dev/cpuset/top-app/cpus
+    chmod 0664 /dev/cpuset/cpus
+    chmod 0664 /dev/cpuset/foreground/cpus
+    chmod 0664 /dev/cpuset/background/cpus
+    chmod 0664 /dev/cpuset/system-background/cpus
+    chmod 0664 /dev/cpuset/top-app/cpus
+
+    # Change permissions of the CPU online settings
+    chown system system /sys/devices/system/cpu/cpu0/online
+    chown system system /sys/devices/system/cpu/cpu1/online
+    chown system system /sys/devices/system/cpu/cpu2/online
+    chown system system /sys/devices/system/cpu/cpu3/online
+    chown system system /sys/devices/system/cpu/cpu4/online
+    chown system system /sys/devices/system/cpu/cpu5/online
+    chown system system /sys/devices/system/cpu/cpu6/online
+    chown system system /sys/devices/system/cpu/cpu7/online
+    chmod 0664 /sys/devices/system/cpu/cpu0/online
+    chmod 0664 /sys/devices/system/cpu/cpu1/online
+    chmod 0664 /sys/devices/system/cpu/cpu2/online
+    chmod 0664 /sys/devices/system/cpu/cpu3/online
+    chmod 0664 /sys/devices/system/cpu/cpu4/online
+    chmod 0664 /sys/devices/system/cpu/cpu5/online
+    chmod 0664 /sys/devices/system/cpu/cpu6/online
+    chmod 0664 /sys/devices/system/cpu/cpu7/online
+
+
+
+    # Kernel Workqueue
+	chown system system /sys/module/workqueue/parameters/power_efficient
+    chmod 0644 /sys/module/workqueue/parameters/power_efficient
+
+	chown root system /proc/gpufreq/gpufreq_opp_max_freq
+	chmod 664 /proc/gpufreq/gpufreq_opp_max_freq
+	
+	chown root system /proc/cpufreq/cpufreq_turbo_mode
+	chmod 664 /proc/cpufreq/cpufreq_turbo_mode
+	
+	chown root system /proc/cpufreq/cpufreq_limited_power
+	chmod 664 /proc/cpufreq/cpufreq_limited_power
+	
+	chown root system /proc/gpufreq/gpufreq_input_boost
+	chmod 664 /proc/gpufreq/gpufreq_input_boost
+
+
+	chown root system /sys/kernel/debug/ged/hal/total_gpu_freq_level_count
+    chmod 0664 /sys/kernel/debug/ged/hal/total_gpu_freq_level_count
+    chown root system /sys/kernel/debug/ged/hal/custom_boost_gpu_freq
+    chmod 0664 /sys/kernel/debug/ged/hal/custom_boost_gpu_freq
+    chown root system /sys/kernel/debug/ged/hal/custom_upbound_gpu_freq
+    chmod 0664 /sys/kernel/debug/ged/hal/custom_upbound_gpu_freq
+#   
+
+
+
 
     # Sensor
     chmod 0660 /dev/hwmsensor
@@ -1017,8 +1114,8 @@ on boot
     chown root radio /proc/net/netfilter/nfnetlink_log
     chown root radio /proc/net/netfilter/nfnetlink_queue
 
-    chown radio system /proc/cpufreq/cpufreq_cur_freq
-    chown radio system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+#    chown radio system /proc/cpufreq/cpufreq_cur_freq
+#    chown radio system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 
 # WMT proc
 		chown shell system /proc/driver/wmt_dbg
@@ -1673,6 +1770,11 @@ service BGW /system/vendor/xbin/BGW
 	user system
 	group gps system radio
 	class main
+
+#service mtkFlpDaemon /system/xbin/mtkFlpDaemon
+#	user system
+#	group gps system radio
+#	class main
 
 service MtkCodecService /system/vendor/bin/MtkCodecService
     class main

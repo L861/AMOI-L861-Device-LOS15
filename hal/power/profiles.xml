@@ -1,0 +1,245 @@
+<!--
+	Copyright (C) 2018 TeamNexus
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+		http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<profiles>
+
+	<!--
+		This files contains all six profiles used in zer Zero Power HAL.
+		To override this configuration, copy this file to /data/system/power_profiles.xml
+		and make your changes in the new files. Be aware that in case of updates you will
+		need to update your custom configuration yourself.
+	-->
+
+	<!-- Profile applied in screen-off situations -->
+	<screen_off>
+		<enabled>true</enabled>
+		<cpu>
+			<enabled>true</enabled>
+				<governor>interactive</governor>
+				<num_limit_power_serv>2</num_limit_power_serv>
+				<freq_min>403000</freq_min>
+				<freq_max>806000</freq_max>
+				<freq_hispeed>806000</freq_hispeed>
+				<freq_boost>0</freq_boost>
+				<cores>
+					<!--  false=disable , tru = this will disable Cpu Hotplug and enable governor-data too -->
+					<enabled>false</enabled>
+					<core1>true</core1>
+					<core2>true</core2>
+					<core3>false</core3>
+					<core4>false</core4>
+					<core5>false</core5>
+					<core6>false</core6>
+					<core7>false</core7>
+					<core8>false</core8>
+				</cores>
+				<!-- TODO: governor-data cannot be inherited yet -->
+				<governor_data>
+					<!-- Mode index -->
+					<param_index>0</param_index>
+					<above_hispeed_delay>19000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<enforced_mode>0</enforced_mode>
+					<go_hispeed_load>99</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
+					<target_loads>75</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+				</governor_data>
+		</cpu>
+		<cpusets>
+			<enabled>false</enabled>
+			<default>0-7</default>
+			<foreground>0-7</foreground>
+			<background>0-7</background>
+			<system_background>0-7</system_background>
+			<top_app>0-7</top_app>
+		</cpusets>
+		<gpu>
+			<enabled>true</enabled>
+			<dvfs>
+				<enabled>true</enabled>
+				<freq_min>253500</freq_min>
+				<freq_max>253500</freq_max>
+			</dvfs>
+			<highspeed>
+				<enabled>false</enabled>
+			</highspeed>
+		</gpu>
+		<kernel>
+			<enabled>true</enabled>
+			<pewq>true</pewq>
+		</kernel>
+		<slow>
+			<enabled>false</enabled>
+			<mode_toggle>false</mode_toggle>
+			<timer_rate>0</timer_rate>
+		</slow>
+		<input_booster>
+			<enabled>false</enabled>
+			<head>0 0 0 0 0 0</head>
+			<tail>0 0 0 0 0 0</tail>
+		</input_booster>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.low.conf"</profilename>
+		</thermal_profile>
+	</screen_off>
+
+	<!--
+		Profile applied when user manually set profile to powersave or
+		the systems applies extreme power savings.
+	-->
+	<power_save extends="screen_off">
+		<enabled>true</enabled>
+		<cpu>
+				<num_limit_power_serv>2</num_limit_power_serv>
+				<freq_min>403000</freq_min>
+				<freq_max>1326000</freq_max>
+				<freq_hispeed>1326000</freq_hispeed>
+				<governor>interactive</governor>
+                <governor_data>
+					<!-- Mode index -->
+					<param_index>0</param_index>
+					<above_hispeed_delay>19000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<enforced_mode>0</enforced_mode>
+					<go_hispeed_load>95</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<mode>0</mode>
+					<target_loads>30 403000:45 806000:50 1183000:60 1326000:70 1469000:80 1625000:85 1781000:90 1950000:95</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+				</governor_data>
+		</cpu>
+		<gpu>
+			<dvfs>
+				<freq_max>338000</freq_max>
+			</dvfs>
+		</gpu>
+		<kernel>
+			<pewq>false</pewq>
+		</kernel>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.low.conf"</profilename>
+		</thermal_profile>
+	</power_save>
+
+	<!--
+		Profile for moderate power savings
+	-->
+	<bias_power_save extends="power_save">
+		<enabled>true</enabled>
+		<cpu>
+				<num_limit_power_serv>4</num_limit_power_serv>
+				<freq_min>403000</freq_min>
+                <freq_max>1326000</freq_max>
+				<freq_hispeed>1326000</freq_hispeed>
+		</cpu>
+        <gpu>
+            <dvfs>
+	 			<freq_max>546000</freq_max>
+			</dvfs>
+		</gpu>
+		<kernel>
+			<pewq>false</pewq>
+		</kernel>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.mid.conf"</profilename>
+		</thermal_profile>
+	</bias_power_save>
+
+	<!--
+		Profile for balanced system performance and efficiency
+	-->
+	<balanced extends="bias_power_save">
+		<enabled>true</enabled>
+		<cpu>
+			    <num_limit_power_serv>4</num_limit_power_serv>
+			    <freq_min>403000</freq_min>
+				<freq_max>1950000</freq_max>
+                <freq_boost>1950000</freq_boost>
+                <freq_hispeed>1950000</freq_hispeed>
+		</cpu>
+        <gpu>
+            <dvfs>
+				<!-- 0 means disabled and means unlimited -->
+	 			<freq_max>0</freq_max>
+			</dvfs>
+		</gpu>
+		<kernel>
+			<pewq>false</pewq>
+		</kernel>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.off.conf"</profilename>
+		</thermal_profile>
+	</balanced>
+
+	<!--
+		Profile for balanced system performance and efficiency,
+		but being closer to the performable system
+	-->
+	<bias_performance extends="balanced">
+		<enabled>true</enabled>
+		<cpu>
+			    <num_limit_power_serv>6</num_limit_power_serv>
+			    <freq_min>403000</freq_min>
+				<freq_max>1950000</freq_max>
+				<freq_hispeed>1950000</freq_hispeed>
+		</cpu>
+		<gpu>
+			<dvfs>
+            <freq_max>0</freq_max>
+			</dvfs>
+		</gpu>
+        <kernel>
+			<pewq>false</pewq>
+		</kernel>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.off.conf"</profilename>
+		</thermal_profile>
+	</bias_performance>
+
+	<!--
+		Profile for full system performance
+	-->
+	<performance extends="bias_performance">
+		<enabled>true</enabled>
+		<cpu>
+			<num_limit_power_serv>8</num_limit_power_serv>
+			<freq_min>403000</freq_min>
+			<freq_max>1950000</freq_max>
+			<freq_hispeed>1950000</freq_hispeed>
+		</cpu>
+		<gpu>
+			<dvfs>
+            <freq_max>0</freq_max>
+			</dvfs>
+		</gpu>
+		<thermal_profile>
+			<enabled>true</enabled>
+			<profilename>"thermal.off.conf"</profilename>
+		</thermal_profile>
+	</performance>
+</profiles>

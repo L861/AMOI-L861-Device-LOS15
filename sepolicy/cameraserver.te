@@ -73,3 +73,4 @@ allow crash_dump cameraserver:fifo_file { getattr };
 allow cameraserver untrusted_app:fifo_file { read write };
 allow cameraserver untrusted_app_25:fifo_file { read write };
 
+allow cameraserver platform_app:fifo_file { getattr read open };

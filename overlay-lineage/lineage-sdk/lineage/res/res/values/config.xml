@@ -16,6 +16,20 @@
      limitations under the License.
 -->
 <resources>
+	
+    <!-- Automatic power profile management per app.
+         Each item should list the fully-qualified activity
+         name and the power profile id, separated by a comma. -->
+    <string-array name="config_auto_perf_activities" translatable="false">
+        <item>com.aurorasoftworks.quadrant.*BenchmarkExecutionActivity,2</item>
+        <item>com.antutu.ABenchMark.*,2</item>
+        <item>.*com.antutu.benchmark.*,2</item>
+        <item>com.whatsapp.*,3</item>
+        <item>.*com.whatsapp.*,3</item>
+        <item>com.android.cameranext.*,4</item>
+        <item>com.google.android.GoogleCamera.*,4</item>
+        <item>com.android.camera2.*,4</item>
+    </string-array>
 
     <!-- Default values for LiveDisplay -->
     <!-- <integer name="config_dayColorTemperature">6500</integer>

@@ -16,6 +16,8 @@ cc_defaults {
 subdirs = [
 	"hal/libcamera_client_mtk",
 	"camera_wrapper",
+	"libs/bluetooth",
+	"hal/libzeroutils",
 //	"libcam.client",
 //	"camera_wrapper",
 //   

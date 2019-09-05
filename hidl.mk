@@ -1,7 +1,8 @@
 # Power
-PRODUCT_PACKAGES += \
-	android.hardware.power@1.0-impl \
-	android.hardware.thermal@1.1-impl
+#PRODUCT_PACKAGES += \
+#	android.hardware.power@1.0-impl \
+#	android.hardware.thermal@1.1-impl \
+#    android.hardware.power@1.0-service.zero
 	
 # Wifi
 PRODUCT_PACKAGES += \
@@ -48,18 +49,6 @@ PRODUCT_PACKAGES += \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service
 
-# Camera HAL
-#    camera.device@3.2-impl \
-#     android.hardware.camera.provider@2.4-service
-#    android.hardware.camera.provider@2.4-impl \
-# camera.device@1.0-impl \
-
-#   camera.device@1.0-impl \
-#	camera.device@1.0-impl-legacy \
-#     camera.device@1.0-impl \
-#Camera HAL
-#
-#
 #	camera.device@1.0-impl \
 #    camera.device@3.2-impl \
 #    camera.device@3.3-impl \
@@ -69,31 +58,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 		android.hardware.camera.provider@2.4-impl \
 
-#	camera.device@1.0-impl \
-#	camera.device@3.2-impl \
-#    camera.device@3.3-impl \
-#	android.hardware.camera.provider@2.4-impl \
-    
-#	android.hardware.camera.provider@2.4-service \
-#	camera.device@1.0-impl \
-#	camera.device@3.2-impl \
-#    camera.device@3.3-impl \
-    
-	
-#	android.hardware.camera.provider@2.4-impl \
-#	android.hardware.camera.provider@2.4-impl-legacy \
-#	android.hardware.camera.provider@2.4-service \
-    
-#    android.hardware.camera.provider@2.4-impl \
-#    android.hardware.camera.provider@2.4-service
-    
-
-   
 
 # Bluetooth HAL
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth@1.0-impl \
-#    android.hardware.bluetooth@1.0-service
+    android.hardware.bluetooth@1.0-service
+
+# Bluetooth Mtk HAL
+#PRODUCT_PACKAGES += \
+#	android.hardware.bluetooth@1.0-impl-mediatek \
+#	android.hardware.bluetooth@1.0-service-mediatek \
+	
 
 #USB HAL
 PRODUCT_PACKAGES += \

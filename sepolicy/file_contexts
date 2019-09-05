@@ -574,3 +574,21 @@
 # USB Gadget
 /dev/hidg(.*)                        u:object_r:hid_gadget_device:s0
 
+####################################
+# HIDL services
+/(vendor|system/vendor)/bin/hw/android\.hardware\.power@1\.0-service.zero    u:object_r:hal_power_default_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.vibrator@1\.0-service.zero     u:object_r:hal_vibrator_default_exec:s0
+
+####################################
+# Power HAL
+#
+/sys/class/input/input[0-9]*/enabled                             u:object_r:power_hal_sysfs:s0
+/sys/class/misc/mali0/device/dvfs(.*)?                           u:object_r:power_hal_sysfs:s0
+/sys/devices/system/cpu/cpu[0-9]*/online                         u:object_r:power_hal_sysfs:s0
+/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_max_freq       u:object_r:power_hal_sysfs:s0
+/sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_min_freq       u:object_r:power_hal_sysfs:s0
+/sys/devices/system/cpu/cpu[0-9]*/cpufreq/interactive(/.*)?      u:object_r:power_hal_sysfs:s0
+/sys/devices/system/cpu/cpu[0-9]*/cpufreq/nexus(/.*)?            u:object_r:power_hal_sysfs:s0
+/sys/power/enable_dm_hotplug                                     u:object_r:power_hal_sysfs:s0
+/sys/class/input_booster(/.*)                                    u:object_r:power_hal_sysfs:s0
+/data/power(/.*)                                                 u:object_r:power_hal_data_files:s0

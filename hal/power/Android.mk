@@ -1,4 +1,5 @@
-# Copyright (C) 2011 The Android Open Source Project
+#
+# Copyright (C) 2018 TeamNexus
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,20 +12,57 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := power.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE               := android.hardware.power@1.0-service.zero
 LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_SRC_FILES := power.c
-LOCAL_SHARED_LIBRARIES := liblog
-LOCAL_MODULE_TAGS := optional
-LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_TAGS          := optional
+LOCAL_PROPRIETARY_MODULE   := true
 
-ifneq ($(TARGET_TAP_TO_WAKE_NODE),)
-LOCAL_CFLAGS += -DTAP_TO_WAKE_NODE=\"$(TARGET_TAP_TO_WAKE_NODE)\"
-endif
+LOCAL_INIT_RC := android.hardware.power@1.0-service.zero.rc
 
-include $(BUILD_SHARED_LIBRARY)
+LOCAL_SRC_FILES := \
+	Service.cpp \
+	Power.cpp \
+	Profiles.cpp
+
+LOCAL_SHARED_LIBRARIES := \
+	libbase \
+	libcutils \
+	libdl \
+	libhardware \
+	libhidlbase \
+	libhidltransport \
+	liblog \
+	libutils \
+	libxml2 \
+	libzeroutils \
+	android.hardware.power@1.0 \
+	vendor.lineage.power@1.0
+
+LOCAL_C_INCLUDES := \
+	external/libxml2/include
+
+LOCAL_CFLAGS := -Wall -Werror -Wno-unused-parameter -Wno-unused-function
+LOCAL_CFLAGS += -DPOWER_HAS_LINEAGE_HINTS
+
+
+
+
+# Enables mutex-protection against multithreading-problems
+# but may cause deadlocks while booting. Recommended if 
+# problems can be traced back to overlapping HAL-calls
+# LOCAL_CFLAGS += -DLOCK_PROTECTION
+
+# Enforces strict limitations of rules present in power-HAL.
+# This may cause errors but ensures the stability of the
+# power-HAL
+LOCAL_CFLAGS += -DSTRICT_BEHAVIOUR
+
+LOCAL_CFLAGS += -DNR_CPUS=$(TARGET_NR_CPUS)
+
+include $(BUILD_EXECUTABLE)

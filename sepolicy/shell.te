@@ -108,3 +108,7 @@ allow shell aee_exp_data_file:file r_file_perms;
 # Operation : Migration
 # Purpose: Allow shell to read binder from surfaceflinger
 allow shell surfaceflinger:fifo_file {read write};
+allow shell adbd:unix_stream_socket { ioctl };
+
+#allow shell kernel:system { syslog_read };
+allow shell kmsg_device:chr_file { read };

@@ -110,5 +110,16 @@ allow init self:capability mknod ;
 allow init vendor_configs_file:dir { mounton };
 allow init kernel:system { module_request };
 allow init system_file:file { execute_no_trans };
-
-
+allow init vendor_file:file { execute_no_trans };
+# Bluetooth
+#allow init bluetooth:binder { call };
+#allow init hwservicemanager:binder { call };
+#allow hwservicemanager init:dir { search };
+#allow hwservicemanager init:file { read open };
+#allow hwservicemanager init:binder { call };
+#allow hwservicemanager init:process { getattr };
+#allow init hal_bluetooth_hwservice:hwservice_manager { find add };
+#allow init hwservicemanager:binder { transfer };
+#allow init hidl_base_hwservice:hwservice_manager { add };
+# Audio
+#allow init hal_audio_hwservice:hwservice_manager { find add };

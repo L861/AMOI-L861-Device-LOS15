@@ -289,3 +289,17 @@ allow system_server keystore_service:service_manager find;
 
 allow system_server device:chr_file { read open };
 allow system_server mnld_data_file:file { read open lock getattr };
+
+# allow system_server init:binder { call transfer };
+
+####################################
+# Power HAL
+#
+# directory
+allow system_server power_hal_sysfs:dir       rw_dir_perms;
+allow system_server power_hal_devfs:dir       rw_dir_perms;
+allow system_server power_hal_data_files:dir  rw_dir_perms;
+# files
+allow system_server power_hal_devfs:file      rw_file_perms;
+allow system_server power_hal_sysfs:file      rw_file_perms;
+allow system_server power_hal_data_files:file rw_file_perms;

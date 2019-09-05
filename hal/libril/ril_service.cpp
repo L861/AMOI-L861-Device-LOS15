@@ -6911,7 +6911,7 @@ int radio::newSmsOnSimInd(int slotId, int indicationType,
 int radio::onUssdInd(int slotId, int indicationType,
 		     int token, RIL_Errno e, void *response, size_t responseLen) {
     if (radioService[slotId] != NULL && radioService[slotId]->mRadioIndication != NULL) {
-	if (response == NULL || responseLen != 2 * sizeof(char *)) {
+	if (response == NULL /* || responseLen != 2 * sizeof(char *) */) {
 	    RLOGE("onUssdInd: invalid response");
 	    return 0;
 	}

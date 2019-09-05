@@ -64,3 +64,5 @@ allow autokd kmsg_device:chr_file { write open };
 #
 allow autokd system_prop:property_service { set };
 allow autokd platformblk_device:dir { search };
+#
+allow autokd system_data_file:file { write read getattr unlink };

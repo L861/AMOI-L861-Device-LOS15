@@ -69,3 +69,9 @@ allow untrusted_app proc:file { open read ioctl };
 allow untrusted_app_25 proc:file { read open ioctl };
 allow untrusted_app_25 sysfs_leds:dir { search };
 allow untrusted_app_25 sysfs:file { getattr read open ioctl };
+
+allow untrusted_app_25 proc:file { getattr open read };
+allow untrusted_app_25 mediatek_prop:file  { getattr open read };
+
+allow untrusted_app sysfs:file { open read getattr };
+allow untrusted_app proc:file { getattr read open };

@@ -32,8 +32,8 @@
     <item name="radio.scanning">10</item>
     <item name="gps.on">50</item>
     
-    <item name="camera.flashlight">100</item> <!-- Avg. power for camera flash, ~160mA -->
-    <item name="camera.avg">500</item> <!-- Avg. power use of camera in standard usecases, ~550mA -->
+    <item name="camera.flashlight">160</item> <!-- Avg. power for camera flash, ~160mA -->
+    <item name="camera.avg">550</item> <!-- Avg. power use of camera in standard usecases, ~550mA -->
     
     <!-- Current consumed by the radio at different signal strengths, when paging -->
     <array name="radio.on">
@@ -41,14 +41,14 @@
         <value>1</value>
     </array>
     <array name="cpu.speeds">
-        <value>403000</value>
-        <value>806000</value>
-        <value>1183000</value>
-        <value>1326000</value>
-        <value>1482000</value>
-        <value>1664000</value>
-        <value>1885000</value>
-        <value>2158000</value>
+      <value>403000</value> <!-- 403 MHz CPU speed -->
+      <value>806000</value> <!-- 806 MHz CPU speed -->
+      <value>1183000</value> <!-- 1183 MHz CPU speed -->
+      <value>1326000</value> <!-- 1326 MHz CPU speed -->
+      <value>1469000</value> <!-- 1469 MHz CPU speed -->
+      <value>1625000</value> <!-- 1625 MHz CPU speed -->
+      <value>1781000</value> <!-- 1781 MHz CPU speed -->
+      <value>1950000</value> <!-- 1950 MHz CPU speed -->
     </array>
     <item name="cpu.idle">3.9</item>
     <item name="cpu.awake">62</item>

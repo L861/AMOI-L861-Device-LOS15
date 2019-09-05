@@ -21,8 +21,12 @@ DEVICE_PACKAGE_OVERLAYS += \
          $(DEVICE_PATH)/overlay-lineage
 
 # Screen density
-PRODUCT_AAPT_CONFIG := normal xxhdpi
-PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+# PRODUCT_AAPT_CONFIG := normal xxhdpi
+# PRODUCT_AAPT_PREF_CONFIG := xxhdpi
+
+# Device uses high-density artwork where available
+PRODUCT_AAPT_CONFIG := normal xhdpi xxhdpi xxxhdpi
+PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
 
 # Recovery allowed devices
 TARGET_OTA_ASSERT_DEVICE := L861
@@ -35,7 +39,7 @@ PRODUCT_PACKAGES += hwcomposer.mt6795
 # Super User ROOT
 PRODUCT_PACKAGES += su
 
-PRODUCT_PROPERTY_OVERRIDES += persist.sys.root_access=3
+#PRODUCT_PROPERTY_OVERRIDES += persist.sys.root_access=3
 
 
 # FMRadio
@@ -58,9 +62,19 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.mtk_bt_fm_over_bt=1	
 
 # Power
+#PRODUCT_PACKAGES += \
+#	power.mt6795
+
+#
+# Power
+#
 PRODUCT_PACKAGES += \
-	power.default \
-	power.mt6795
+	android.hardware.power@1.0-service.zero
+
+PRODUCT_COPY_FILES += \
+$(DEVICE_PATH)/hal/power/profiles.xml:system/etc/power_profiles.xml
+	
+# 	power.default \
 
 # Modem controller
 PRODUCT_PACKAGES += \
@@ -99,6 +113,10 @@ PRODUCT_PACKAGES += \
 	libcam.client \
 	libcam_utils
 
+# Powertoggles
+PRODUCT_PACKAGES += \
+	Powertoggles
+
 #	libcam.paramsmgr \
 #	libcam.camadapter \
 #	libcam.iopipe
@@ -128,8 +146,8 @@ PRODUCT_PACKAGES += \
 
     
 # Timezone
-#PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
-#     persist.sys.timezone=Europe/Rome
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES := \
+     persist.sys.timezone=Europe/Amsterdam
 
 # Torch
 PRODUCT_PACKAGES += \
@@ -150,13 +168,19 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	ro.allow.mock.location=0 \
-	ro.secure=0 \
-	ro.adb.secure=0 \
-	ro.debuggable=1 \
 	ro.zygote=zygote64_32 \
 	ro.dalvik.vm.native.bridge=0 \
 	persist.debug.xlog.enable=0 \
-	camera.disable_zsl_mode=1
+	camera.disable_zsl_mode=1 \
+	persist.sys.usb.config=mtp,adb \
+
+#OEM Lock
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+	ro.boot.flash.locked=1
+
+#	ro.secure=0 \
+#	ro.adb.secure=0 \
+#	ro.debuggable=1 \	
 #persist.sys.usb.config=mtp,adb \
 
 ifeq (lineage_L861,$(TARGET_PRODUCT))	#this is included only in lineage atm as some other roms have issue with this
@@ -464,6 +488,13 @@ PRODUCT_PACKAGES += \
 	gps.mt6795 \
 	libcurl
 
+# GPS GNNS
+#PRODUCT_PACKAGES += \
+#	flp.default \
+#	mtkFlpDaemon \
+#	libmtkflp
+
+
 #camera
 PRODUCT_PACKAGES += \
     libcamera_parameters_mtk \
@@ -503,6 +534,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libbt-vendor \
     libbluetooth_mtk
+
+
 
 # Graphics
 PRODUCT_PACKAGES += \

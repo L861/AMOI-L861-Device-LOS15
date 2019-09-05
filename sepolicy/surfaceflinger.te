@@ -89,3 +89,6 @@ allow surfaceflinger pq_conf_prop:file { read open getattr };
 allow surfaceflinger su:fifo_file { read write };
 allow surfaceflinger platform_app:fifo_file  { read };
 allow surfaceflinger mediacodec:fifo_file { write };
+# screencap
+allow surfaceflinger shell:fifo_file { read };
+#allow surfaceflinger hal_graphics_allocator_hwservice:hwservice_manager { add };

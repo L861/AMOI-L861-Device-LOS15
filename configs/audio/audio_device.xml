@@ -17,6 +17,7 @@
     <!--receiver output-->    
     <path name="receiver_output" value="turnon">
         <kctl name="Voice_Amp_Switch" value="On" />
+        <kctl name="Audio_Speaker_PGA_gain" value="17Db" />
     </path>
     <path name="receiver_output" value="turnoff">
         <kctl name="Voice_Amp_Switch" value="Off" />
