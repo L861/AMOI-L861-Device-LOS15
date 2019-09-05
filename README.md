@@ -1,28 +1,27 @@
-# OpenStone L861 - Lineage-15.1 branch (oreo)
+# AMOI L861 - Lineage-15.1 branch (oreo)
 
 ==============
 
-This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenStone L861.
+This branch is device tree for building Lineage-15.1 branch (oreo) Rom for AMOI L861.
 
 ---
 
 ## Build Information
 
-### Working
+### Working - Stable / Daily Usage
 
 * Boots
+* Cameras IMX230/OV8858
 * Ril
-* wifi & hotspot
+* Wifi & hotspot
 * Audio
-* sound
-* online/offline charging
-* lights ( notifications, charging,etc)
-* bluetooth
+* Online/offline charging
+* Lights ( notifications, charging,etc)
+* Bluetooth
 * USB tethering
 
 ### Broken/Bugs
 
-* graphical glitches
-* camera
-* everything
+* Graphical glitches = Telegram Emojis / Google Photos preview thumbnails
+
 
