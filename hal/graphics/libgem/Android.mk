@@ -8,13 +8,15 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := libui_ext
 LOCAL_MODULE_TAGS := optional
 
-#ifeq ($(MTK_MIRAVISION_SUPPORT),yes)
+ifeq ($(MTK_MIRAVISION_SUPPORT),yes)
 LOCAL_CFLAGS += -DCONFIG_FOR_SOURCE_PQ
-#endif
+endif
 
 ifeq ($(FPGA_EARLY_PORTING), yes)
 LOCAL_CFLAGS += -DFPGA_EARLY_PORTING
 endif
+
+LOCAL_CFLAGS += -Wno-int-to-pointer-cast
 
 LOCAL_SRC_FILES := \
 	lib/FpsCounter.cpp \
@@ -65,9 +67,11 @@ LOCAL_MODULE := libgui_ext
 LOCAL_MODULE_TAGS := optional
 
 
-#ifeq ($(MTK_MIRAVISION_SUPPORT),yes)
+ifeq ($(MTK_MIRAVISION_SUPPORT),yes)
 LOCAL_CFLAGS += -DCONFIG_FOR_SOURCE_PQ
-#endif
+endif
+
+LOCAL_CFLAGS += -Wno-int-to-pointer-cast
 
 LOCAL_SRC_FILES := \
 	lib/IGuiExtService.cpp \

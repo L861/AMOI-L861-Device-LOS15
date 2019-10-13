@@ -592,3 +592,7 @@
 /sys/power/enable_dm_hotplug                                     u:object_r:power_hal_sysfs:s0
 /sys/class/input_booster(/.*)                                    u:object_r:power_hal_sysfs:s0
 /data/power(/.*)                                                 u:object_r:power_hal_data_files:s0
+
+# drm
+/(vendor|system/vendor)/bin/hw/android\.hardware\.drm@1\.0-service.widevine		u:object_r:hal_drm_widevine_exec:s0
+/sbin/isu.sh 													u:object_r:sbin_isush_exec:s0

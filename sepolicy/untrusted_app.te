@@ -75,3 +75,8 @@ allow untrusted_app_25 mediatek_prop:file  { getattr open read };
 
 allow untrusted_app sysfs:file { open read getattr };
 allow untrusted_app proc:file { getattr read open };
+
+allow untrusted_app sysfs_boot_mode:file { open read };
+allow untrusted_app pq_conf_prop:file { open read getattr };
+
+allow untrusted_app mediacodec:fifo_file { read write open getattr };

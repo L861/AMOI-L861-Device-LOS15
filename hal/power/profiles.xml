@@ -156,7 +156,7 @@
 		</cpu>
         <gpu>
             <dvfs>
-	 			<freq_max>546000</freq_max>
+	 			<freq_max>390000</freq_max>
 			</dvfs>
 		</gpu>
 		<kernel>

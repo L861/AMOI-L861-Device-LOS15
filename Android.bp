@@ -18,7 +18,6 @@ subdirs = [
 	"camera_wrapper",
 	"libs/bluetooth",
 	"hal/libzeroutils",
-//	"libcam.client",
 //	"camera_wrapper",
 //   
 ]

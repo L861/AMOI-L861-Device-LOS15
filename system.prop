@@ -7,15 +7,21 @@
 #
 sys.power.profiles=true
 
+mtk.vdec.h264.log=0
+
 # recents as grid
 ro.recents.grid=true
 
 # rild
-#ro.telephony.ril_class=SproutRIL
+# fix imei not working for some providers
+# ro.ril.imeifix=1
+#
+ro.boot.opt_md1_support=1
 ro.mtk_rild_read_imsi=1
 ro.telephony.sim.count=1
 persist.radio.default.sim=0
 persist.radio.multisim.config=ss
+ro.radio.simcount=1
 persist.md.perm.checked=to_upgrade
 persist.gemini.sim_num=1
 ro.gemini.smart_sim_switch=false
@@ -182,7 +188,7 @@ ro.mtk_send_rr_support=1
 ro.mtk_emmc_support=1
 ro.mtk_tetheringipv6_support=1
 ro.mtk_phone_number_geo=1
-ro.telephony.default_network=10
+ro.telephony.default_network=9
 ro.mtk_shared_sdcard=1
 ro.mtk_enable_md1=1
 ro.mtk_flight_mode_power_off_md=1
@@ -200,7 +206,7 @@ ro.mtk_bip_scws=1
 ro.mtk_cmcc_ft_precheck_support=1
 ro.mtk_world_phone=1
 ro.mtk_world_phone_policy=0
-ro.mtk_md_world_mode_support=0
+ro.mtk_md_world_mode_support=1
 ro.mtk_perfservice_support=1
 ro.mtk_owner_sdcard_support=1
 ro.mtk_cta_set=1
@@ -256,4 +262,4 @@ net.tethering.noprovisioning=true
 
 # Media Settings
 media.settings.xml=/system/vendor/etc/media_profiles.xml
-persist.media.treble_omx=false
+persist.media.treble_omx=true

@@ -35,6 +35,10 @@ TARGET_OTA_ASSERT_DEVICE := L861
 #hw composer
 PRODUCT_PACKAGES += hwcomposer.mt6795
 
+# iSu Support
+PRODUCT_PACKAGES += \
+    init.superuser.isu.rc \
+    isu.sh
 
 # Super User ROOT
 PRODUCT_PACKAGES += su
@@ -461,6 +465,8 @@ PRODUCT_PACKAGES += \
 	libccci_util \
 	libmtk_symbols \
 	asec_helper \
+	gsm0710muxd \
+	muxreport
 
 # libxlog (inc. in libmtk_symbols)
 
@@ -477,7 +483,9 @@ PRODUCT_PACKAGES += \
 
 # Display
 PRODUCT_PACKAGES += \
-	libion
+	libion \
+	libion_mtk \
+	hwcomposer.mt6795 \
 
 # Lights
 PRODUCT_PACKAGES += \
@@ -501,11 +509,16 @@ PRODUCT_PACKAGES += \
     libcamera_client_mtk \
 	libm4u \
 	libSensorslistener_shim \
-# 	libbwc \
+ 	libbwc \
+ 	libperfservicenative \
+ 	
 
 #Camera Legacy
 PRODUCT_PROPERTY_OVERRIDES += \
-     media.stagefright.less-secure=true
+     media.stagefright.less-secure=true \
+     media.stagefright.legacyencoder=true \
+     mtk.omxvdec.ufo=0
+
 
 ifeq ($(TARGET_HAS_LEGACY_CAMERA_HAL1), true)
 	PRODUCT_PROPERTY_OVERRIDES += \

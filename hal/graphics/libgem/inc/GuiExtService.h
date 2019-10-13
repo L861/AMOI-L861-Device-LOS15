@@ -41,7 +41,6 @@ private:
 //    virtual void onFirstRef();
 //    virtual status_t readyToRun();
 //    virtual bool threadLoop();
-    void parseArgs(const Vector<String16>& args);
 
     mutable Mutex mLock;
     sp<GuiExtPool> mPool;
@@ -51,9 +50,6 @@ private:
     // ex: BQ-... this is a dump tunnel for BQ
     mutable Mutex mDumpLock;
     KeyedVector<String8, sp<IDumpTunnel> > mDumpTunnels;
-
-    // use to control the dump info
-    bool mNeedKickDump;
 };
 };
 #endif

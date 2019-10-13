@@ -5,6 +5,7 @@
     <!-- These are the initial mixer settings -->
     <kctl name="Audio_Speaker_class_Switch" value="CLASSAB" />
     <kctl name="Handset_PGA_GAIN" value="8Db" />
+    <kctl name="Audio_Speaker_PGA_gain" value="17Db" />
   	<!--headphone output-->    
     <path name="headphone_output" value="turnon">
         <kctl name="Audio_Amp_R_Switch" value="On" />
@@ -18,6 +19,7 @@
     <path name="receiver_output" value="turnon">
         <kctl name="Voice_Amp_Switch" value="On" />
         <kctl name="Audio_Speaker_PGA_gain" value="17Db" />
+        <kctl name="Handset_PGA_GAIN" value="8Db" />
     </path>
     <path name="receiver_output" value="turnoff">
         <kctl name="Voice_Amp_Switch" value="Off" />
@@ -27,6 +29,8 @@
         <kctl name="Speaker_Amp_Switch" value="On" />
         <kctl name="Audio_Speaker_class_Switch" value="CLASSAB" />
         <kctl name="Audio_Speaker_PGA_gain" value="17Db" />
+        <kctl name="Lineout_PGAL_GAIN" value="2Db" />
+		<kctl name="Lineout_PGAR_GAIN" value="2Db" />
     </path>
     <path name="two_in_one_speaker_output" value="turnoff">
         <kctl name="Audio_Speaker_class_Switch" value="RECEIVER" />
@@ -36,6 +40,8 @@
     <path name="speaker_output" value="turnon">
         <kctl name="Speaker_Amp_Switch" value="On" />
          <kctl name="Audio_Speaker_PGA_gain" value="17Db" />
+         <kctl name="Lineout_PGAL_GAIN" value="2Db" />
+         <kctl name="Lineout_PGAR_GAIN" value="2Db" />
     </path>
     <path name="speaker_output" value="turnoff">
         <kctl name="Speaker_Amp_Switch" value="Off" />

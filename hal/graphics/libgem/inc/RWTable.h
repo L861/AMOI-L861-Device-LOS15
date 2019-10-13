@@ -9,47 +9,43 @@ namespace android {
 template <typename KeyType, typename ValueType>
 class RWTable {
 public:
-    RWTable(const ValueType& defValue = ValueType()) :
-        mMap(defValue) {}
-    virtual ~RWTable() {}
+    RWTable() :
+        mMap(NULL)
+    {
+    }
 
-    ValueType& operator[] (const KeyType& key) {
+    sp<ValueType> operator[] (KeyType const key) {
+        ssize_t idx = 0;
+        sp<ValueType> value = NULL;
         {
             RWLock::AutoRLock l(mLock);
-            ssize_t idx = mMap.indexOfKey(key);
+            idx = mMap.indexOfKey(key);
             if (idx >= 0) {
-                return mMap.editValueAt(idx);
+                value = mMap.editValueAt(idx);
             }
         }
-        {
-            RWLock::AutoWLock l(mLock);
-            static ValueType empty = ValueType();
-            mMap.add(key, empty);
-            return mMap.editValueFor(key);
+        if (idx < 0) {
+            value = createEntry();
+            {
+                RWLock::AutoWLock l(mLock);
+                mMap.add(key, value);
+            }
         }
+        return value;
     }
 
-    ValueType& valueAt(const size_t& idx) {
-        RWLock::AutoRLock l(mLock);
-        if (idx >= mMap.size()) {
-            // FIXME: Do something
-        }
-        return mMap.editValueAt(idx);
-    }
-
-    bool remove(const KeyType& key) {
+    bool remove(KeyType const key) {
         RWLock::AutoWLock l(mLock);
-        return mMap.removeItem(key) >= 0;
+        return mMap.removeItem(key) >= 0 ? true : false;
     }
 
-    size_t size() const {
-        RWLock::AutoRLock l(mLock);
-        return mMap.size();
+    virtual ~RWTable() {
     }
 
 protected:
-    DefaultKeyedVector<KeyType, ValueType> mMap;
-    mutable RWLock mLock;
+    virtual sp<ValueType> createEntry() = 0;
+    DefaultKeyedVector<KeyType, sp<ValueType> > mMap;
+    RWLock mLock;
 };
 
 }; // namespace android

@@ -8,6 +8,12 @@ TARGET_BOARD_KERNEL_HEADERS := $(DEVICE_PATH)/kernel-headers
 MTK_K64_SUPPORT := yes
 #USE_CAMERA_STUB := true
 
+
+#DRM
+MTK_WVDRM_L1_SUPPORT := yes
+BOARD_WIDEVINE_OEMCRYPTO_LEVEL := 3
+
+
 ARCH_ARM_HAVE_TLS_REGISTER := true
 TARGET_NO_BOOTLOADER := true
 
@@ -65,29 +71,12 @@ MTK_HARDWARE := true
 TARGET_KMODULES := true
 
 
-#ifeq ($(BOARD_USES_MTK_HARDWARE),true)
-#    mtk_flags := -DMTK_HARDWARE
-#
-#    TARGET_GLOBAL_CFLAGS += $(mtk_flags)
-#    TARGET_GLOBAL_CPPFLAGS += $(mtk_flags)
-#    CLANG_TARGET_GLOBAL_CFLAGS += $(mtk_flags)
- #   CLANG_TARGET_GLOBAL_CPPFLAGS += $(mtk_flags)
-
-#    2ND_TARGET_GLOBAL_CFLAGS += $(mtk_flags)
-#    2ND_TARGET_GLOBAL_CPPFLAGS += $(mtk_flags)
-#    2ND_CLANG_TARGET_GLOBAL_CFLAGS += $(mtk_flags)
-#    2ND_CLANG_TARGET_GLOBAL_CPPFLAGS += $(mtk_flags)
-#endif
-
-
-
 
 BOARD_GLOBAL_CFLAGS += -DMTK_HARDWARE -DADD_LEGACY_ACQUIRE_BUFFER_SYMBOL
 BOARD_GLOBAL_CFLAGS += -DCOMPAT_SENSORS_M
 BOARD_GLOBAL_CFLAGS += -DMTK_HARDWARE
 BOARD_GLOBAL_CPPFLAGS += -DMTK_HARDWARE
 BOARD_GLOBAL_CPPFLAGS += -DCOMPAT_SENSORS_M
-#BOARD_GLOBAL_CFLAGS += -DCOMPAT_SENSORS_L
 BOARD_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
 BOARD_GLOBAL_CFLAGS += -DDISABLE_ASHMEM_TRACKING
 #BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT // not use for MTK!!!
@@ -107,28 +96,16 @@ TARGET_IS_64_BIT := true
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 androidboot.selinux=enforcing
 BOARD_KERNEL_BASE := 0x40078000
 BOARD_KERNEL_PAGESIZE := 2048
-#BOARD_MKBOOTIMG_ARGS := \
-#	--base 0x40078000 \
-#	--pagesize 2048 \
-#	--kernel_offset 0x00008000 \
-#	--ramdisk_offset 0x03f88000 \
-#	--second_offset 0x00e88000 \
-#	--tags_offset 0x0df88000 \
-#	--board MT6795
+
 	
 TARGET_KERNEL_SOURCE := kernel/openstone/L861
 TARGET_KERNEL_CONFIG := los15_defconfig
-#TARGET_KERNEL_CONFIG := x500_defconfig
+
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 
 #TARGET_KERNEL_CROSS_COMPILE_PREFIX :=/usr/src/android/gcc-linaro-4.9.4-2017.01-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_MKBOOTIMG_ARGS := --base 0x40078000 --pagesize 2048 --kernel_offset 0x00008000 --ramdisk_offset 0x03f88000 --second_offset 0x00f00000 --tags_offset 0x0df88000 --board MT6795
-#--board 1453346013 
-#--board 1453346013
-#TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
-#TARGET_KMODULES := true
-
 
 # build old-style zip files (required for ota updater)
 BLOCK_BASED_OTA := false
@@ -148,9 +125,29 @@ SF_VSYNC_EVENT_PHASE_OFFSET_NS := -8000000
 PRESENT_TIME_OFFSET_FROM_VSYNC_NS := 0
 #SF_START_GRAPHICS_ALLOCATOR_SERVICE := true
 
+
+# MTK PATHS
+MTK_STATIC_LIBRARY := $(BUILD_STATIC_LIBRARY)
+MTK_SHARED_LIBRARY := $(BUILD_SHARED_LIBRARY)
+MTK_ROOT := vendor/mediatek/proprietary
+MTK_PATH_SOURCE := vendor/mediatek/proprietary
+MTK_PATH_PLATFORM := $(TOP)/vendor/mediatek/proprietary
+MTK_PLATFORM_DIR := mt6795
+
+#MTK_BASIC_PACKAGE := yes
+
+
+# HW Composer
 MTK_HWC_SUPPORT := yes
-MTK_HWC_VERSION := 1.4.1
+MTK_HWC_VERSION := 1.4.0
 MAX_VIRTUAL_DISPLAY_DIMENSION := 4096
+MTK_HDMI_SUPPORT := yes
+#TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
+MTK_SEC_VIDEO_PATH_SUPPORT := yes
+MTK_ROTATION_OFFSET_SUPPORT := yes
+#TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
+#MTK_BASIC_PACKAGE := yes
+
 
 # Support of MTK NFC
 #TARGET_USES_NQ_NFC := true
@@ -202,7 +199,8 @@ BUILD_WITH_ALSA_UTILS := true
 SIM_COUNT := 1
 BOARD_PROVIDES_RILD := true
 BOARD_PROVIDES_LIBRIL := true
-#BOARD_CONNECTIVITY_MODULE := conn_soc
+#MTK_MUX_CHANNEL := 64
+
 
 #BOARD_RIL_CLASS := ../../../device/openstone/L861/ril/
 #BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril/
@@ -215,6 +213,10 @@ BOARD_CONNECTIVITY_MODULE := conn_soc
 NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
 #TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
+
+TARGET_HAS_WIDE_COLOR_DISPLAY := false
+TARGET_HAS_HDR_DISPLAY := false
+TARGET_USES_COLOR_METADATA := false
 
 
 # LineageHW
@@ -365,6 +367,7 @@ TARGET_NEEDS_TEXT_RELOCATIONS := true
 
 # Camera
 # USE_CAMERA_STUB := true
+CAMERA_HARDWARE_MODULE_ID := camera
 BOARD_NUMBER_OF_CAMERAS := 2
 MAX_CAMERAS := 2
 BOARD_USES_LEGACY_MTK_AV_BLOB := true
@@ -383,6 +386,9 @@ TARGET_LD_SHIM_LIBS := \
 /system/vendor/lib/libmmsdkservice.feature.so|libmtk_symbols.so:\
 /system/vendor/lib64/libmmsdkservice.feature.so|libmtk_symbols.so:\
 /system/vendor/lib/libMtkOmxVenc.so|libmtk_symbols.so:\
+/system/vendor/lib/libgem.so|libmtk_symbols.so:\
+/system/vendor/lib64/libgem.so|libmtk_symbols.so:\
+#/system/vendor/lib/libMtkOmxVdecEx.so|libmtk_symbols.so:\
 #/system/lib/libsensorservice.so|libSensorslistener_shim.so:\
 #/system/lib64/libsensorservice.so|libSensorslistener_shim.so:\
 #/system/vendor/lib/libcam.paramsmgr.so|libcam.paramsmgr.shim.so:\

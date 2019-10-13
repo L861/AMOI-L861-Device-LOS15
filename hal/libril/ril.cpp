@@ -640,9 +640,17 @@ void onNewCommandConnect(RIL_SOCKET_ID socket_id) {
 #ifdef MTK_HARDWARE
 //    RIL_UNSOL_RESPONSE(RIL_UNSOL_SET_ATTACH_APN, NULL, 0, socket_id); // reset apn??
 // MTK modem stuff
+
+    int imeifix = 0;
+    char propperty_value[PROPERTY_VALUE_MAX] = { 0 };
+
+    property_get("ro.ril.imeifix", propperty_value, "0");
+    imeifix = atoi(propperty_value);
+
+
 #define RIL_MUXREP_CASE	"ril.mux.report.case"
 #define RIL_MUXREPORT	"ril.muxreport"
-    if ( 0 == property_get(RIL_MUXREPORT, prop, NULL) && (socket_id == RIL_SOCKET_2)) {
+    if (( 0 == property_get(RIL_MUXREPORT, prop, NULL) && (socket_id == RIL_SOCKET_2)) || ( 0 == property_get(RIL_MUXREPORT, prop, NULL) && (socket_id == RIL_SOCKET_1) && imeifix == 1 )) {
 	RLOGD("**reset modem**");
 	property_set(GSM_RIL_INIT, "0");		// clear ril init
 	// reset modem and service once after boot

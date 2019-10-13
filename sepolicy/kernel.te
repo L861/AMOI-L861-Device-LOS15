@@ -79,3 +79,15 @@ allow system_server power_hal_data_files:dir  rw_dir_perms;
 allow system_server power_hal_devfs:file      rw_file_perms;
 allow system_server power_hal_sysfs:file      rw_file_perms;
 allow system_server power_hal_data_files:file rw_file_perms;
+
+# DRM
+
+allow kernel untrusted_app:fd { use };
+#allow kernel untrusted_app_tmpfs:file { write };
+
+#type isolated_app_tmpfs, file_type;
+#type untrusted_app_tmpfs, file_type;
+#type platform_app_tmpfs, file_type;
+
+allow kernel tmpfs:file write;
+allow kernel untrusted_app:file { write };

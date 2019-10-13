@@ -123,3 +123,16 @@ allow init vendor_file:file { execute_no_trans };
 #allow init hidl_base_hwservice:hwservice_manager { add };
 # Audio
 #allow init hal_audio_hwservice:hwservice_manager { find add };
+
+#allow init init:process { execmem };
+#allow init vndbinder_device:chr_file { open read write ioctl };
+#allow init hwservicemanager:binder { call transfer };
+#allow hwservicemanager init:dir { search };
+
+#isu
+type sbin_isush_exec,exec_type,file_type;
+allow init shell_exec:file { execute_no_trans };
+allow init sbin_isush_exec:file { read open execute };
+allow init su_exec:file { relabelfrom };
+allow init system_data_file:file { append };
+

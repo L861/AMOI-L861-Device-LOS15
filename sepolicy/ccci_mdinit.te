@@ -71,3 +71,7 @@ allow ccci_mdinit ctl_emdlogger1_prop:property_service  { set };
 allow ccci_mdinit self:capability { fsetid };
 allow ccci_mdinit nvram_data_file:dir { search };
 allow ccci_mdinit block_device:dir { search };
+
+#oreo
+allow ccci_mdinit { ctl_rildaemon_prop ctl_ril-daemon-mtk_prop ctl_ril-daemon-s_prop ctl_ril-daemon-d_prop ctl_ril-daemon-md2_prop }:property_service set;
+allow ccci_mdinit ril_active_md_prop:property_service set;

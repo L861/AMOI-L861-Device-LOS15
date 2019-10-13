@@ -13,12 +13,7 @@
 #include <cutils/log.h>
 
 #include <ui/GraphicBuffer.h>
-
-#ifdef MTK_AOSP_ENHANCEMENT
-#include <ui/mediatek/IDumpTunnel.h>
-#else
 #include <mediatek/IDumpTunnel.h>
-#endif
 
 #include "IGuiExtService.h"
 

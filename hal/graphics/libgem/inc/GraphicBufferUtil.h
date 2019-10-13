@@ -4,20 +4,12 @@
 #include <utils/Singleton.h>
 
 #include <ui/PixelFormat.h>
-#include <ui/Rect.h>
 
 #include <hardware/gralloc_extra.h>
 
 namespace android {
 // ---------------------------------------------------------------------------
 class GraphicBuffer;
-
-struct DownSampleConfig
-{
-    int mDownSampleX;
-    int mDownSampleY;
-    Rect mCrop;
-};
 
 class BufferInfo
 {
@@ -34,15 +26,7 @@ public:
     size_t mSize;
     buffer_handle_t mHandle;
 
-    BufferInfo() :
-        mErr(NO_ERROR),
-        mWidth(0),
-        mHeight(0),
-        mStride(0),
-        mVStride(0),
-        mFormat(0),
-        mSize(0),
-        mHandle(NULL)
+    BufferInfo() : mErr(NO_ERROR), mSize(0)
     {
     }
 
@@ -71,9 +55,6 @@ public:
     int drawLine(const buffer_handle_t& handle, uint8_t val, int ptn_w, int ptn_h, int pos);
     int drawLine(const sp<GraphicBuffer>& gb, uint8_t val, int ptn_w, int ptn_h, int pos);
     int drawLine(const BufferInfo &handle, uint8_t val, int ptn_w, int ptn_h, int pos);
-    DownSampleConfig downSampleCopy(const DownSampleConfig& config,
-                                    const sp<GraphicBuffer>& srcBuf,
-                                    sp<GraphicBuffer>& dstBuf);
 
 private:
     friend class Singleton<GraphicBufferUtil>;

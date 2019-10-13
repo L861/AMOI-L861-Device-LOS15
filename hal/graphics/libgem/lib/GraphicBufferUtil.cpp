@@ -11,8 +11,7 @@
 #include <ui/GraphicBufferMapper.h>
 
 #include <png.h>
-//#include <transform_scanline.h>
-#include <SkColorPriv.h>
+#include <transform_scanline.h>
 
 #include <GraphicBufferUtil.h>
 #include <graphics_mtk_defs.h>
@@ -141,27 +140,6 @@ static void writeData(uint32_t width,
     {
         png_write_rows(out, (png_bytepp)&in, 1);
         in = (uint8_t *)in + widthBytes;
-    }
-}
-
-static bool isSupportedFormat(const int& format)
-{
-    switch (format)
-    {
-        case HAL_PIXEL_FORMAT_RGBA_8888:
-        case HAL_PIXEL_FORMAT_RGBX_8888:
-        case HAL_PIXEL_FORMAT_BGRA_8888:
-        case 0x1ff:                     // tricky format for SGX_COLOR_FORMAT_BGRX_8888 in fact
-        case HAL_PIXEL_FORMAT_RGB_888:
-        case HAL_PIXEL_FORMAT_RGB_565:
-        case HAL_PIXEL_FORMAT_YUYV:
-        case HAL_PIXEL_FORMAT_YV12:
-        case HAL_PIXEL_FORMAT_YCbCr_420_888:
-        case HAL_PIXEL_FORMAT_I420:
-            return true;
-        default:
-            ALOGE("    unknown format: 0x%x, use default as 0.0", format);
-            return false;
     }
 }
 
@@ -546,10 +524,6 @@ status_t GraphicBufferUtil::drawLine(const BufferInfo &info, uint8_t val, int pt
         ALOGE("[%s] buffer lock fail: %s (handle:%p)",
             __func__, strerror(err), handle);
     }
-    else if (5670766 == pos)
-    {
-        ALOGD("[debug] drawLine, just force sync");
-    }
     else
     {
         // if custom format, just regard as one-byte-plane size
@@ -668,134 +642,12 @@ int GraphicBufferUtil::getRealFormat(buffer_handle_t handle, PixelFormat* format
             default:
                 ALOGE("    CANNOT get real format: (format=0x%x, fillFormat=0x%x)",
                       *format,
-                      static_cast<unsigned int>(sf_info.status & GRALLOC_EXTRA_MASK_CM));
+                      sf_info.status & GRALLOC_EXTRA_MASK_CM);
                 return GRALLOC_EXTRA_ERROR;
         }
     }
     return err;
 }
-
-DownSampleConfig GraphicBufferUtil::downSampleCopy(const DownSampleConfig& config,
-                                                   const sp<GraphicBuffer>& srcBuf,
-                                                   sp<GraphicBuffer>& dstBuf)
-{
-    BufferInfo srcInfo;
-    srcInfo.getInfo(srcBuf);
-
-    const int& width = srcInfo.mWidth;
-    const int& height = srcInfo.mHeight;
-    const int& format = srcInfo.mFormat;
-    const int& stride = srcInfo.mStride;
-    const int& vstride = srcInfo.mVStride;
-    const uint32_t bits = getGraphicBufferUtil().getBitsPerPixel(format);
-    Rect newCrop;
-
-    // down sample config valid check
-    DownSampleConfig newConfig;
-
-    // adjust valid DownSample config
-    // only non-block color format support downsample and crop copy
-    newConfig.mDownSampleX = (config.mDownSampleX <= 0 || !isSupportedFormat(format)) ? 1 : config.mDownSampleX;
-    newConfig.mDownSampleY = (config.mDownSampleY <= 0 || !isSupportedFormat(format)) ? 1 : config.mDownSampleY;
-    if (config.mCrop.isEmpty() || !isSupportedFormat(format))
-    {
-        newCrop = Rect(stride, vstride);
-    }
-    else
-    {
-        newCrop.left = (config.mCrop.left >= 0 && config.mCrop.left < stride)? config.mCrop.left : 0;
-        newCrop.top = (config.mCrop.top >= 0 && config.mCrop.top < vstride)? config.mCrop.top : 0;
-        newCrop.right = (config.mCrop.right < stride && config.mCrop.right > newCrop.left) ? config.mCrop.right : stride;
-        newCrop.bottom = (config.mCrop.bottom < vstride && config.mCrop.bottom > newCrop.top) ? config.mCrop.bottom : vstride;
-    }
-    newConfig.mCrop = newCrop;
-
-    void *src = NULL;
-    void *dst = NULL;
-    status_t err = srcBuf->lock(GraphicBuffer::USAGE_SW_READ_OFTEN, &src);
-    if (err != NO_ERROR)
-    {
-        ALOGE("[%s] lock GraphicBuffer failed", __func__);
-        return newConfig;
-    }
-
-    // do memcpy with downSampleConfig
-    if ((newConfig.mDownSampleX == 1) && (newConfig.mDownSampleY == 1) &&
-        (stride == newCrop.getWidth()) && (vstride == newCrop.getHeight()))
-    {
-        if ((newCrop.getWidth() != dstBuf->width) || (newCrop.getHeight() != dstBuf->height)
-            ||(srcBuf->format != dstBuf->format))
-        {
-            dstBuf = new GraphicBuffer(srcBuf->width, srcBuf->height, srcBuf->format, srcBuf->usage);
-            ALOGD("[%s] setting changed, backup=(%d, %d, %d) => active=(%d, %d, %d) size = %d",
-                __func__, srcBuf->width, srcBuf->height, srcBuf->format,
-                dstBuf->width, dstBuf->height, dstBuf->format, (stride * vstride * bits) >> 3);
-        }
-
-        dstBuf->lock(GraphicBuffer::USAGE_SW_READ_OFTEN | GraphicBuffer::USAGE_SW_WRITE_OFTEN, &dst);
-        if (err != NO_ERROR)
-        {
-            srcBuf->unlock();
-            ALOGE("[%s] lock backup buffer failed", __func__);
-            return newConfig;
-        }
-        memcpy(dst, src, (stride * vstride * bits) >> 3);
-    }
-    else
-    {
-        int y0, x0;
-
-        int newWidth = (newCrop.getWidth() - 1) / newConfig.mDownSampleX + 1;
-        int newHeight = (newCrop.getHeight() - 1) / newConfig.mDownSampleY + 1;
-        if ((newWidth != dstBuf->width) || (newHeight != dstBuf->height)
-            ||(srcBuf->format != dstBuf->format))
-        {
-            dstBuf = new GraphicBuffer(newWidth, newHeight, srcBuf->format, srcBuf->usage);
-            ALOGD("[%s] setting changed, backup=(%d, %d, %d) => active=(%d, %d, %d) size=%d",
-                __func__, srcBuf->width, srcBuf->height, srcBuf->format,
-                dstBuf->width, dstBuf->height, dstBuf->format, (newWidth * newHeight * bits) >> 3);
-        }
-
-        err = dstBuf->lock(GraphicBuffer::USAGE_SW_READ_OFTEN | GraphicBuffer::USAGE_SW_WRITE_OFTEN, &dst);
-        if (err != NO_ERROR)
-        {
-            srcBuf->unlock();
-            ALOGE("[%s] lock backup buffer failed", __func__);
-            return newConfig;
-        }
-
-        BufferInfo dstInfo;
-        dstInfo.getInfo(dstBuf);
-        const int& newStride = dstInfo.mStride;
-
-        // use bytesPerPixel to filter uv part
-        // for 12 bit(yuv format), we only handle y plane copy
-        const int&& bytesPerPixel = bits >> 3;
-        for (int y = newCrop.top, y0 = 0; y < newCrop.bottom; y0++, y += newConfig.mDownSampleY)
-        {
-            if (newConfig.mDownSampleX == 1)
-            {
-                memcpy((char*)dst + ((newStride * bytesPerPixel * y0)),
-                       (char*)src + (((stride * y + newCrop.left) * bytesPerPixel)),
-                        (newCrop.getWidth()* bytesPerPixel));
-            }
-            else
-            {
-                for (int x = newCrop.left, x0 = 0; x < newCrop.right; x0++, x += newConfig.mDownSampleX)
-                {
-                    memcpy((char*)dst + (((newStride * y0 + x0) * bytesPerPixel)),
-                           (char*)src + (((stride * y + newCrop.left + x) * bytesPerPixel)),
-                            bits >> 3);
-                }
-            }
-        }
-    }
-    srcBuf->unlock();
-    dstBuf->unlock();
-
-    return std::move(newConfig);
-}
-
 
 // ---------------------------------------------------------------------------
 }; // namespace android
