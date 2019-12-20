@@ -356,6 +356,7 @@ void Profiles::loadProfileImpl(SecPowerProfile *profile, xmlXPathContext *ctx, c
 
 
 	if (profile->gpu.enabled) {
+		PROFILE_SET_UINT(gpu, fps, "gpu/fps", "60");
 		if (profile->gpu.dvfs.enabled) {
 			PROFILE_SET_UINT(gpu.dvfs, freq_min, "gpu/dvfs/freq_min", "253500");
 			PROFILE_SET_UINT(gpu.dvfs, freq_max, "gpu/dvfs/freq_max", "676000");

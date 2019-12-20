@@ -43,7 +43,8 @@ LOCAL_C_INCLUDES += $(JNI_H_INCLUDE) \
 LOCAL_CFLAGS += -Wno-format-security
 LOCAL_SRC_FILES := PerfServiceNative.cpp
 LOCAL_MODULE := libperfservicenative
-LOCAL_VENDOR_MODULE := true
+# do not use vendor folder for Stonex cam driver!!!
+LOCAL_VENDOR_MODULE := false
 include $(BUILD_SHARED_LIBRARY)
 
 

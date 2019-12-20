@@ -928,6 +928,7 @@ on post-fs-data
 
     # AGPS
     mkdir /data/agps_supl 0771 gps system
+    chmod 0666 /dev/ttyC2
 
     # secure memory
     chown system system /proc/secmem0
@@ -1519,7 +1520,8 @@ service slpd /system/vendor/bin/slpd
     user gps
     group gps inet
 
-service wifi2agps /system/bin/wifi2agps
+
+service wifi2agps /system/vendor/bin/wifi2agps
     class main
     user wifi
     group gps inet

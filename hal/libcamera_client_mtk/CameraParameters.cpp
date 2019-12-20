@@ -39,6 +39,8 @@ const char CameraParameters::KEY_PICTURE_FORMAT[] = "picture-format";
 #ifdef MTK_HARDWARE
 const char CameraParameters::SNAPSHOT_PICTURE_FLIP[] = "snapshot-picture-flip";//add by xueweifeng
 #endif
+const char CameraParameters::KEY_VIDEO_HDR_MODE[] = "video-hdr";
+const char CameraParameters::KEY_VIDEO_HDR_MODES[] = "video-hdr-values";
 const char CameraParameters::KEY_SUPPORTED_PICTURE_FORMATS[] = "picture-format-values";
 const char CameraParameters::KEY_JPEG_THUMBNAIL_WIDTH[] = "jpeg-thumbnail-width";
 const char CameraParameters::KEY_JPEG_THUMBNAIL_HEIGHT[] = "jpeg-thumbnail-height";

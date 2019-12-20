@@ -742,15 +742,15 @@ enqueBuffer(MUINT32 const data, IImageBuffer const * pImageBuffer)
                     GET_IIMAGEBUFFER_BUF_STRIDE_IN_BYTE(pImageBuffer, 2));
             #endif
             //
-            tempBuffer->unlockBuf(LOG_TAG);
-            tempBuffer->decStrong(tempBuffer);
+            // tempBuffer->unlockBuf(LOG_TAG);
+            // tempBuffer->decStrong(tempBuffer);
             //
             bufProvider->enqueProvider(keepImgBufQueNode);
             // only dequeue is not from APClient 
             if(isAPClientFromFD)
             {
                 // If APClient exists, copy to it
-                sp<IImgBufProvider> pBufProvider;
+                sp<IImgBufProvider> pBufProvider = NULL;
                 pBufProvider = mspImgBufProvidersMgr->getAPClientBufPvdr();
                 ImgBufQueNode APClientnode; 
                 if (pBufProvider != 0 && pBufProvider->dequeProvider(APClientnode))
@@ -774,7 +774,10 @@ enqueBuffer(MUINT32 const data, IImageBuffer const * pImageBuffer)
                     //
                     pBufProvider->enqueProvider(APClientnode);
                 }
-            }
+            }else{
+				tempBuffer->unlockBuf(LOG_TAG);
+                tempBuffer->decStrong(tempBuffer);
+			}
             //
             mvBufQueNode[bufQueIdx].erase(mvBufQueNode[bufQueIdx].begin());
             //

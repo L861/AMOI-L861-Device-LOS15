@@ -7,7 +7,10 @@ TARGET_BOARD_KERNEL_HEADERS := $(DEVICE_PATH)/kernel-headers
 
 MTK_K64_SUPPORT := yes
 #USE_CAMERA_STUB := true
-
+# debug native crahses sample
+# addr2line -C -f -e obj/SHARED_LIBRARIES/libutils_intermediates/libutils.so.debug 0000000000011088
+#
+#
 
 #DRM
 MTK_WVDRM_L1_SUPPORT := yes
@@ -49,6 +52,9 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
 
+# Add VOLTE Support
+#MTK_VOLTE_SUPPORT := yes
+#ART_BOOT_IMAGE_EXTRA_ARGS=--runtime-arg -verbose:verifier
 
 # FIX Freezing
 TARGET_NO_SENSOR_PERMISSION_CHECK := true
@@ -84,6 +90,9 @@ BOARD_GLOBAL_CFLAGS += -DDECAY_TIME_DEFAULT=0
 BOARD_DISABLE_HW_ID_MATCH_CHECK := true
 #
 BOARD_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
+
+
+#TARGET_DOES_NOT_SUPPORT_SECCOMP := true
 
 #Sensors
 #USE_SENSOR_MULTI_HAL := true 
@@ -153,6 +162,7 @@ MTK_ROTATION_OFFSET_SUPPORT := yes
 #TARGET_USES_NQ_NFC := true
 MTK_NFC_SUPPORT := yes
 MTK_NFC_HAL := MTK
+#MTK_BSP_PACKAGE := yes
 
 #Software gatekeeper
 BOARD_USE_SOFT_GATEKEEPER := true
@@ -201,9 +211,6 @@ BOARD_PROVIDES_RILD := true
 BOARD_PROVIDES_LIBRIL := true
 #MTK_MUX_CHANNEL := 64
 
-
-#BOARD_RIL_CLASS := ../../../device/openstone/L861/ril/
-#BOARD_RIL_CLASS := ../../../$(LOCAL_PATH)/ril/
 
 BOARD_CONNECTIVITY_VENDOR := MediaTek
 BOARD_CONNECTIVITY_MODULE := conn_soc
@@ -254,6 +261,9 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(DEVICE_PATH)/bluetooth
 # GPS
 BOARD_GPS_LIBRARIES := true
 BOARD_MEDIATEK_USES_GPS := true
+MTK_GPS_SUPPORT := yes
+MTK_GPS_CHIP :=  MTK_GPS_MT6630
+
 
 # make_ext4fs requires numbers in dec format
 #BOARD_HAS_LARGE_FILESYSTEM := true

@@ -54,6 +54,81 @@ PRODUCT_PACKAGES += \
     libfmmt6630
 
 
+
+
+# VOLTE
+#MTK_VOLTE_SUPPORT := yes
+ifeq ($(MTK_VOLTE_SUPPORT), yes)
+
+PRODUCT_PACKAGES += \
+	volte_imcb \
+	volte_stack \
+	volte_ua \
+
+
+#PRODUCT_BOOT_JARS += \
+#	mediatek-ims-common \
+#	mediatek-telephony-common \
+#	mediatek-telephony-base \
+
+
+
+#PRODUCT_PACKAGES += \
+#	volte_imcb \
+#	volte_stack \
+#	volte_ua \
+#	WfoService \
+#	ImsService \
+#	mediatek-framework \
+#	ImsService \
+#	WfoService \
+#	vendor.mediatek.hardware.imsa@1.0-service \
+#	mediatek-ims-common \
+#	mediatek-telephony-common \
+#	mediatek-telephony-base \
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.mtk_volte_support=1 \
+	persist.mtk_ims_support=1 \
+	persist.mtk.volte.enable=1 \
+	persist.mtk_vilte_support=0 \
+	persist.mtk_viwifi_support=0 \
+	ro.mtk_ims_support=0 \
+	ro.mtk_volte_support=1 \
+	ro.mtk_vilte_support=0 \
+	ro.mtk_lte_dc_support=0 \
+	persist.dbg.volte_avail_ovr=1 \
+	persist.dbg.vt_avail_ovr=0 \
+	persist.dbg.allow_ims_off=1 \
+	persist.radio.rat_on=combine \
+	persist.radio.data_ltd_sys_ind=1 \
+	persist.radio.data_con_rprt=1 \
+	persist.radio.calls.on.ims=0 \
+	persist.radio.vilte_ut_support=0 \
+	persist.mtk_wfc_support=1 \
+	persist.mtk.wfc.enable=1 \
+	persist.dbg.wfc_avail_ovr=0 \
+
+else
+
+PRODUCT_PROPERTY_OVERRIDES += \
+	persist.mtk_volte_support=0 \
+	persist.mtk_ims_support=0 \
+	persist.mtk_wfc_support=0 \
+	persist.mtk.volte.enable=0 \
+	persist.mtk.wfc.enable=0 \
+	persist.mtk_vilte_support=0 \
+	persist.mtk_viwifi_support=0 \
+	ro.mtk_ims_support=0 \
+	ro.mtk_volte_support=0 \
+	ro.mtk_vilte_support=0 \
+	ro.mtk_lte_dc_support=0 \
+
+
+endif
+# END VOLTE
+
+
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.mtk_fm_recording_support=1 \
 	persist.mtk.wcn.combo.chipid=-1 \
@@ -84,38 +159,16 @@ $(DEVICE_PATH)/hal/power/profiles.xml:system/etc/power_profiles.xml
 PRODUCT_PACKAGES += \
         md_ctrl
 
-# Weather
-PRODUCT_PACKAGES += \
-   WeatherProvider \
-   WeatherManagerService
-
-# Camera
-#	Snap \
-#	libcam.halsensor \
-#	libcam2halsensor \
-#	libcam.halsensor \
-
-# Sensors
-#PRODUCT_PACKAGES += \
-#	multihal \
-#	sensors.default
-
-#	libcam2halsensor \
-#	libcam.halsensor \
-#	libcam2client \
-#	libcam.client \
-#	libcam.camnode \
-#	libcam1_utils \	
-
 PRODUCT_PACKAGES += \
 	libcameracustom \
 	libstdc++ \
 	libmtkcamera_client \
-	Camera2 \
 	CameraNext \
+	Camera2 \
 	libcam.camadapter \
 	libcam.client \
-	libcam_utils
+	libcam_utils \
+
 
 # Powertoggles
 PRODUCT_PACKAGES += \
@@ -487,14 +540,13 @@ PRODUCT_PACKAGES += \
 	libion_mtk \
 	hwcomposer.mt6795 \
 
-# Lights
-PRODUCT_PACKAGES += \
-        lights.default
+
 
 # GPS
 PRODUCT_PACKAGES += \
 	gps.mt6795 \
-	libcurl
+	libcurl \
+	mtk_agpsd
 
 # GPS GNNS
 #PRODUCT_PACKAGES += \
@@ -515,10 +567,12 @@ PRODUCT_PACKAGES += \
 
 #Camera Legacy
 PRODUCT_PROPERTY_OVERRIDES += \
-     media.stagefright.less-secure=true \
-     media.stagefright.legacyencoder=true \
-     mtk.omxvdec.ufo=0
+    media.stagefright.less-secure=true \
+    media.stagefright.legacyencoder=true \
+    mtk.omxvdec.ufo=0
 
+#	persist.camera.eis.enable=1
+    
 
 ifeq ($(TARGET_HAS_LEGACY_CAMERA_HAL1), true)
 	PRODUCT_PROPERTY_OVERRIDES += \
@@ -548,13 +602,17 @@ PRODUCT_PACKAGES += \
     libbt-vendor \
     libbluetooth_mtk
 
-
-
 # Graphics
 PRODUCT_PACKAGES += \
     libgralloc_extra \
     libui_ext \
-    libgui_ext
+    libgui_ext \
+    memtrack.mt6795 \
+    libdrm
+    
+# Lights
+#PRODUCT_PACKAGES += \
+#	lights.default 
 
 # XML Parser
 PRODUCT_PACKAGES += libxml2

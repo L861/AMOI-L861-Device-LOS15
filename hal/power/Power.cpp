@@ -340,12 +340,13 @@ void Power::setProfile(SecPowerProfiles profile) {
 			cpu_write(freq_min);
 			cpu_write(freq_max);
 			cpu_write2(freq_hispeed, "hispeed_freq");
-
-			for (int i = 0; data->cpu.governor_data[i].name[0]; i++) {
+		}
+		
+		for (int i = 0; data->cpu.governor_data[i].name[0]; i++) {
 				Utils::writeCpuGov(0, data->cpu.governor_data[i].name,
 					std::string(data->cpu.governor_data[i].data));
-			}
 		}
+		
 	}
 
 	/*********************
@@ -374,6 +375,7 @@ void Power::setProfile(SecPowerProfiles profile) {
 	 * GPU Defaults
 	 */
 	if (data->gpu.enabled) {
+		PROFILE_WRITE("/d/ged/hal/fps_upper_bound",gpu,fps);
 		if (data->gpu.dvfs.enabled) {
 			PROFILE_WRITE("/proc/gpufreq/gpufreq_opp_max_freq",gpu.dvfs,freq_max);
 		}

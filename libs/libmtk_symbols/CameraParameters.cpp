@@ -20,4 +20,6 @@ namespace android {
 const char CameraParameters::KEY_SNAPSHOT_PICTURE_FLIP[] = "snapshot-picture-filp";
 const char CameraParameters::FLASH_MODE_TORCH1[] = "torch1";
 const char CameraParameters::FLASH_MODE_TORCH2[] = "torch2";
+const char CameraParameters::KEY_VIDEO_HDR_MODE[] = "video-hdr";
+const char CameraParameters::KEY_VIDEO_HDR_MODES[] = "video-hdr-values";
 }; // namespace android

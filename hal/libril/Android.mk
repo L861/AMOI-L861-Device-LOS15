@@ -29,16 +29,31 @@ ril_shared_libs := \
     librilmtk \
     librilutils \
     mtk-ril \
-    android.hardware.radio@1.0 \
-    android.hardware.radio.deprecated@1.0 \
     libhidlbase  \
     libhidltransport \
-    libhwbinder
+    libhwbinder \
+    android.hardware.radio@1.0 \
+    android.hardware.radio.deprecated@1.0 \
+
+
+ifeq ($(BOARD_USES_MTK_HARDWARE), true)
+ril_shared_libs += \
+    vendor.mediatek.hardware.radio@1.1 \
+    vendor.mediatek.hardware.radio@2.0 \
+    vendor.mediatek.hardware.radio.deprecated@1.1
+
+endif
 
 ril_inc := external/nanopb-c \
     $(LOCAL_PATH)/../include
 
-ril_cflags := -Wno-unused-parameter -DANDROID_SIM_COUNT_2 -DANDROID_MULTI_SIM
+ril_cflags := -Wno-unused-parameter
+
+ifeq ($(SIM_COUNT), 2)
+    ril_cflags += -DANDROID_MULTI_SIM
+    ril_cflags += -DANDROID_SIM_COUNT_2
+endif
+# -DANDROID_SIM_COUNT_2 -DANDROID_MULTI_SIM
 
 ifeq ($(BOARD_USES_MTK_HARDWARE),true)
   ril_cflags += -DMTK_HARDWARE

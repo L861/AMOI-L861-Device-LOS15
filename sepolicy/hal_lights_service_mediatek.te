@@ -1,0 +1,19 @@
+type hal_lights_service_mediatek, domain , mlstrustedsubject , coredomain ;
+hal_server_domain(hal_lights_service_mediatek, hal_light)
+
+type hal_lights_service_mediatek_exec, exec_type, vendor_file_type, file_type;
+init_daemon_domain(hal_lights_service_mediatek)
+
+allow hal_lights_service_mediatek hal_lights_service_mediatek:capability { chown fowner };
+allow hal_lights_service_mediatek hwservicemanager_prop:file { read open getattr };
+allow hal_lights_service_mediatek hwservicemanager:binder { call transfer };
+
+allow hal_lights_service_mediatek hidl_base_hwservice:hwservice_manager { add };
+
+allow hwservicemanager hal_lights_service_mediatek:dir { search };
+allow hwservicemanager hal_lights_service_mediatek:file { read open };
+allow hwservicemanager hal_lights_service_mediatek:process { getattr };
+allow hwservicemanager hal_lights_service_mediatek:binder { call transfer };
+
+allow hal_lights_service_mediatek sysfs_leds:dir { search };
+allow hal_lights_service_mediatek sysfs:file { open read write };

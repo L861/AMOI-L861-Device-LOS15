@@ -1,37 +1,44 @@
-#ifndef __MT65XX_SYNC_WRITE_H__
-#define __MT65XX_SYNC_WRITE_H__
-
-#define mt_reg_sync_writel(v, a)        mt65xx_reg_sync_writel(v, a)
-#define mt_reg_sync_writew(v, a)        mt65xx_reg_sync_writew(v, a)
-#define mt_reg_sync_writeb(v, a)        mt65xx_reg_sync_writeb(v, a)
+#ifndef _MT_SYNC_WRITE_H
+#define _MT_SYNC_WRITE_H
 
 #if defined(__KERNEL__)
 
 #include <linux/io.h>
 #include <asm/cacheflush.h>
-#include <asm/system.h>
+//#include <asm/system.h>
 
 /*
  * Define macros.
  */
+#define mt_reg_sync_writel(v, a)	mt65xx_reg_sync_writel(v, a)
+#define mt_reg_sync_writew(v, a)	mt65xx_reg_sync_writew(v, a)
+#define mt_reg_sync_writeb(v, a)	mt65xx_reg_sync_writeb(v, a)
 
 #define mt65xx_reg_sync_writel(v, a) \
         do {    \
-            writel((v), (a));   \
+            __raw_writel((v), IOMEM((a)));   \
             dsb();  \
         } while (0)
 
 #define mt65xx_reg_sync_writew(v, a) \
         do {    \
-            writew((v), (a));   \
+            __raw_writew((v), IOMEM((a)));   \
             dsb();  \
         } while (0)
 
 #define mt65xx_reg_sync_writeb(v, a) \
         do {    \
-            writeb((v), (a));   \
+            __raw_writeb((v), IOMEM((a)));   \
             dsb();  \
         } while (0)
+
+#ifdef CONFIG_64BIT
+#define mt_reg_sync_writeq(v, a) \
+        do {    \
+            __raw_writeq((v), IOMEM((a)));   \
+            dsb();  \
+        } while (0)
+#endif
 
 #else   /* __KERNEL__ */
 
@@ -41,20 +48,13 @@
 #include <unistd.h>
 #include <string.h>
 
+#define mt_reg_sync_writel(v, a)        mt65xx_reg_sync_writel(v, a)
+#define mt_reg_sync_writew(v, a)        mt65xx_reg_sync_writew(v, a)
+#define mt_reg_sync_writeb(v, a)        mt65xx_reg_sync_writeb(v, a)
+
 #define dsb()   \
         do {    \
-            __asm__ __volatile__ ("dsb sy" : : : "memory"); \
-        } while (0)
-
-#define outer_sync()    \
-        do {    \
-            int fd; \
-            char buf[] = "1";   \
-            fd = open("/sys/bus/platform/drivers/outercache/outer_sync", O_WRONLY); \
-            if (fd != -1) {  \
-                write(fd, buf, strlen(buf)); \
-                close(fd); \
-            }   \
+            __asm__ __volatile__ ("dsb" : : : "memory"); \
         } while (0)
 
 #define mt65xx_reg_sync_writel(v, a) \
@@ -77,4 +77,4 @@
 
 #endif  /* __KERNEL__ */
 
-#endif  /* !__MT65XX_SYNC_WRITE_H__ */
+#endif  /* !_MT_SYNC_WRITE_H */

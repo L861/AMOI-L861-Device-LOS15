@@ -54,6 +54,26 @@ service muxreport-daemon /system/vendor/bin/muxreport
 
 service ril-daemon-mtk /system/vendor/bin/hw/rild
     class core
+    socket rild stream 660 root radio
+    socket rild-debug stream 660 root radio
+    socket rild2 stream 660 root radio
+    socket rild2-debug stream 660 root radio
+    socket rild3 stream 660 root radio
+    socket rild4 stream 660 root radio
+    socket rild-ims stream 660 root radio
+    socket rild-debug stream 660 radio system
+    socket rild-oem stream 660 radio system
+    socket rild-mtk-ut stream 660 radio net_bt
+    socket rild-mtk-ut-2 stream 660 radio net_bt
+    socket rild-mtk-modem stream 660 radio system
+    socket rild-atci stream 660 root radio
+    socket sap_uim_socket1 stream 660 bluetooth bluetooth
+    socket sap_uim_socket2 stream 660 bluetooth bluetooth
+    socket sap_uim_socket3 stream 660 bluetooth bluetooth
+    socket sap_uim_socket4 stream 660 bluetooth bluetooth
+	socket rild-mal stream 660 radio system
+	socket rild-mal-at stream 660 radio system
+	socket rild-vsim stream 660 root radio
     user root
     group radio cache inet misc audio log readproc wakelock system
     disabled
@@ -68,11 +88,6 @@ service ril-daemon-mtk /system/vendor/bin/hw/rild
 #  Modem related services (Begin)
 #
 
-#service permission_check /system/vendor/bin/permission_check
-#    class main
-#    user root
-#    group nvram
-#    oneshot
 
 service permission_check /system/vendor/bin/permission_check
     class main
@@ -82,15 +97,15 @@ service permission_check /system/vendor/bin/permission_check
 
 service ccci_fsd /system/vendor/bin/ccci_fsd 0
     user root
-    group root
+    group radio system
     class core
     oneshot
 
-service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
-    user root
-    group root
-    class core
-    oneshot
+#service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
+#    user root
+#    group root
+#    class core
+#    oneshot
 
 
 #service ccci_fsd /system/vendor/bin/ccci_fsd 0
@@ -99,11 +114,11 @@ service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
 #    class core
 #    oneshot
 
-#service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
-#    user root
-#    group radio system
-#    class core
-#    oneshot
+service ccci_mdinit /system/vendor/bin/ccci_mdinit 0
+    user root
+    group radio system
+    class core
+    oneshot
 
 #service ccci_rpcd /system/vendor/bin/ccci_rpcd
 #    user root

@@ -17,7 +17,10 @@ fchownat: 1
 fchmodat: 1
 fsync: 1
 sysinfo: 1
-# _llseek: 1
+#_llseek: 1
 sysinfo: 1
 # ffmpeg needs this
 getdents64: 1
+getcwd: 1
+inotify_init1: 1
+inotify_add_watch: 1

@@ -1,9 +1,13 @@
 #include <linux/ioctl.h>                                                                       
                                                                                                
+#ifdef CONFIG_COMPAT
+//32-64 bit conversion
+#include <linux/fs.h>
+#include <linux/compat.h>
+#endif
+
 #ifndef __JPEG_DRV_H__                                                                         
 #define __JPEG_DRV_H__                                                                         
-
-
 
 #define TO_CEIL(x,a) ( ((x) + ((a)-1)) & ~((a)-1) )
 #define TO_FLOOR(x,a) ( (x) & ~((a)-1) )
@@ -11,97 +15,96 @@
 
 #define DUNUM_MAPPING(value) (((value)-1)&0x3)
                                                                                                                
-                                                                                           
-                                                                                                               
-typedef struct                                                                                                 
-{                                                                                                              
-    long timeout;                                                                                              
-    unsigned int *result;                                                                                      
-                                                                                                               
-}JPEG_DEC_DRV_OUT;                                                                                             
-
-
 //===========================================================================================
 
+#define MAX_JPEG_COMPONENT     4
+#define MAX_NUM_SCAN           32
 
+#define D_MAX_JPEG_HW_COMP     3
+//#define D_MAX_JPEG_HUFF_TBL    4
+#define D_MAX_JPEG_QTBL        4
+#define D_MAX_JPEG_HW_QTBL     2
+#define D_MAX_JPEG_BLOCK_NUM   10
+#define D_HUFF_LOOKAHEAD_BITS  6   /* # of bits of lookahead */
 
+#define D_DCTSIZE              8
+#define D_JPEG_DRAM_ALIGN_MASK 0xf
+#define D_JPEG_DRAM_ALIGN_SIZE (D_JPEG_DRAM_ALIGN_MASK + 1)
 
-#define MAX_JPEG_COMPONENT	     4
-#define MAX_NUM_SCAN		        32
-
-#define D_MAX_JPEG_HW_COMP		   3
-//#define D_MAX_JPEG_HUFF_TBL		 4
-#define D_MAX_JPEG_QTBL			     4
-#define D_MAX_JPEG_HW_QTBL		   2
-#define D_MAX_JPEG_BLOCK_NUM		10
-#define D_HUFF_LOOKAHEAD_BITS	   6	   /* # of bits of lookahead */
-
-#define D_DCTSIZE				         8
-#define D_JPEG_DRAM_ALIGN_MASK	0xf
-#define D_JPEG_DRAM_ALIGN_SIZE	(D_JPEG_DRAM_ALIGN_MASK + 1)
-
-#define D_JPEG_BASELINE			0
-#define D_JPEG_DC_REFINE		1
-#define D_JPEG_AC_FIRST			2
-#define D_JPEG_AC_REFINE		3
-#define D_JPEG_DC_FIRST			4
+#define D_JPEG_BASELINE        0
+#define D_JPEG_DC_REFINE       1
+#define D_JPEG_AC_FIRST        2
+#define D_JPEG_AC_REFINE       3
+#define D_JPEG_DC_FIRST        4
 
 /* global data check flags */
-#define D_FLAG_NONE				(0)
+#define D_FLAG_NONE            (0)
 
-#define D_GLOB_PROGRESSIVE		(1 << 0)
-#define D_GLOB_NCOMP			(1 << 1)
-#define D_GLOB_BLK_W			(1 << 2)
-#define D_GLOB_BLK_H			(1 << 3)
-#define D_GLOB_PIC_W			(1 << 4)
-#define D_GLOB_PIC_H			(1 << 5)
-#define D_GLOB_DCHUFF			(1 << 6)	/* no need */
-#define D_GLOB_ACHUFF			(1 << 7)	/* no need */
-#define D_GLOB_NZBUFF			(1 << 8)	/* no need */
-#define D_GLOB_QTBL				(1 << 9)	/* no need */
-#define D_GLOB_RESTART			(1 << 10)
+#define D_GLOB_PROGRESSIVE     (1 << 0)
+#define D_GLOB_NCOMP           (1 << 1)
+#define D_GLOB_BLK_W           (1 << 2)
+#define D_GLOB_BLK_H           (1 << 3)
+#define D_GLOB_PIC_W           (1 << 4)
+#define D_GLOB_PIC_H           (1 << 5)
+#define D_GLOB_DCHUFF          (1 << 6) /* no need */
+#define D_GLOB_ACHUFF          (1 << 7) /* no need */
+#define D_GLOB_NZBUFF          (1 << 8) /* no need */
+#define D_GLOB_QTBL            (1 << 9) /* no need */
+#define D_GLOB_RESTART         (1 << 10)
 /* scan data check flags */
-#define D_SCAN_DATASTART		(1 << 0)
-#define D_SCAN_NCOMP			(1 << 1)
-#define D_SCAN_COMPIN			(1 << 2)
-#define D_SCAN_COMPQ			(1 << 3)
-#define D_SCAN_BLKDC			(1 << 4)
-#define D_SCAN_BLKAC			(1 << 5)
-#define D_SCAN_ALAH				(1 << 6)
-#define D_SCAN_SESS				(1 << 7)
-#define D_SCAN_LAST				(1 << 8)
-#define D_SCAN_ROWSTART			(1 << 9)
-#define D_SCAN_ROWEND			(1 << 10)
-#define D_SCAN_DCHUFF			(1 << 11)
-#define D_SCAN_ACHUFF			(1 << 12)
-#define D_SCAN_QTBL				(1 << 13)
-#define D_SCAN_NZBUFF			(1 << 14)
+#define D_SCAN_DATASTART       (1 << 0)
+#define D_SCAN_NCOMP           (1 << 1)
+#define D_SCAN_COMPIN          (1 << 2)
+#define D_SCAN_COMPQ           (1 << 3)
+#define D_SCAN_BLKDC           (1 << 4)
+#define D_SCAN_BLKAC           (1 << 5)
+#define D_SCAN_ALAH            (1 << 6)
+#define D_SCAN_SESS            (1 << 7)
+#define D_SCAN_LAST            (1 << 8)
+#define D_SCAN_ROWSTART        (1 << 9)
+#define D_SCAN_ROWEND          (1 << 10)
+#define D_SCAN_DCHUFF          (1 << 11)
+#define D_SCAN_ACHUFF          (1 << 12)
+#define D_SCAN_QTBL            (1 << 13)
+#define D_SCAN_NZBUFF          (1 << 14)
 /* mcu row check flags */
-#define D_ROW_CURR				(1 << 0)
-#define D_ROW_OUTBUF			(1 << 1)
-#define D_ROW_OUTBUFSIZE		(1 << 2)
+#define D_ROW_CURR             (1 << 0)
+#define D_ROW_OUTBUF           (1 << 1)
+#define D_ROW_OUTBUFSIZE       (1 << 2)
 /* mcu check flags */
-#define D_MCU_OUTADDR			(1 << 0)
-#define D_MCU_COEFADDR			(1 << 1)
+#define D_MCU_OUTADDR          (1 << 0)
+#define D_MCU_COEFADDR         (1 << 1)
 /* misc check flags */
-#define D_MISC_ADDR_X			(1 << 0)
-#define D_MISC_ADDR_Y			(1 << 1)
-
-
-#define M_JPEG_INTERFACE_START() \
-	int				i4Ret = (int)E_HWJPG_OK;
-
-#define M_JPEG_INTERFACE_END() \
-	return i4Ret
-
+#define D_MISC_ADDR_X          (1 << 0)
+#define D_MISC_ADDR_Y          (1 << 1)
 
 #define HORI 0
 #define VERT 1
 
 #define JPEG_ENC_DST_ADDR_OFFSET_MASK (0x0f)
 
+#define M_JPEG_INTERFACE_START() \
+int i4Ret = (int)E_HWJPG_OK;
+
+#define M_JPEG_INTERFACE_END() \
+return i4Ret
 
 
+#ifdef CONFIG_OF
+typedef struct JpegDeviceStruct {
+
+    struct device *pDev;
+    long encRegBaseVA;  /* considering 64 bit kernel, use long */
+    long decRegBaseVA;
+    uint32_t encIrqId;
+    uint32_t decIrqId;
+    
+} JpegDeviceStruct;
+
+const long jpeg_dev_get_encoder_base_VA(void);
+
+const long jpeg_dev_get_decoder_base_VA(void);
+#endif
 
 
 typedef enum _ENUM_JPEG_RET_CODE_T
@@ -141,6 +144,7 @@ typedef enum _ENUM_JPEG_RET_CODE_T
 	E_JPG_ERR_LAST,
 	E_JPG_ERR_DISPLAY_ADDR, //30
 	E_JPG_ERR_INVALID_COMPONENT	//code sync
+    
 } JpegDecRetCode;
 
 
@@ -174,6 +178,7 @@ typedef enum
 	E_HWJPG_ERR_HUFF_ADDR,
 	/* last */
 	E_HWJPG_ERR_GENERAL
+    
 } JpegDrvDecRetCode;
 
 
@@ -190,7 +195,9 @@ typedef enum
     JDEC_HAL_DEC_MODE_PROGRESSIVE_MCU_ROW_ENHANCE,
     JDEC_HAL_DEC_MODE_PROGRESSIVE_SCAN_MULTI_COLLECT,
     JDEC_HAL_DEC_MODE_PROGRESSIVE_SCAN_ENHANCE
+    
 } JpegDrvDecMode;
+
 
 /* jpeg format */
 typedef enum _JpegDecFormat
@@ -210,7 +217,19 @@ typedef enum _JpegDecFormat
 	E_JPG_DIFF_SEQ_ARITHMETIC,
 	E_JPG_DIFF_PROG_ARITHMETIC,
 	E_JPG_UNSUPPORT_FORMAT
+    
 } JpegDecFormat;
+
+
+//// jpeg decode mode
+typedef enum _JpegDecMode
+{
+    JPEG_DEC_MODE_NONE,
+    JPEG_DEC_MODE_FRAME,                   ///< Jpeg baseline picture, decode whole picture
+    JPEG_DEC_MODE_DC_LINK,                 ///< Jpeg baseline picture, decode whole picture
+    JPEG_DEC_MODE_MCU_ROW                 ///< Jpeg baseline picture, decode MCU row
+    
+} JpegDecMode;
 
 
 /* component info in SOF marker */
@@ -220,7 +239,9 @@ typedef struct _JpegDecSOFComp
 	unsigned char		u1HSampFactor;
 	unsigned char		u1VSampFactor;
 	unsigned char		u1QuantTblNo;
+    
 } JpegDecSOFComp;
+
 
 typedef struct _JpegDecSOS
 {
@@ -232,6 +253,7 @@ typedef struct _JpegDecSOS
  	unsigned char    u1Ss, u1Se, u1Ah, u1Al, u1AhAl;        /* OT: NO USE */
 	unsigned char*   pu1ScanTableStart;
 	unsigned char*   pu1ScanDataStart;
+    
 } JpegDecSOS;
 
 
@@ -240,8 +262,8 @@ typedef struct
 {
 	unsigned char au1Bits[17];
 	unsigned char au1HuffVal[256];
+    
 } JpegDecDhtHuffTbl;
-
 
 
 /* SOF data */
@@ -255,8 +277,8 @@ typedef struct _JpegDecSOF
 	unsigned char			  u1NumComponents;
 	unsigned char			  au1MapId2Index[256];
 	JpegDecSOFComp			arSofComp[MAX_JPEG_COMPONENT];
+    
 } JpegDecSOF;
-
 
 
 /* DHT data */
@@ -268,6 +290,7 @@ typedef struct
 	unsigned int			  fgAcTblLoaded;     /* bit mask for loaded ac table */
 	JpegDecDhtHuffTbl		arDcTbl[4];
 	JpegDecDhtHuffTbl		arAcTbl[4];
+    
 } JpegDecDHT;
 
 /* DQT data */
@@ -282,6 +305,7 @@ typedef struct
 	unsigned int		afgPrec[4];
 	unsigned char		u1NumQ;
 	unsigned int		fgDQT;
+    
 } JpegDecDQT;
 
 
@@ -307,28 +331,16 @@ typedef struct
 } JpegDrvDecFlow;
 
 
-
-//// jpeg decode mode
-typedef enum _JpegDecMode
-{
-    JPEG_DEC_MODE_NONE,
-    JPEG_DEC_MODE_FRAME,                   ///< Jpeg baseline picture, decode whole picture
-    JPEG_DEC_MODE_DC_LINK,                 ///< Jpeg baseline picture, decode whole picture
-    JPEG_DEC_MODE_MCU_ROW                 ///< Jpeg baseline picture, decode MCU row
-} JpegDecMode;
-
-
 //// JPEG Decoder Structure
 typedef struct
 {
 
-    /* common */
+     /* common */
     unsigned int    decodeMode;        //OK 
     unsigned int    reg_OpMode ;       //OK
     unsigned int    regDecDumpEn;
-	  unsigned int    totalMCU ;         //OK
-	  unsigned int    comp0_DU ;
-
+    unsigned int    totalMCU ;         //OK
+    unsigned int    comp0_DU ;
     unsigned int    membershipList ;   //OK    /* { GRAY, gmcEn, DU9, DU8,..., DU1, DU0} */
 
     /* for BRZ  (0): 1, (1): 1/2, (2): 1/4, (3): 1/8 */
@@ -336,7 +348,7 @@ typedef struct
     unsigned char   lumaVerDecimate;   //OK
     unsigned char   cbcrHorDecimate;   //OK
     unsigned char   cbcrVerDecimate;   //OK
-	  
+  
     unsigned int    srcStreamAddrBase;     //OK
     unsigned int    srcStreamSize;         //OK
     unsigned int    srcStreamAddrWritePtr; //OK 
@@ -356,16 +368,11 @@ typedef struct
     unsigned int    dma_GroupNum ;        //OK
     unsigned int    dma_LastMcuNum ;      //OK
     unsigned int    gmcEn ;               //OK
-
-
     //unsigned int totalMcuRows;         //OK                 ///< number of MCU column in the JPEG file                           
+    unsigned int    compImgStride[D_MAX_JPEG_HW_COMP];   //OK           // hSamplingFactor[n] * 8 * mcuPerRow (byte pitch of a component)
+    unsigned int    compMemStride[D_MAX_JPEG_HW_COMP];       //OK
+    unsigned int    compTileBufStride[D_MAX_JPEG_HW_COMP];         // hSamplingFactor[n] * 8 * mcuPerRow (byte pitch of a component)
 
-	  unsigned int	  compImgStride[D_MAX_JPEG_HW_COMP];		   //OK           // hSamplingFactor[n] * 8 * mcuPerRow (byte pitch of a component)
-	  unsigned int	  compMemStride[D_MAX_JPEG_HW_COMP];       //OK
-	  unsigned int	  compTileBufStride[D_MAX_JPEG_HW_COMP];		         // hSamplingFactor[n] * 8 * mcuPerRow (byte pitch of a component)
-
-
-    
     unsigned int    mcuPerRow;            //OK     //move to HAL ///< number of MCU row in the JPEG file                              
     unsigned int    pauseRow_en;          //OK
     unsigned int    pauseRowCnt;                   //move to HAL
@@ -377,19 +384,19 @@ typedef struct
     unsigned int    buffer_Y_row_size ;            //move to HAL
     unsigned int    buffer_C_row_size ;            //move to HAL
 
-                                                                                                                    
     //unsigned int compDU[3];           //OK                 ///< (required by HW decoder) number of DU for each component        
     //unsigned int duPerMCURow[3];       //OK                 ///< (required by HW decoder) DU per MCU row for each component      (MT6589_NOUSE)
     //unsigned int dummyDU[3];           //OK                 ///< (required by HW decoder) number of dummy DU for each component  (MT6589_NOUSE) 
     //unsigned int samplingFormat;       //OK                 /// how many format?     
-                                                                           
-
-
-
 }JPEG_DEC_DRV_IN;
 
 
+typedef struct                                                                                                 
+{                                                                                                              
+    long timeout;                                                                                              
+    unsigned int *result;                                                                                      
 
+}JPEG_DEC_DRV_OUT;                                                                                             
 
 
 typedef struct 
@@ -397,9 +404,7 @@ typedef struct
     unsigned int    decRowBuf[3];    //OK
     unsigned int    pauseMCU;             //OK
 
-
 }JPEG_DEC_CONFIG_ROW; 
-
 
 
 typedef struct 
@@ -410,10 +415,7 @@ typedef struct
     unsigned int    decRowBuf1[64]; 
     unsigned int    decRowBuf2[64]; 
 
-
 }JPEG_DEC_CONFIG_CMDQ; 
-
-
 
 
 typedef struct 
@@ -473,7 +475,6 @@ typedef struct
 	  unsigned int	  u4CurrMcuRow;
     unsigned int    u4ModTotalRows;
     
-	  
 	  /* for single component in p scan */
 	  unsigned char	  u1FirstCompInScan;   
 	  
@@ -503,28 +504,12 @@ typedef struct
   
 } JpegDrvDecConfig;
 
+
 typedef struct
 {
     unsigned int *pChksum;  
+    
 } JpegDrvDecResult;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //==========================================================================================
 
@@ -532,7 +517,6 @@ typedef struct
 // JPEG Encoder Structure 
 typedef struct 
 {
-
     unsigned int dstBufferAddr; 
     unsigned int dstBufferSize; 
 
@@ -560,9 +544,6 @@ typedef struct
 }JPEG_ENC_DRV_IN; 
 
 
-
-
-
 typedef struct                                                                                                 
 {                                                                                                              
     long timeout;                                                                                              
@@ -572,27 +553,40 @@ typedef struct
                                                                                                                
 }JPEG_ENC_DRV_OUT;                                                                                             
                                                                                                                
+                                                                                                               
 typedef struct {                                                                                               
     unsigned long startAddr;//In :                                                                             
     unsigned long size;                                                                                        
     unsigned long result;// 0 : out of pmem range, 1 : inside pmem range, 2 : partially overlap with pmem range
+    
 } JPEG_PMEM_RANGE;                                                                                             
 
-//====================================================================================
 
+#ifdef CONFIG_COMPAT
 
 typedef struct
 {
-    long timeout;
-    unsigned int *pFileSize;  
-    unsigned int *pResult;
-    unsigned int *pCycleCount;
+    compat_long_t timeout;                                                                                              
+    compat_uptr_t result;                                                                                      
     
-} JpegDrvEncResult;
+}compat_JPEG_DEC_DRV_OUT;                                                                                             
 
+typedef struct
+{
+    compat_uptr_t pChksum;
 
+} compat_JpegDrvDecResult;
 
+typedef struct                                                                                                 
+{                                                                                                              
+    compat_long_t timeout;                                                                                              
+    compat_uptr_t fileSize;                                                                                    
+    compat_uptr_t result;
+    compat_uptr_t cycleCount;                                                                                      
+                                                                                                               
+}compat_JPEG_ENC_DRV_OUT;
 
+#endif
 
 
 //typedef struct
@@ -619,11 +613,6 @@ typedef struct
 //======================================================================================
 
 
-
-
-
-
-                                                                                                               
 #define JPEG_IOCTL_MAGIC        'x'                                                                            
 
 #if 0                                                                                                               
@@ -638,6 +627,7 @@ typedef struct
 #endif
 
 ///////////////////// JPEG DEC IOCTL /////////////////////////////////////
+
 #define JPEG_DEC_IOCTL_INIT     _IO    (JPEG_IOCTL_MAGIC,  1)
 #define JPEG_DEC_IOCTL_CONFIG   _IOW   (JPEG_IOCTL_MAGIC,  2, JPEG_DEC_DRV_IN)
 #define JPEG_DEC_IOCTL_FLOW     _IOW   (JPEG_IOCTL_MAGIC,  3, JpegDrvDecFlow)
@@ -656,22 +646,25 @@ typedef struct
 #define JPEG_DEC_IOCTL_DUMP_REG _IO  (JPEG_IOCTL_MAGIC, 30)
 //#define JPEG_DEC_IOCTL_MAN_GDMA _IOW (JPEG_IOCTL_MAGIC, 31, unsigned char)
 
-
-
 ///////////////////// JPEG ENC IOCTL /////////////////////////////////////
 
-                                                                                                               
 #define JPEG_ENC_IOCTL_INIT     _IO  (JPEG_IOCTL_MAGIC, 11)                                                    
 #define JPEG_ENC_IOCTL_CONFIG   _IOW (JPEG_IOCTL_MAGIC, 12, JPEG_ENC_DRV_IN)                                   
 #define JPEG_ENC_IOCTL_WAIT     _IOWR(JPEG_IOCTL_MAGIC, 13, JPEG_ENC_DRV_OUT)                                  
 #define JPEG_ENC_IOCTL_DEINIT   _IO  (JPEG_IOCTL_MAGIC, 14)                                                    
 #define JPEG_ENC_IOCTL_START    _IO  (JPEG_IOCTL_MAGIC, 15)                                                    
 
-
 #define JPEG_ENC_IOCTL_WARM_RESET   _IO(JPEG_IOCTL_MAGIC, 20)
 #define JPEG_ENC_IOCTL_DUMP_REG     _IO(JPEG_IOCTL_MAGIC, 21)
 #define JPEG_ENC_IOCTL_RW_REG       _IO(JPEG_IOCTL_MAGIC, 22)
 
+#ifdef CONFIG_COMPAT
+
+#define COMPAT_JPEG_DEC_IOCTL_WAIT         _IOWR  (JPEG_IOCTL_MAGIC,  5, compat_JPEG_DEC_DRV_OUT)
+#define COMPAT_JPEG_DEC_IOCTL_CHKSUM       _IOWR  (JPEG_IOCTL_MAGIC,  8, compat_JpegDrvDecResult)
+#define COMPAT_JPEG_ENC_IOCTL_WAIT         _IOWR  (JPEG_IOCTL_MAGIC, 13, compat_JPEG_ENC_DRV_OUT)                                  
+
+#endif
                                                                                                                
 #endif                                                                                                         
                                                                                                                

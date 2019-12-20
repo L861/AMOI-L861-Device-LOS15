@@ -34,7 +34,7 @@
 				<freq_hispeed>806000</freq_hispeed>
 				<freq_boost>0</freq_boost>
 				<cores>
-					<!--  false=disable , tru = this will disable Cpu Hotplug and enable governor-data too -->
+					<!--  false=disable , tru = this will disable Cpu Hotplug -->
 					<enabled>false</enabled>
 					<core1>true</core1>
 					<core2>true</core2>
@@ -45,18 +45,13 @@
 					<core7>false</core7>
 					<core8>false</core8>
 				</cores>
-				<!-- TODO: governor-data cannot be inherited yet -->
 				<governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
 					<above_hispeed_delay>19000</above_hispeed_delay>
 					<boost>0</boost>
 					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
 					<go_hispeed_load>99</go_hispeed_load>
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
-					<mode>0</mode>
 					<target_loads>75</target_loads>
 					<timer_rate>20000</timer_rate>
 					<timer_slack>20000</timer_slack>
@@ -72,6 +67,7 @@
 		</cpusets>
 		<gpu>
 			<enabled>true</enabled>
+			<fps>30</fps>
 			<dvfs>
 				<enabled>true</enabled>
 				<freq_min>253500</freq_min>
@@ -108,28 +104,26 @@
 	<power_save extends="screen_off">
 		<enabled>true</enabled>
 		<cpu>
+				<enabled>true</enabled>
 				<num_limit_power_serv>2</num_limit_power_serv>
 				<freq_min>403000</freq_min>
 				<freq_max>1326000</freq_max>
 				<freq_hispeed>1326000</freq_hispeed>
 				<governor>interactive</governor>
                 <governor_data>
-					<!-- Mode index -->
-					<param_index>0</param_index>
 					<above_hispeed_delay>19000</above_hispeed_delay>
 					<boost>0</boost>
 					<boostpulse_duration>40000</boostpulse_duration>
-					<enforced_mode>0</enforced_mode>
-					<go_hispeed_load>95</go_hispeed_load>
+					<go_hispeed_load>99</go_hispeed_load>
 					<io_is_busy>0</io_is_busy>
 					<min_sample_time>40000</min_sample_time>
-					<mode>0</mode>
-					<target_loads>30 403000:45 806000:50 1183000:60 1326000:70 1469000:80 1625000:85 1781000:90 1950000:95</target_loads>
+					<target_loads>70</target_loads>
 					<timer_rate>20000</timer_rate>
 					<timer_slack>20000</timer_slack>
 				</governor_data>
 		</cpu>
 		<gpu>
+			<fps>30</fps>
 			<dvfs>
 				<freq_max>338000</freq_max>
 			</dvfs>
@@ -149,6 +143,7 @@
 	<bias_power_save extends="power_save">
 		<enabled>true</enabled>
 		<cpu>
+				<enabled>true</enabled>
 				<num_limit_power_serv>4</num_limit_power_serv>
 				<freq_min>403000</freq_min>
                 <freq_max>1326000</freq_max>
@@ -174,13 +169,28 @@
 	<balanced extends="bias_power_save">
 		<enabled>true</enabled>
 		<cpu>
+				<enabled>true</enabled>
 			    <num_limit_power_serv>4</num_limit_power_serv>
 			    <freq_min>403000</freq_min>
 				<freq_max>1950000</freq_max>
                 <freq_boost>1950000</freq_boost>
                 <freq_hispeed>1950000</freq_hispeed>
+				<governor>interactive</governor>
+				<governor_data>
+					<above_hispeed_delay>200000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<go_hispeed_load>99</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<target_loads>60</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+				</governor_data>
 		</cpu>
+		
         <gpu>
+			<fps>60</fps>
             <dvfs>
 				<!-- 0 means disabled and means unlimited -->
 	 			<freq_max>0</freq_max>
@@ -202,12 +212,27 @@
 	<bias_performance extends="balanced">
 		<enabled>true</enabled>
 		<cpu>
+				<enabled>true</enabled>
 			    <num_limit_power_serv>6</num_limit_power_serv>
 			    <freq_min>403000</freq_min>
 				<freq_max>1950000</freq_max>
 				<freq_hispeed>1950000</freq_hispeed>
+				<governor>interactive</governor>
+				<governor_data>
+					<above_hispeed_delay>19000</above_hispeed_delay>
+					<boost>0</boost>
+					<boostpulse_duration>40000</boostpulse_duration>
+					<go_hispeed_load>99</go_hispeed_load>
+					<io_is_busy>0</io_is_busy>
+					<min_sample_time>40000</min_sample_time>
+					<target_loads>90</target_loads>
+					<timer_rate>20000</timer_rate>
+					<timer_slack>20000</timer_slack>
+				</governor_data>
+				
 		</cpu>
 		<gpu>
+			<fps>60</fps>
 			<dvfs>
             <freq_max>0</freq_max>
 			</dvfs>
@@ -227,12 +252,14 @@
 	<performance extends="bias_performance">
 		<enabled>true</enabled>
 		<cpu>
+			<enabled>true</enabled>
 			<num_limit_power_serv>8</num_limit_power_serv>
 			<freq_min>403000</freq_min>
 			<freq_max>1950000</freq_max>
 			<freq_hispeed>1950000</freq_hispeed>
 		</cpu>
 		<gpu>
+			<fps>60</fps>
 			<dvfs>
             <freq_max>0</freq_max>
 			</dvfs>

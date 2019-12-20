@@ -687,6 +687,10 @@ public:
     // High-dynamic range mode
     static const char LIGHTFX_HDR[];
 
+    static const char KEY_SNAPSHOT_PICTURE_FLIP[];
+    static const char KEY_VIDEO_HDR_MODE[];
+    static const char KEY_VIDEO_HDR_MODES[];
+
     /**
      * Returns the the supported preview formats as an enum given in graphics.h
      * corrsponding to the format given in the input string or -1 if no such

@@ -57,6 +57,7 @@ PRODUCT_PACKAGES += \
 #Camera HAL
 PRODUCT_PACKAGES += \
 		android.hardware.camera.provider@2.4-impl \
+#		vendor.mediatek.hardware.pq@2.0_vendor \
 
 
 # Bluetooth HAL
@@ -119,11 +120,15 @@ PRODUCT_PACKAGES += \
 #    android.hardware.biometrics.fingerprint@2.0-service
 
 # Ril
+
+#    android.hardware.radio@1.0 \
+#    android.hardware.radio@1.1 \
+#    android.hardware.radio.deprecated@1.0 \
+
 PRODUCT_PACKAGES += \
-    android.hardware.radio@1.0 \
-    android.hardware.radio@1.1 \
-    android.hardware.radio.deprecated@1.0 \
-#    vendor.mediatek.hardware.radio.deprecated@1.1
+    vendor.mediatek.hardware.radio@1.1 \
+    vendor.mediatek.hardware.radio@2.0 \
+    vendor.mediatek.hardware.radio.deprecated@1.1
     
 
 # Tether Packages

@@ -22,5 +22,7 @@ public:
     static const char KEY_SNAPSHOT_PICTURE_FLIP[];
     static const char FLASH_MODE_TORCH1[];
     static const char FLASH_MODE_TORCH2[];
+    static const char KEY_VIDEO_HDR_MODE[];
+    static const char KEY_VIDEO_HDR_MODES[];
 }; // namespace android
 };

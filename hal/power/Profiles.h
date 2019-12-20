@@ -118,6 +118,8 @@ struct SecPowerProfile {
 	PROFILE_DEFINE(struct {
 
 		PROFILE_BOOL(enabled);
+		
+		PROFILE_UINT(fps);
 
 		PROFILE_DEFINE(struct {
 

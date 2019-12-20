@@ -2405,8 +2405,8 @@ int extract_frames(GSM0710_Buffer *buf)
                             /* The call blocks until the device reports that the transfer has completed */
                             fsync_result = fsync(channel->fd); /*push to /dev/pts device */
                             if (fsync_result < 0) {
-                                LOGMUX(LOG_ERR, "fsync() failed (%d, %d - %s)", fsync_result, errno, strerror(errno));
-                            }
+                             //   LOGMUX(LOG_ERR, "fsync() failed (%d, %d - %s)", fsync_result, errno, strerror(errno));
+                            } 
 
                             #ifdef __MUXD_FLOWCONTROL__
                             if ((frame->length - write_result) > 0) {

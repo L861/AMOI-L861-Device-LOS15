@@ -7,3 +7,6 @@ setsockopt: 1
 clock_gettime: 1
 # ffmpeg needs this
 nanosleep: 1
+readlinkat: 1
+pread64: 1
+mremap: 1

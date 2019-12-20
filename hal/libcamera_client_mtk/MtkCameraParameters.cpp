@@ -332,7 +332,7 @@ const char MtkCameraParameters::KEY_HEARTBEAT_MONITOR_SUPPORTED[] = "mtk-heartbe
 
 // KEY for Video HDR
 const char MtkCameraParameters::KEY_VIDEO_HDR[] = "video-hdr";
-const char MtkCameraParameters::KEY_VIDEO_HDR_MODE[] = "video-hdr-mode";
+const char MtkCameraParameters::KEY_VIDEO_HDR_MODE[] = "video-hdr-values";
 const char MtkCameraParameters::VIDEO_HDR_MODE_IVHDR[] = "video-hdr-mode-ivhdr";
 const char MtkCameraParameters::VIDEO_HDR_MODE_MVHDR[] = "video-hdr-mode-mvhdr";
 const char MtkCameraParameters::VIDEO_HDR_MODE_ZVHDR[] = "video-hdr-mode-zvhdr";

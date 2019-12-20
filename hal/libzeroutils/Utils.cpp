@@ -160,7 +160,8 @@ bool Utils::writeCpuGov(const int core, const string file, const string data) {
 
 	ASSERT_CPU_CORE();
 
-	path << "/sys/devices/system/cpu/cpu" << core << "/cpufreq/" << kCpuGovernors[core] << "/" << file;
+	path << "/sys/devices/system/cpu/cpufreq/" << kCpuGovernors[core] << "/" << file;
+
 	if (!isFile(path.str())) {
 		return false;
 	}
