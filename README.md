@@ -19,10 +19,12 @@ This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenS
 * lights ( notifications, charging,etc)
 * bluetooth
 * USB tethering
+* main & front camera
+* GPS/Glonass/Beidou
+* Compass/Gyroscpe
 
 ### Broken/Bugs
 
-* graphical glitches
-* camera
-* everything
+* graphical glitches (Telegram / Google Photos)
+
 
