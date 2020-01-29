@@ -131,11 +131,11 @@
         <kctl name="Audio_ADC_1_Switch" value="On" />
         <kctl name="Audio_ADC_2_Switch" value="On" /> 
         <kctl name="Audio_Preamp1_Switch" value="IN_ADC1" />        
-        <kctl name="Audio_Preamp2_Switch" value="IN_ADC3" />
+        <!-- <kctl name="Audio_Preamp2_Switch" value="IN_ADC3" /> -->
     </path>
     <path name="builtin_Mic_DualMic" value="turnoff">
         <kctl name="Audio_Preamp1_Switch" value="OPEN" />
-        <kctl name="Audio_Preamp2_Switch" value="OPEN" />		
+        <!-- <kctl name="Audio_Preamp2_Switch" value="OPEN" /> -->
         <kctl name="Audio_ADC_1_Switch" value="Off" />
         <kctl name="Audio_ADC_2_Switch" value="Off" />        
     </path>
@@ -254,6 +254,6 @@
     </path>
     <path name="Mic_Setting_NoInverse" value="setting">
         <kctl name="Audio_Preamp1_Switch" value="IN_ADC1" />>
-        <kctl name="Audio_Preamp2_Switch" value="IN_ADC3" />>        
+        <!-- <kctl name="Audio_Preamp2_Switch" value="IN_ADC3" />> -->       
     </path>            
 </mixercontrol>

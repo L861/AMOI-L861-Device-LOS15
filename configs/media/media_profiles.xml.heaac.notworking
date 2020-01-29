@@ -112,10 +112,10 @@
 				 height="2160"
 				 frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		<Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="vga" fileFormat="mp4" duration="30">
@@ -176,10 +176,10 @@
 				 height="1440"
 				 frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="2k" fileFormat="mp4" duration="30">
@@ -189,10 +189,10 @@
 				 height="1088"
 				 frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="4kdci" fileFormat="mp4" duration="30">
@@ -202,10 +202,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="2160p" fileFormat="mp4" duration="30">
@@ -215,10 +215,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapselow" fileFormat="mp4" duration="30">
@@ -243,10 +243,10 @@
 				 frameRate="30" />
 
 		  <!-- audio setting is ignored -->
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapsevga" fileFormat="mp4" duration="30">
@@ -297,10 +297,10 @@
 				 frameRate="30" />
 
 		  <!-- audio setting is ignored -->
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapse2k" fileFormat="mp4" duration="30">
@@ -311,10 +311,10 @@
 				 frameRate="30" />
 
 		  <!-- audio setting is ignored -->
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapse4kdci" fileFormat="mp4" duration="30">
@@ -324,10 +324,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapse2160p" fileFormat="mp4" duration="30">
@@ -337,10 +337,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
         <ImageEncoding quality="100" />
@@ -496,10 +496,10 @@
 				 frameRate="30" />
 
 		  <!-- audio setting is ignored -->
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapse4kdci" fileFormat="mp4" duration="30">
@@ -509,10 +509,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="timelapse2160p" fileFormat="mp4" duration="30">
@@ -522,10 +522,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="qhd" fileFormat="mp4" duration="30">
@@ -535,10 +535,10 @@
 				 height="1440"
 				 frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				 bitRate="64000"
+				 sampleRate="48000"
+				 channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="4kdci" fileFormat="mp4" duration="30">
@@ -548,10 +548,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
 		<EncoderProfile quality="2160p" fileFormat="mp4" duration="30">
@@ -561,10 +561,10 @@
 				height="2160"
 				frameRate="30" />
 
-      <Audio codec="aac"
-            bitRate="96000"
-            sampleRate="44100"
-            channels="1" />
+		  <Audio codec="heaac"
+				bitRate="64000"
+				sampleRate="48000"
+				channels="2" />
 		</EncoderProfile>
 
         <ImageEncoding quality="100" />

@@ -163,12 +163,13 @@ PRODUCT_PACKAGES += \
 	libcameracustom \
 	libstdc++ \
 	libmtkcamera_client \
-	CameraNext \
-	Camera2 \
 	libcam.camadapter \
 	libcam.client \
 	libcam_utils \
+	L861Pro \
 
+#	CameraNext \
+#	Camera2 \
 
 # Powertoggles
 PRODUCT_PACKAGES += \
