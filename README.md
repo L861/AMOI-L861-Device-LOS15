@@ -23,8 +23,3 @@ This branch is device tree for building Lineage-15.1 branch (oreo) Rom for OpenS
 * GPS/Glonass/Beidou
 * Compass/Gyroscpe
 
-### Broken/Bugs
-
-* graphical glitches (Telegram / Google Photos)
-
-
